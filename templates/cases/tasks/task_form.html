@@ -1,0 +1,12 @@
+{% load crispy_forms_tags %}
+
+
+<form action="{% url 'cases:add_task' case.pk %}" method="post">
+
+    {% csrf_token %}
+    {{ task_form|crispy }}
+
+    <button type="submit" class="btn btn-secondary">Add Task</button>
+
+
+</form>

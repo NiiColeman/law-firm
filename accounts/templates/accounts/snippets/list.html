@@ -1,0 +1,27 @@
+<tbody>
+
+
+
+    {% for law in lawyers  %}
+    <tr>
+        <td><img src="../assets/images/users/user-10.jpg" alt=""
+                class="thumb-sm rounded-circle mr-2">{{law.user.first_name}} {{law.user.last_name}}</td>
+        <td>{{law.user.email}}</td>
+        <td>{{law.user.phone}}</td>
+        <td>{{law.bar_number}}</td>
+
+        <td>{{law.lawyer_status}}</td>
+
+        <td>
+            <a href="{% url 'accounts:lawyer_detail' law.pk %}" class="mr-2 btn btn-secondary"><i
+                    class="fas fa-eye  font-14"></i></a>
+            <!-- <a href="#"><i class="fas fa-trash-alt text-danger font-16"></i></a> -->
+        </td>
+    </tr>
+    <!--end tr-->
+
+    {% endfor %}
+
+
+
+</tbody>

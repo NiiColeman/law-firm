@@ -1,0 +1,6 @@
+<form action="{{doc.get_delete_url}}" method="post">
+
+
+    {% csrf_token %}
+    <button class="btn btn-danger">Delete</button>
+</form>

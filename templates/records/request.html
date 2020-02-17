@@ -1,0 +1,69 @@
+<div class="table-responsive dash-social">
+    <table id="datatable" class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Document Title</th>
+
+                <th>Requested By</th>
+                <th>Date Requested</th>
+
+
+
+
+
+
+
+
+                <th>Action</th>
+            </tr>
+            <!--end tr-->
+        </thead>
+
+
+        <tbody>
+
+            {% for req  in  reqs %}
+            <tr>
+                <td>
+                    {{req.document.title|title}}
+
+                    <!-- <td>{{req.document.category|title}}</td> -->
+
+
+                    <!-- {% if req.document.status|stringformat:"s" == 'Not Available' %}
+                <td><span class="badge badge-md   badge-soft-danger">{{req.document.status}}</span> </td>
+                {% else %}
+                <td><span class="badge badge-md   badge-soft-success">{{req.document.status}}</span> </td>
+        
+                {% endif %} -->
+
+                <td>{{req.requested_by|title}}</td>
+                <td>{{req.date_requested}}</td>
+
+
+
+
+
+                <td>
+                    <a href="{{req.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
+                            class="mdi mdi-eye"></i></a>
+
+                    <a href="{% url 'documents:approve' req.id %}"
+                        class="btn btn-gradient-primary waves-effect waves-light"><i class="mdi mdi-eye">Approve</i></a>
+
+
+                </td>
+            </tr>
+
+
+
+            {% endfor %}
+
+
+            <!--end tr-->
+
+        </tbody>
+
+
+    </table>
+</div>

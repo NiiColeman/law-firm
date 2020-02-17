@@ -1,0 +1,60 @@
+{% extends 'accounts/base2.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="text-center auth-logo-text">
+    <h4 class="mt-0 mb-3 mt-5">Register</h4>
+
+</div>
+<!--end auth-logo-text-->
+
+
+<form class="form-horizontal auth-form my-4" method="POST" action="{% url 'accounts:lawyer-signup' %}">
+
+    <div class="form-group">
+        {% csrf_token %}
+
+
+        {{user_form|crispy}}
+
+        <div class="input-group mb-3">
+
+            {{lawyer_form|crispy}}
+        </div>
+
+
+
+
+
+    </div>
+
+    </div>
+    <!--end form-group-->
+
+    <div class="form-group row mt-4">
+        <div class="col-sm-12">
+            <!-- <div class="custom-control custom-switch switch-success">
+                <input type="checkbox" class="custom-control-input" id="customSwitchSuccess">
+                <label class="custom-control-label text-muted" for="customSwitchSuccess">By
+                    registering you agree to the Frogetor <a href="#" class="text-primary">Terms of Use</a></label>
+
+            </div> -->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end form-group-->
+
+    <div class="form-group mb-0 row">
+        <div class="col-12 mt-2">
+            <button class="btn btn-gradient-primary btn-round btn-block waves-effect waves-light" type="submit">Register
+                <i class="fas fa-sign-in-alt ml-1"></i></button>
+        </div>
+        <!--end col-->
+    </div>
+    <!--end form-group-->
+</form>
+<!--end form-->
+
+{% endblock content %}

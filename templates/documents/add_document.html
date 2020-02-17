@@ -1,0 +1,9 @@
+<form action="{% url 'documents:add_document' %}" method="POST" enctype="multipart/form-data">
+
+
+    {% include 'documents/snippets/form.html' with form=form %}
+
+
+
+    <button class="btn btn-success">Add Document</button>
+</form>

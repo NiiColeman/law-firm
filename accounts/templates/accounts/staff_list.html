@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Users</a></li>
+                            <li class="breadcrumb-item active">Front Desk Personnel</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Contacts</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 btn-rounded float-right mt-0 mb-3"
+                            data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg">+ Add
+                            New</button>
+                        <h4 class="header-title mt-0">Contacts Details</h4>
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone No</th>
+                                        <th>Role</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+
+                                {% include 'accounts/snippets/slist.html' with staff_list=staff_list %}
+
+
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+
+
+            <!--  Modal content for the above example -->
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            {% include 'accounts/add_staff.html' %}
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+
+
+
+
+
+        </div>
+        <!--end row-->
+
+    </div><!-- container -->
+    {% endblock content %}

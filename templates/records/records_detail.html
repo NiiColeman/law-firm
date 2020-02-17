@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'documents:doc_list' %}">Documents</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'documents:record_list' %}">Records</a></li>
+                            <li class="breadcrumb-item active">Record Detail</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Procuct-Detail</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        {% include 'messages/messages.html' %}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <img src="{% static './assets/images/doc.png' %} " alt="" class=" mx-auto  d-block"
+                                    height="400">
+                            </div>
+                            <!--end col-->
+                            <div class="col-lg-6 align-self-center">
+                                <div class="single-pro-detail">
+
+                                    <div class="custom-border mb-3"></div>
+                                    <h3 class="pro-title">{{rec.document.title}}</h3>
+                                    <p class="text-muted mb-0">Date Requested: {{rec.date_requested}}</p>
+
+                                    {% if rec.approved_by %}
+                                    <p class="text">Date Approved:{{rec.date_approved}}</p>
+                                    <p class="text">Approved By: {{rec.approved_by.user.username|title}}</p>
+                                    {% endif %}
+
+
+                                    <!-- <h2 class="pro-price">$89.00 <span><del>$180.00</del></span><span
+                                            class="text-danger font-weight-bold ml-2">50% Off</span></h2>
+                                    <h6 class="text-muted font-13">Features :</h6>
+
+                                    <h6 class="text-muted font-13 d-inline-block align-middle mr-2">Color :</h6>
+                                    <div class="radio2 radio-info2 form-check-inline ml-2">
+                                        <input type="radio" id="inlineRadio1" value="option1" name="radioInline"
+                                            checked="">
+                                        <label for="inlineRadio1"></label>
+                                    </div>
+                                    <div class="radio2 radio-dark2 form-check-inline">
+                                        <input type="radio" id="inlineRadio2" value="option2" name="radioInline">
+                                        <label for="inlineRadio2"></label>
+                                    </div>
+                                    <div class="radio2 radio-danger2 form-check-inline">
+                                        <input type="radio" id="inlineRadio3" value="option3" name="radioInline">
+                                        <label for="inlineRadio3"></label>
+                                    </div>
+                                    <div class="radio2 radio-purple2 form-check-inline">
+                                        <input type="radio" id="inlineRadio4" value="option4" name="radioInline">
+                                        <label for="inlineRadio4"></label>
+                                    </div> -->
+
+                                    <div class="quantity mt-3 ">
+                                        <!-- <input class="form-control" type="number" min="0" value="0"
+                                            id="example-number-input"> -->
+                                        <button href="" class="btn btn-gradient-primary text-white px-4 d-inline-block"
+                                            data-toggle="modal" data-animation="bounce"
+                                            data-target=".bs-example-modal-lg"><i class="mdi mdi-pencil mr-2"></i>Edit
+                                            Record</button>
+
+                                        <button class="btn btn-gradient-danger text-white px-4 d-inline-block"
+                                            data-toggle="modal" data-animation="bounce"
+                                            data-target=".bs-example-modal-center"> <i
+                                                class="mdi mdi-trash mr-2"></i>Delete</button>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <!--end col-->
+                        </div>
+                        <!--end row-->
+                    </div>
+                    <!--end card-body-->
+
+                </div>
+                <!--end card-->
+
+
+
+                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Edit
+                                    doc</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            </div>
+                            <div class="modal-body">
+
+                                {% include 'records/records_update.html' with rec=rec %}
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+
+
+
+                <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                    aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title mt-0" id="exampleModalLabel">Delete Record</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>AreYou Sure You Want TO Delete {{rec.document.title|title}}</p>
+
+
+                                <form action="{{rec.get_delete_url}}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-secondary" data-dismiss="modal"
+                                        aria-label="Close">Cancel</button>
+
+                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                </form>
+
+
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+
+
+
+
+            </div>
+            <!--end col-->
+        </div>
+        {% endblock content %}

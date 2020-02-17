@@ -1,0 +1,68 @@
+<div class="table-responsive dash-social">
+    <table id="datatable" class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Document Title</th>
+
+                <th>Requested By</th>
+                <th>Date Requested</th>
+                <th>Approved By</th>
+                <th>Date Approved</th>
+
+
+
+
+
+
+
+                <th>Action</th>
+            </tr>
+            <!--end tr-->
+        </thead>
+
+
+        <tbody>
+
+            {% for app  in  apps %}
+            <tr>
+                <td>
+                    {{app.document.title|title}}
+
+                    <!-- <td>{{app.document.category|title}}</td> -->
+
+
+                    <!-- {% if app.document.status|stringformat:"s" == 'Not Available' %}
+                <td><span class="badge badge-md   badge-soft-danger">{{app.document.status}}</span> </td>
+                {% else %}
+                <td><span class="badge badge-md   badge-soft-success">{{app.document.status}}</span> </td>
+        
+                {% endif %} -->
+
+                <td>{{app.requested_by|title}}</td>
+                <td>{{app.date_requested}}</td>
+                <td>{{app.approved_by|title}}</td>
+                <td>{{app.date_approved}}</td>
+
+
+
+
+                <td>
+                    <a href="{{app.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
+                            class="mdi mdi-eye"></i></a>
+
+
+                </td>
+            </tr>
+
+
+
+            {% endfor %}
+
+
+            <!--end tr-->
+
+        </tbody>
+
+
+    </table>
+</div>

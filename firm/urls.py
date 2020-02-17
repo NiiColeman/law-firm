@@ -14,18 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import index
-
-
-
+from .views import index,FirmChart
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", index, name="index")
+    path('accounts/', include('django.contrib.auth.urls')),
+    path("api/chart/data", FirmChart.as_view(), name="api-data"),
+
+    path("", index, name="index"),
+    path("", include('accounts.urls')),
+    path("", include('cases.urls')),
+    path("",include('documents.urls')),
+
 ]
 
 
@@ -34,5 +38,3 @@ if settings.DEBUG:
                           document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
-
-

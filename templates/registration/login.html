@@ -1,0 +1,38 @@
+{% extends 'registration/base2.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+
+
+{% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+<div class="text-center auth-logo-text">
+  <h4 class="mt-0 mb-3 mt-5">Let's Get Started </h4>
+  <p class="text-muted mb-0">Sign in to continue</p>
+</div>
+<!--end auth-logo-text-->
+
+
+<form class="form-horizontal auth-form my-4" method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+
+<p class="m-t-sm"><a href="{% url 'password_reset' %}">Forgot password?</a>
+
+
+
+
+  {% endblock %}

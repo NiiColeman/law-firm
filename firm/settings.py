@@ -25,6 +25,7 @@ SECRET_KEY = 'el4*ad0)o)u6tq@(mkvi*b%h(-z&9lx=6os%ud@%8aw&d-a4r5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['192.168.8.119']
 ALLOWED_HOSTS = []
 
 
@@ -36,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles', 'lawyers', 'cases', 'documents','accounts','crispy_forms', 'rest_framework','timezone_field','django_forms_bootstrap'
 ]
 
 MIDDLEWARE = [
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'firm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,"templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +69,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'firm.wsgi.application'
+
+
+AUTHENTICATION_BACKENDS = (
+  
+    'django.contrib.auth.backends.ModelBackend',
+
+   
+)
+
 
 
 # Database
@@ -113,7 +123,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+AUTH_USER_MODEL = 'lawyers.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -121,8 +131,55 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
- 
+
 ]
 VENV_PATH = os.path.join(BASE_DIR)
 STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
+
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com.'  # mail service smtp
+EMAIL_HOST_USER = 'nii.cole@outlook.com'
+DEFAULT_FROM_EMAIL = 'nii.cole@outlook.com'
+EMAIL_FROM = 'nii.cole@outlook.com'  # email id
+EMAIL_HOST_PASSWORD = 'coleman0'  # password
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+
+
+
+
+# # Twilio API
+# TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
+# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
+
+
+
+# DRAMATIQ_BROKER = {
+#     "BROKER": "dramatiq.brokers.redis.RedisBroker",
+#     "OPTIONS": {
+#         "url": 'redis://localhost:6379/0',
+#     },
+#     "MIDDLEWARE": [
+#         "dramatiq.middleware.Prometheus",
+#         "dramatiq.middleware.AgeLimit",
+#         "dramatiq.middleware.TimeLimit",
+#         "dramatiq.middleware.Callbacks",
+#         "dramatiq.middleware.Retries",
+#         "django_dramatiq.middleware.AdminMiddleware",
+#         "django_dramatiq.middleware.DbConnectionsMiddleware",
+#     ]
+# }

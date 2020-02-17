@@ -1,0 +1,41 @@
+<tbody>
+
+    {% for rec  in  recs %}
+    <tr>
+        <td>
+            {{rec.document.title|title}}
+
+            <!-- <td>{{rec.document.category|title}}</td> -->
+
+
+            <!-- {% if rec.document.status|stringformat:"s" == 'Not Available' %}
+        <td><span class="badge badge-md   badge-soft-danger">{{rec.document.status}}</span> </td>
+        {% else %}
+        <td><span class="badge badge-md   badge-soft-success">{{rec.document.status}}</span> </td>
+
+        {% endif %} -->
+
+        <td>{{rec.requested_by|title}}</td>
+        <td>{{rec.date_requested}}</td>
+        <td>{{rec.approved_by|title}}</td>
+        <td>{{rec.date_approved}}</td>
+
+
+
+
+        <td>
+            <a href="{{rec.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
+                    class="mdi mdi-eye"></i></a>
+
+
+        </td>
+    </tr>
+
+
+
+    {% endfor %}
+
+
+    <!--end tr-->
+
+</tbody>
