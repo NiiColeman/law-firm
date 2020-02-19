@@ -343,9 +343,15 @@ def add_to_archives(request,pk):
         form=CaseArchiveForm(request.POST or None)
         if form.is_valid():
             staff=get_staff(request.user)
-            archive=CaseArchives.objects.create(case=case,archived_by=staff,archive_location=form.instance.location)
-            messages.success(request,"Case has been archived")
-            return HttpResponseRedirect(reverse('cases_archive_detail',args=[case.pk]))
+            try:
+                archive=CaseArchive.objects.create(case=case,archived_by=staff,archive_location=form.instance.archive_location)
+                messages.success(request,"Case Has Already Been Archived")
+                return redirect('cases:archive_list')
+            except:
+                messages.error(request,"Case Has Already Been Archived")
+                return redirect('cases:archive_list')
+                
+           
         else:
             print(form.errors)
             messages.error(request,"Failed to archive case")
@@ -353,7 +359,7 @@ def add_to_archives(request,pk):
     else:
         form=CaseArchiveForm()
 
-    return render(request,"cases/archives/add_archive",{'form':form})
+    return render(request,"cases/archives/add_archive.html",{'form':form})
 
             
 
