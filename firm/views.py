@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from cases.models import Case
 from documents.models import Document
-from lawyers.models import Lawyer,User
+from lawyers.models import Lawyer,User,OtherStaff
 from cases.models import Case
 from documents.models import Document
 from rest_framework.views import APIView
@@ -18,7 +18,7 @@ def index(request):
     lawyer = Lawyer.objects.all()
     case = Case.objects.all()
     document = Document.objects.all()
-
+    # request.session['other_staff']=Otherstaff.objects.get(user=request.user)
     context = {
         'lawyer': lawyer,
         'case': case,

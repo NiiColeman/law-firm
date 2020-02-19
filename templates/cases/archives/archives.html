@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+Case List
+{% endblock title %}
+
+{% load auth_extras %}
+
+
+
+
+
+
+
+
+{% block content %}
+<!-- Page Content-->
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Cases</a></li>
+                            <li class="breadcrumb-item active">Case List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Cases</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" btn-lg btn-block"
+                            data-toggle="modal" data-target=".bd-example-modal-xl"></i>Add New Case</button> -->
+
+
+
+
+
+
+
+
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Case Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date Added</th>
+                                        <th>Added By</th>
+                                        <th>Location</th>
+
+
+                                        <th>Action</th>
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+
+                                <tbody>
+
+                                    {% for archive  in  archives %}
+                                    <tr>
+                                        <td>
+                                            {{archive.case.name|title}}
+
+                                        <td>{{archive.case.category|title}}</td>
+
+
+                                        {% if archive.case.status|stringformat:"s" == "Pending" %}
+                                        <td> <span
+                                                class="badge badge-md   badge-soft-danger">{{archive.case.status}}</span>
+                                        </td>
+                                        {% else %}
+                                        <td> <span
+                                                class="badge badge-md   badge-soft-success">{{archive.case.status}}</span>
+                                        </td>
+                                        {% endif %}
+
+
+                                        <td> {{archive.date_modefied}}
+                                        </td>
+                                        <td>{{archive.archived_by.user.first_name|title}}
+                                            {{archive.archived_by.user.last_name|title}}</td>
+                                        <td>{{archive.archive_location}}</td>
+                                        <td>
+                                            <a href="{{archive.get_absolute_url}}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                    class="mdi mdi-eye"></i></a>
+
+
+                                        </td>
+                                    </tr>
+
+
+
+                                    {% endfor %}
+
+
+                                    <!--end tr-->
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+        </div>
+
+
+
+
+
+    </div>
+
+</div>
+{% endblock content %}

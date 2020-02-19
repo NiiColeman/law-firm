@@ -1,0 +1,13 @@
+{% load crispy_forms_tags %}
+
+<form action="{% url 'accounts:staff_profileupdate' staff.pk %}" method="post" enctype="multipart/form-data">
+
+
+    {% csrf_token %}
+    {{user_form|crispy}}
+    {{staff_form|crispy}}
+
+
+    <button type="submit" class="btn btn-secondary">Update Profile</button>
+
+</form>

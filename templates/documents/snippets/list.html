@@ -23,6 +23,13 @@
                     class="mdi mdi-eye"></i></a>
 
 
+
+
+
+        </td>
+
+
+        <td>
             {% if user.is_authenticated %}
             {% if doc.status|stringformat:"s" == 'Available' %}
             <form action="{% url 'documents:record_request' doc.id %}" method="post">
@@ -33,11 +40,7 @@
             </form>
 
             {% endif %}
-            {%  endif %}
-
-
-
-        </td>
+            {%  endif %}</td>
     </tr>
 
 

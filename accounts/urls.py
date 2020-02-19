@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import accounts, staff_detail_view, lawyer_profile_view, lawyer_detail, lawyer_list, lawyer_profile, other_staff, update_lawyer_profile, change_password, add_staff, staff_details, update_staff
+from .views import accounts, update_lawyers_profile, staff_detail_view, lawyer_profile_view, lawyer_detail, lawyer_list, lawyer_profile, other_staff, update_lawyer_profile, change_password, add_staff, staff_details, update_staff, update_staff_profile
 
 
 app_name = "accounts"
@@ -26,6 +26,9 @@ urlpatterns = [
     path("accounts/users/<int:pk>/update-staff",
          update_staff, name='update_staff'),
 
+    path("accounts/lawyers/<int:pk>/lawyers-profile",
+         update_lawyers_profile, name="lawyers_profile"),
+
 
 
 
@@ -34,8 +37,12 @@ urlpatterns = [
 
     path("accounts/profile/<int:pk>/update-profile",
          update_lawyer_profile, name="update_profile"),
-    path("accounts/profile/<int:pk>/staff-profile",
+    path("accounts/profile/staff-profile",
          staff_detail_view, name="staff_profile"),
+
+
+    path("accounts/profile/<int:pk>/update-staff-profile",
+         update_staff_profile, name="staff_profileupdate"),
 
 
 

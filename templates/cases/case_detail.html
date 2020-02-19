@@ -243,139 +243,220 @@ Case Details
 
                                     </div>
                                 </div>
-                            </div>
 
 
 
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Case Files
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample-faq">
 
 
-                            <!--end row-->
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h4 class="header-title my-3">Freelancing Projects</h4>
+                                                </div>
+                                            </div>
+                                            <div class="file-box-content">
+
+                                                {% if case_files %}
+
+
+                                                {% for file in case_files  %}
+                                                <div class="file-box">
+                                                    <a href="{{file.file.url}}" class="download-icon-link">
+                                                        <i class="dripicons-download file-download-icon"></i>
+                                                    </a>
+                                                    <div class="text-center">
+                                                        <i class="far fa-file-alt text-primary"></i>
+                                                        <h6 class="text-truncate">{{file.title|title}}</h6>
+                                                        <!-- <small class="text-muted">06 March 2019 / 5MB</small> -->
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+
+
+                                                {% endif %}
+
+                        </p>
                     </div>
-                    <!--end card-body-->
+
+
                 </div>
-                <!--end card-->
+
             </div>
-            <!--end col-->
-
-
-            <div class="col-md-12 col-lg-4">
-                <div class="card">
-                    <div class="card-body center">
-
-                        <h5 class="pro-title text text-center">ACTIONS</h5>
-                        <button class="btn btn-primary  btn-lg btn-block" data-toggle="modal"
-                            data-target=".bd-example-modal-xl">
-                            Edit
-                        </button>
-
-
-                        <button class="btn btn-danger  btn-lg btn-block" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-center"> Delete </button>
-
-                    </div>
-                    <!--end card-body-->
-                </div>
-                <!--end card-->
-
-
-                <div class="card">
-                    <div class="card-body">
-
-                        <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
-                            data-animation="bounce" data-target=".bs-example-modal-lg">Add New Task</button>
-                    </div>
-                    <!--end card-body-->
-                </div>
-            </div>
-
-
-
-
-            <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title mt-0" id="myModalLabel">Modal Heading</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>
-                        <div class="modal-body">
-                            {% include 'cases/update_case.html' with case=case %}
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div>
-
-
-
-
-            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
-                aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title mt-0" id="exampleModalLabel">Delete Case</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{case.name|title}}</p>
-
-
-                            <form action="{{case.get_delete_url}}" method="POST">
-                                {% csrf_token %}
-                                <button class="btn btn-secondary" data-dismiss="modal"
-                                    aria-label="Close">Cancel</button>
-
-                                <input type="submit" value="Delete" class="btn btn-danger">
-                            </form>
-
-
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div>
-
-
-
-            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        </div>
-                        <div class="modal-body">
-                            {% include 'cases/tasks/task_form.html' with task_form=task_form case=case %}
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
     </div>
-    {% endblock content %}
+
+
+
+
+
+    <!--end row-->
+</div>
+<!--end card-body-->
+</div>
+<!--end card-->
+</div>
+<!--end col-->
+
+
+<div class="col-md-12 col-lg-4">
+    <div class="card">
+        <div class="card-body center">
+            {% if request.user.is_superuser %}
+
+            <h5 class="pro-title text text-center">ACTIONS</h5>
+            <button class="btn btn-primary  btn-lg btn-block" data-toggle="modal" data-target=".bd-example-modal-xl">
+                Edit
+            </button>
+
+
+            <button class="btn btn-danger  btn-lg btn-block" data-toggle="modal" data-animation="bounce"
+                data-target=".bs-example-modal-center"> Delete </button>
+            {% endif %}
+        </div>
+        <!--end card-body-->
+    </div>
+    <!--end card-->
+
+
+    <div class="card">
+        <div class="card-body">
+
+            <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-animation="bounce"
+                data-target=".bs-example-modal-lg">Add New Task</button>
+
+
+
+            <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal" data-animation="bounce"
+                data-target=".bs-example-modal-sm">Upload Case Files</button>
+        </div>
+        <!--end card-body-->
+
+
+        <!-- <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
+                        data-animation="bounce" data-target=".bs-example-modal-center">Upload Case Files</button> -->
+
+    </div>
+
+
+</div>
+
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="mySmallModalLabel">Add Case Files</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {% include 'cases/snippets/upload_files.html' %}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myModalLabel">Edit Case/h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {% include 'cases/update_case.html' with case=case %}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+<div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="exampleModalLabel">Delete Case</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>AreYou Sure You Want TO Delete {{case.name|title}}</p>
+
+
+                <form action="{{case.get_delete_url}}" method="POST">
+                    {% csrf_token %}
+                    <button class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancel</button>
+
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mt-0" id="myLargeModalLabel">Add Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {% include 'cases/tasks/task_form.html' with task_form=task_form case=case %}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+{% endblock content %}

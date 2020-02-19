@@ -28,6 +28,11 @@
             <!--end col-->
         </div>
         <!-- end page title end breadcrumb -->
+
+
+
+        {% include 'messages/messages.html' %}
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -83,16 +88,16 @@
                         <ul class="nav nav-pills mb-0" id="pills-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="general_detail_tab" data-toggle="pill"
-                                    href="#general_detail">General</a>
+                                    href="#general_detail">Recent Activity</a>
                             </li>
-                            <li class="nav-item">
+                            <!-- <li class="nav-item">
                                 <a class="nav-link" id="education_detail_tab" data-toggle="pill"
                                     href="#education_detail">Education</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="portfolio_detail_tab" data-toggle="pill"
                                     href="#portfolio_detail">Portfolio</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item">
                                 <a class="nav-link" id="settings_detail_tab" data-toggle="pill"
                                     href="#settings_detail">Settings</a>
@@ -116,7 +121,15 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <img src="../assets/images/small/user-pro.jpg" alt="" class="img-fluid">
+
+                                                {% if staff.user.avatar %}
+                                                <img src="{{staff.user.avatar.url}}" alt="" class="img-fluid">
+                                                {% else %}
+                                                <img src="{% static './assets/images/small/user-pro.jpg' %}" alt=""
+                                                    class="img-fluid">
+                                                {% endif %}
+
+
                                             </div>
                                             <div class="col-md-6">
 
@@ -127,18 +140,32 @@
                                             <div class="col-lg-4">
                                                 <div class="row">
                                                     <div class="col-lg-6 mx-auto">
-                                                        <div class="own-detail bg-blue">
-                                                            <h1>8+</h1>
-                                                            <h5>Year Experience</h5>
+                                                        <div class="own-detail own-detail-happy bg-success">
+
+
+                                                            {% if doc %}
+                                                            <h1>{{doc.count}}</h1>
+                                                            <h5>Document(s) Added</h5>
+
+                                                            {% else %}
+                                                            <h1>0</h1>
+                                                            <h5>Document(s) Added</h5>
+                                                            {% endif %}
+
                                                         </div>
                                                         <div class="own-detail own-detail-project bg-secondary">
-                                                            <h1>50</h1>
-                                                            <h5>Copmlete Projects</h5>
+
+                                                            {% if rec %}
+                                                            <h1>{{rec.count}}</h1>
+                                                            <h5>Approved Document(s)</h5>
+
+                                                            {% else %}
+                                                            <h1>0</h1>
+                                                            <h5>Approved Document(s)</h5>
+                                                            {% endif %}
+
                                                         </div>
-                                                        <div class="own-detail own-detail-happy bg-success">
-                                                            <h1>37</h1>
-                                                            <h5>Happy Clients</h5>
-                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,6 +174,151 @@
                                     <!--end card-body-->
                                 </div>
                                 <!--end card-->
+
+                                <!--end card-->
+
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <div class="accordion" id="accordionExample-faq">
+                                            <div class="card shadow-none border mb-1">
+                                                <div class="card-header" id="headingOne">
+                                                    <h5 class="my-0">
+                                                        <button class="btn btn-link ml-4 shadow-none" type="button"
+                                                            data-toggle="collapse" data-target="#collapseOne"
+                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            Document Approved By {{staff.user.first_name}}
+                                                            {{staff.user.last_name}}
+                                                        </button>
+                                                    </h5>
+                                                </div>
+
+                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                                    data-parent="#accordionExample-faq">
+                                                    <div class="card-body">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <!-- <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" 
+                                                                    data-toggle="modal" data-animation="bounce"
+                                                                    data-target=".bs-example-modal-lg"><i
+                                                                        class="mdi mdi-plus-circle-outline mr-2"></i>Add New Request</button> -->
+
+
+
+                                                                <div class="modal fade bs-example-modal-lg"
+                                                                    tabindex="-1" role="dialog"
+                                                                    aria-labelledby="myLargeModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title mt-0 text text-center"
+                                                                                    id="myLargeModalLabel">Add New
+                                                                                    Document</h5>
+                                                                                <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-hidden="true">×</button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                {% include 'records/add_record.html' %}
+                                                                            </div>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div>
+
+
+
+
+
+
+                                                                <div class="table-responsive dash-social">
+                                                                    <table id="datatable" class="table">
+                                                                        <thead class="thead-light">
+                                                                            <tr>
+                                                                                <th>Document Title</th>
+
+                                                                                <th>Requested By</th>
+                                                                                <th>Date Requested</th>
+                                                                                <th>Approved By</th>
+                                                                                <th>Date Approved</th>
+
+
+
+
+
+
+
+                                                                                <th>Action</th>
+                                                                            </tr>
+                                                                            <!--end tr-->
+                                                                        </thead>
+
+                                                                        {% include 'records/snippets/list.html' with recs=rec %}
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <!--end card-body-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card shadow-none border mb-1">
+                                                <div class="card-header" id="headingTwo">
+                                                    <h5 class="my-0">
+                                                        <button
+                                                            class="btn btn-link collapsed ml-4 align-self-center shadow-none"
+                                                            type="button" data-toggle="collapse"
+                                                            data-target="#collapseTwo" aria-expanded="false"
+                                                            aria-controls="collapseTwo">
+                                                            Documents Added by
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                    data-parent="#accordionExample-faq">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive dash-social">
+                                                            <table id="datatable" class="table">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th>Document Title</th>
+                                                                        <th>Category</th>
+                                                                        <th>Added By</th>
+                                                                        <th>Status</th>
+
+
+                                                                        <th>Date Added</th>
+                                                                        <th>Location</th>
+
+
+                                                                        <th>Action</th>
+                                                                        <th> </th>
+
+                                                                    </tr>
+                                                                    <!--end tr-->
+                                                                </thead>
+
+                                                                {% include 'documents/snippets/list.html' with docs=doc %}
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!--end accordion-->
+                                    </div>
+                                    <!--end card-body-->
+                                </div>
+
+
+
+
+
+
+
+
                             </div>
                             <!--end col-->
                         </div>
@@ -154,370 +326,8 @@
                     </div>
                     <!--end general detail-->
 
-                    <div class="tab-pane fade" id="education_detail">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="header-title mt-0 mb-3">Education</h4>
-                                        <div class="slimscroll education-activity">
-                                            <div class="activity">
-                                                <i class="mdi mdi-school icon-success"></i>
-                                                <div class="time-item">
-                                                    <div class="item-info">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="m-0">University</h6>
-                                                            <span class="text-muted">Oct-2009 to Oct-2011</span>
-                                                        </div>
-                                                        <p class="text-muted mt-3">There are many variations of passages
-                                                            of Lorem Ipsum available, but the majority have suffered
-                                                            alteration.
-                                                            <a href="#" class="text-info">[more info]</a>
-                                                        </p>
-                                                        <div>
-                                                            <span class="badge badge-soft-secondary">Design</span>
-                                                            <span class="badge badge-soft-secondary">HTML</span>
-                                                            <span class="badge badge-soft-secondary">Css</span>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <i class="mdi mdi-medal icon-pink"></i>
-                                                <div class="time-item">
-                                                    <div class="item-info">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="m-0">Bachelor of Arts</h6>
-                                                            <span class="text-muted">Oct-2006 to Oct-209</span>
-                                                        </div>
-                                                        <p class="text-muted mt-3">There are many variations of passages
-                                                            of Lorem Ipsum available, but the majority have suffered
-                                                            alteration.
-                                                            <a href="#" class="text-info">[more info]</a>
-                                                        </p>
-                                                        <div>
-                                                            <span class="badge badge-soft-secondary">Python</span>
-                                                            <span class="badge badge-soft-secondary">Django</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <i class="mdi mdi-book-open-page-variant icon-purple"></i>
-                                                <div class="time-item">
-                                                    <div class="item-info">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="m-0">Secondary</h6>
-                                                            <span class="text-muted">Oct-2003 to Oct-2006</span>
-                                                        </div>
-                                                        <p class="text-muted mt-3">There are many variations of passages
-                                                            of Lorem Ipsum available, but the majority have suffered
-                                                            alteration.
-                                                            <a href="#" class="text-info">[more info]</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <i class="mdi mdi-lead-pencil icon-warning"></i>
-                                                <div class="time-item">
-                                                    <div class="item-info">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="m-0">Primary</h6>
-                                                            <span class="text-muted">Oct-1996 to Oct-2003</span>
-                                                        </div>
-                                                        <p class="text-muted mt-3">There are many variations of passages
-                                                            of Lorem Ipsum available, but the majority have suffered
-                                                            alteration.
-                                                            <a href="#" class="text-info">[more info]</a>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--end activity-->
-                                        </div>
-                                        <!--end education-activity-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="header-title mt-0 mb-3">My Skills</h4>
-                                        <div class="row">
-                                            <div class="col-4">
-                                                <img src="../assets/images/widgets/education.svg" alt=""
-                                                    class="img-fluid">
-                                            </div>
-                                            <div class="col-8 align-self-center">
-                                                <p class="skill-detail">Contrary to popular belief, Lorem Ipsum is not
-                                                    simply random text.
-                                                    It has roots in a piece of classical Latin literature from 45 BC,
-                                                    making it over 2000 years old. Richard McClintock, a Latin professor
-                                                    at Hampden-Sydney College in Virginia, looked up one of the more
-                                                    obscure Latin words.
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="skills mt-4">
-                                            <div class="skill-box">
-                                                <h4 class="skill-title">HTML5 &amp; CSS3 </h4>
-                                                <div class="progress-line">
-                                                    <span data-percent="78" style="width: 78%;">
-                                                        <span class="percent-tooltip">78%</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="skill-box">
-                                                <h4 class="skill-title">Web Design</h4>
-                                                <div class="progress-line">
-                                                    <span data-percent="90" style="width: 90%;">
-                                                        <span class="percent-tooltip">90%</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="skill-box">
-                                                <h4 class="skill-title">UI/UX Design</h4>
-                                                <div class="progress-line">
-                                                    <span data-percent="80" style="width: 80%;">
-                                                        <span class="percent-tooltip">80%</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="skill-box">
-                                                <h4 class="skill-title">Photoshop &amp; Ilistletor </h4>
-                                                <div class="progress-line">
-                                                    <span data-percent="95" style="width: 95%;">
-                                                        <span class="percent-tooltip">95%</span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-
-                        </div>
-                        <!--end row-->
-                    </div>
-                    <!--end education detail-->
-
-                    <div class="tab-pane fade" id="portfolio_detail">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <ul class="col container-filter categories-filter mb-0" id="filter">
-                                                <li><a class="categories active" data-filter="*">All</a></li>
-                                                <li><a class="categories" data-filter=".branding">Branding</a></li>
-                                                <li><a class="categories" data-filter=".design">Design</a></li>
-                                                <li><a class="categories" data-filter=".photo">Photo</a></li>
-                                                <li><a class="categories" data-filter=".coffee">coffee</a></li>
-                                            </ul>
-                                        </div><!-- End portfolio  -->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row container-grid nf-col-3  projects-wrapper">
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item branding design coffee spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-1.jpg"
-                                                        title="Consequat massa quis">
-                                                        <img class="item-container "
-                                                            src="../assets/images/small/img-1.jpg" alt="7" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-white">Consequat massa quis</h5>
-                                                                <p class="text-white">Branding, Design, Coffee</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item photo spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-2.jpg"
-                                                        title="Vivamus elementum semper">
-                                                        <img class="item-container mfp-fade"
-                                                            src="../assets/images/small/img-2.jpg" alt="2" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-light">Vivamus elementum semper</h5>
-                                                                <p class="text-light">Photo</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item branding coffee spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-3.jpg" title="Quisque rutrum">
-                                                        <img class="item-container"
-                                                            src="../assets/images/small/img-3.jpg" alt="4" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-light">Quisque rutrum</h5>
-                                                                <p class="text-light">Branding, Design, Coffee</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item branding design spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-4.jpg"
-                                                        title="Tellus eget condimentum">
-                                                        <img class="item-container"
-                                                            src="../assets/images/small/img-4.jpg" alt="5" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-light">Tellus eget condimentum</h5>
-                                                                <p class="text-light">Design</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item branding design spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-5.jpg" title="Nullam quis ant">
-                                                        <img class="item-container"
-                                                            src="../assets/images/small/img-5.jpg" alt="6" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-light">Nullam quis ant</h5>
-                                                                <p class="text-light">Branding, Design</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-
-                                            <div class="col-lg-4 col-md-6 p-0 nf-item photo spacing">
-                                                <div class="item-box">
-                                                    <a class="cbox-gallary1 mfp-image"
-                                                        href="../assets/images/small/img-6.jpg"
-                                                        title="Sed fringilla mauris">
-                                                        <img class="item-container"
-                                                            src="../assets/images/small/img-6.jpg" alt="1" />
-                                                        <div class="item-mask">
-                                                            <div class="item-caption">
-                                                                <h5 class="text-light">Sed fringilla mauris</h5>
-                                                                <p class="text-light">Photo</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                                <!--end item-box-->
-                                            </div>
-                                            <!--end col-->
-                                        </div>
-                                        <!--end row-->
-                                    </div>
-                                    <!--end card-body-->
-                                </div>
-                                <!--end card-->
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-4">
-                                <div class="card ">
-                                    <div class="card-body">
-                                        <div class="text-center">
-                                            <h4><i class="fas fa-quote-left text-primary"></i></h4>
-                                        </div>
-                                        <div id="carouselExampleFade2" class="carousel slide" data-ride="carousel">
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item">
-                                                    <div class="text-center">
-                                                        <p class="text-muted px-4">
-                                                            It is a long established fact that a reader will be
-                                                            distracted by
-                                                            the readable content of a page when looking at its layout.
-                                                            The point of using Lorem Ipsum is that it has a more-or-less
-                                                            normal distribution of letters, as opposed to using.
-                                                        </p>
-                                                        <div class="">
-                                                            <img src="../assets/images/users/user-10.jpg" alt=""
-                                                                class="rounded-circle thumb-lg mb-2">
-                                                            <p class="mb-0 text-primary"><b>- Mary K. Myers</b></p>
-                                                            <small class="text-muted">CEO Facebook</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="carousel-item active">
-                                                    <div class="text-center">
-                                                        <p class="text-muted px-4">
-                                                            Where does it come from?
-                                                            Contrary to popular belief, Lorem Ipsum is not simply random
-                                                            text.
-                                                            It has roots in a piece of classical Latin literature from
-                                                            45 BC,
-                                                            making it over 2000 years popular belief,old.
-                                                        </p>
-                                                        <div class="">
-                                                            <img src="../assets/images/users/user-4.jpg" alt=""
-                                                                class="rounded-circle  thumb-lg mb-2">
-                                                            <p class="mb-0 text-primary"><b>- Michael C. Rios</b></p>
-                                                            <small class="text-muted">CEO Facebook</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <div class="text-center">
-                                                        <p class="text-muted px-4">
-                                                            There are many variations of passages of Lorem Ipsum
-                                                            available,
-                                                            but the majority have suffered alteration in some form, by
-                                                            injected humour,
-                                                            or randomised words which don't look even slightly
-                                                            believable.
-                                                            If you are going to use a passage of Lorem Ipsum.
-                                                        </p>
-                                                        <div class="">
-                                                            <img src="{% static './assets/images/users/user-5.jpg' %} "
-                                                                alt="" class="rounded-circle  thumb-lg mb-2">
-                                                            <p class="mb-0 text-primary"><b>- Lisa D. Pullen</b></p>
-                                                            <small class="text-muted">CEO Facebook</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--end row-->
-                    </div>
-                    <!--end portfolio detail-->
-
+                    <!-- Education detail here -->
+                    <!-- Portfolio detail here -->
                     <div class="tab-pane fade" id="settings_detail">
                         <div class="row">
                             <div class="col-lg-12 col-xl-9 mx-auto">
@@ -526,15 +336,11 @@
                                         <hr>
 
                                         <div class="">
-                                            <form class="form-horizontal form-material mb-0" method="POST"
-                                                action="{% url 'accounts:update_profile' staff.pk %}"
-                                                enctype="multipart/form-data">
 
-                                                {% include 'accounts/snippets/form.html' %}
 
-                                                <button
-                                                    class="btn btn-gradient-primary btn-sm text-light px-4 mt-3 float-right mb-0">Update
-                                                    Profile</button>
+                                            {% include 'accounts/snippets/staff_update_form.html' %}
+
+
                                         </div>
                                         </form>
                                     </div>

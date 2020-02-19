@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from lawyers.models import Lawyer, OtherStaff, User
-from .forms import UserForm, OtherStaffForm, LawyerForm,OtherStaffForm,UpdateUserForm,UpdateForm,StaffUpdateForm
+from .forms import UserForm, OtherStaffForm, LawyerForm,OtherStaffForm,UpdateUserForm,UpdateForm,StaffUpdateForm,StaffProfileForm,LawyerProfileForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 # Create your views here.
@@ -14,8 +14,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
+from documents.models import DocumentRecord,Document,DocumentStatus
+from cases.forms import CaseForm
 
 def accounts(request):
     lawyer_form = LawyerForm()
@@ -108,10 +108,18 @@ def lawyer_profile(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
     user_form =  LawyerProfileForm(request.POST or None, instance=request.user)
     lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+    cases = Case.objects.filter(lawyer=lawyer)
+    pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
+    completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
+    case_form=CaseForm()
     context = {
         'lawyer': lawyer,
         'user_form': user_form,
         'lawyer_form': lawyer_form,
+        'cases': cases,
+        'pending': pending,
+        'completed': completed,
+        'form':case_form
     }
 
     return render(request, 'accounts/lawyer-profile.html', context)
@@ -124,6 +132,10 @@ def lawyer_detail(request, pk):
     cases = Case.objects.filter(lawyer=lawyer)
     pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
     completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
+    user_form =  StaffUpdateForm(request.POST or None, instance=lawyer.user)
+    lawyer_form=LawyerForm(request.POST or None, instance=lawyer)
+
+
     for case in cases:
         print(case.status)
         print(pending)
@@ -135,7 +147,9 @@ def lawyer_detail(request, pk):
         'lawyer': lawyer,
         'cases': cases,
         'pending': pending,
-        'completed': completed
+        'completed': completed,
+        'user_form':user_form,
+        'lawyer_form':lawyer_form
     }
 
     return render(request, 'accounts/lawyer_detail.html', context)
@@ -269,10 +283,19 @@ def staff_details(request,pk):
     user_form=StaffUpdateForm(instance=staff.user)
     staff_form=OtherStaffForm(instance=staff)
 
+
+    doc=Document.objects.filter(added_by=staff.user)
+    rec=DocumentRecord.objects.filter(approved_by=staff)
+    print(rec)
+    not_available = Document.objects.select_related(
+        'status').filter(status__title='Not Available')
+
     context={
         'staff':staff,
         'user_form':user_form,
         'staff_form':staff_form,
+        'rec':rec,
+        'doc':doc,
     }
 
 
@@ -310,9 +333,23 @@ def update_staff(request,pk):
 
 def staff_detail_view(request,pk):
     staff=get_object_or_404(OtherStaff,pk=pk)
+    user_form =  StaffProfileForm(request.POST or None, instance=request.user)
+    staff_form =OtherStaffForm(request.POST or None , instance=staff)
+    doc=Document.objects.filter(added_by=request.user)
+    rec=DocumentRecord.objects.select_related('approved_by').filter(approved_by__user=request.user)
+    print(rec)
+    not_available = Document.objects.select_related(
+        'status').filter(status__title='Not Available')
+
+
 
     context={
-        'staff':staff
+        'staff':staff,
+        'rec':rec,
+        'doc':doc,
+        'not_status':not_available,
+        'user_form':user_form,
+        'staff_form':staff_form
     }
 
     return render(request,"accounts/staff_profile.html",context)
@@ -323,3 +360,93 @@ def staff_detail_view(request,pk):
 
 
 
+
+def update_staff_profile(request,pk):
+    staff = get_object_or_404(OtherStaff, pk=pk)
+
+    if request.method == 'POST':
+
+        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
+        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+
+        if user_form.is_valid() and staff_form.is_valid():
+            user = user_form.save(commit=False)
+
+            staff_form.instance.user=request.user
+            
+            user.save()
+            staff_form.save()
+            messages.success(request,"profile has been updated")
+            print("success")
+            
+            return HttpResponseRedirect(reverse('accounts:staff_profile',args=[staff.pk]))
+
+        else:
+            print("failed")
+            return HttpResponseRedirect(reverse('accounts:staff_profile',args=[staff.staff]))
+
+            
+
+            
+            
+
+
+    else:
+
+        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
+        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+
+
+    
+    return render(request,"accounts/lawyer-profile.html",{'staff_form':lawyer_form,'staff_form':user_form})
+
+
+
+
+
+
+
+
+def update_lawyers_profile(request,pk):
+    lawyer = get_object_or_404(Lawyer, pk=pk)
+
+    if request.method == 'POST':
+
+        user_form =  StaffProfileForm(request.POST or None, instance=lawyer.user)
+        lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+
+        if user_form.is_valid() and lawyer_form.is_valid():
+            user = user_form.save(commit=False)
+
+            
+            user.save()
+            # lawyer_form.instance.user=request.user
+
+            lawyer_form.save()
+            messages.success(request,"profile has been updated")
+            print("success")
+            
+            return HttpResponseRedirect(reverse('accounts:lawyer_detail',args=[lawyer.pk]))
+
+        else:
+            print("failed")
+
+            print(lawyer_form.errors)
+            print(user_form.errors)
+
+            return HttpResponseRedirect(reverse('accounts:lawyer_detail',args=[lawyer.pk]))
+
+            
+
+            
+            
+
+
+    else:
+
+        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
+        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+
+
+    
+    return render(request,"accounts/lawyer-profile.html",{'lawyer_form':lawyer_form,'user_form':user_form})

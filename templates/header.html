@@ -1,4 +1,5 @@
 {% load static %}
+{% load auth_extras %}
 
 <body>
 
@@ -111,10 +112,19 @@
                     <div class="dropdown-menu dropdown-menu-right">
 
                         {% if user.is_authenticated %}
+
+                        {% if request.user|has_group:"Lawyer" %}
+
                         <a class="dropdown-item" href="{% url 'accounts:lawyer_profile' user.pk %}"><i
                                 class="dripicons-user text-muted mr-2"></i> Profile</a>
 
+                        {% elif request.user|has_group:"FrontDesk" %}
 
+
+
+
+
+                        {% endif %}
 
                         <!-- <a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted mr-2"></i> My Wallet</a>
                         <a class="dropdown-item" href="#"><i class="dripicons-gear text-muted mr-2"></i> Settings</a> -->
@@ -135,12 +145,12 @@
                         <i class="dripicons-menu nav-icon"></i>
                     </button>
                 </li>
-                <li class="hide-phone app-search">
+                <!-- <li class="hide-phone app-search">
                     <form role="search" class="">
                         <input type="text" placeholder="Search..." class="form-control">
                         <a href=""><i class="fas fa-search"></i></a>
                     </form>
-                </li>
+                </li> -->
             </ul>
         </nav>
         <!-- end navbar-->
@@ -208,16 +218,49 @@
                     </ul>
                 </li>
 
+
+                {% if request.user|has_group:"Lawyer" %}
                 <li>
                     <a href="javascript: void(0);"><i class="ti-shopping-cart-full"></i><span>Cases</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:case_list' %}"><i
                                     class="ti-control-record"></i>Case List</a></li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-products.html"><i
-                                    class="ti-control-record"></i>Add_case</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-list.html"><i
-                                    class="ti-control-record"></i>Product List</a></li>
+
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
+                                    class="ti-control-record"></i>Completed
+                                {% if request.session.completed %}
+                                <span class="badge badge-success float-right mr-2">{{request.session.completed}}</span>
+                                {% endif %}
+                            </a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:pending_list' %}"><i
+                                    class="ti-control-record"></i>Pending {% if request.session.pending %}
+                                <span class="badge badge-pink float-right mr-2">{{request.session.pending}}</span>
+                                {% endif %}</a></li>
+                        <!-- 
+                        <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
+                                    class="ti-control-record"></i>Product Detail</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-cart.html"><i
+                                    class="ti-control-record"></i>Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-checkout.html"><i
+                                    class="ti-control-record"></i>Checkout</a></li> -->
+
+                    </ul>
+                </li>
+                {% else %}
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-shopping-cart-full"></i><span>Cases</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+
+
+
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
+                                    class="ti-control-record"></i>Completed Cases</a></li>
+
+                        <!-- 
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
                                     class="ti-control-record"></i>Product Detail</a></li>
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-cart.html"><i
@@ -228,6 +271,11 @@
                     </ul>
                 </li>
 
+                {% endif %}
+
+
+
+                {% if request.user.is_superuser %}
                 <li>
                     <a href="javascript: void(0);"><i class="ti-signal"></i><span>User Management</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
@@ -237,13 +285,16 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:staff_list' %}"><i
                                     class="ti-control-record"></i>Front Desk</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="../crm/crm-opportunities.html"><i
-                                    class="ti-control-record"></i>Opportunities</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../crm/crm-leads.html"><i
-                                    class="ti-control-record"></i>Leads</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../crm/crm-customers.html"><i
-                                    class="ti-control-record"></i>Customers</a></li> -->
+                    class="ti-control-record"></i>Opportunities</a></li>
+        <li class="nav-item"><a class="nav-link" href="../crm/crm-leads.html"><i
+                    class="ti-control-record"></i>Leads</a></li>
+        <li class="nav-item"><a class="nav-link" href="../crm/crm-customers.html"><i
+                    class="ti-control-record"></i>Customers</a></li> -->
                     </ul>
                 </li>
+                {% endif %}
+
+
                 <!-- 
                 <li>
                     <a href="javascript: void(0);"><i class="ti-crown"></i><span>UI Kit</span><span
@@ -388,30 +439,20 @@
                         <li class="nav-item"><a class="nav-link" href="../pages/pages-gallery.html"><i
                                     class="ti-control-record"></i>Gallery</a></li>
                     </ul>
-                </li>
+                </li>-->
 
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Authentication</span><span
+                    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Archives</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-login.html"><i
-                                    class="ti-control-record"></i>Log in</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-register.html"><i
-                                    class="ti-control-record"></i>Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-recover-pw.html"><i
-                                    class="ti-control-record"></i>Recover Password</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-lock-screen.html"><i
-                                    class="ti-control-record"></i>Lock Screen</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-404.html"><i
-                                    class="ti-control-record"></i>Error 404</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../authentication/auth-500.html"><i
-                                    class="ti-control-record"></i>Error 500</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_archives' %}"><i
+                                    class="ti-control-record"></i>Documents</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:rec_archives' %}"><i
+                                    class="ti-control-record"></i>Records</a></li>
+
+
                     </ul>
                 </li>
-                <li>
-                    <a href="../analytics/analytics-index-dark-sidenav.html"><i class="ti-palette"></i><span>Dark
-                            Sidenav</span></a>
-                </li> -->
-            </ul>
+
         </div>
         <!-- end left-sidenav-->

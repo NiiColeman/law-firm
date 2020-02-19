@@ -3,6 +3,8 @@ from django.urls import reverse
 from timezone_field import TimeZoneField
 from django.core.exceptions import ValidationError
 # Create your models here.
+
+
 class Category(models.Model):
     """Model definition for Category."""
     name = models.CharField(max_length=250)
@@ -94,8 +96,9 @@ class Case(models.Model):
 
 
 class CaseFile(models.Model):
-    case = models.OneToOneField(Case, on_delete=models.CASCADE)
-    files = models.FileField(upload_to="attachments/")
+    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    title = models.CharField(default="", max_length=250)
+    file = models.FileField(upload_to="attachments/")
     """Model definition for CaseFile."""
 
     # TODO: Define fields here
@@ -176,3 +179,31 @@ class Appointment(models.Model):
             raise ValidationError(
                 'You cannot schedule an appointment for the past. '
                 'Please check your time and time_zone')
+
+
+class CaseArchive(models.Model):
+    """Model definition for CaseArchives."""
+    case = models.OneToOneField(Case, null=True, on_delete=models.SET_NULL)
+    archived_by = models.ForeignKey(
+        "lawyers.OtherStaff", null=True, on_delete=models.SET_NULL)
+    # date_archived = models.DateTimeField(auto_now=False)
+    date_modefied = models.DateTimeField(auto_now=True)
+    archive_location = models.CharField(max_length=250, default="Archives")
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for CaseArchives."""
+
+        verbose_name = 'CaseArchives'
+        verbose_name_plural = 'CaseArchives'
+
+    def __str__(self):
+        """Unicode representation of CaseArchive."""
+        return self.case.name
+
+    def get_absolute_url(self):
+        return reverse("cases:archive_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("cases:archive_update", kwargs={"pk": self.pk})

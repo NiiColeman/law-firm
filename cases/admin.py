@@ -1,13 +1,17 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Case, Status, Category, PriorityLevel, CaseTask
+from .models import Case, Status, Category, PriorityLevel, CaseTask,CaseFile,CaseArchive
 
 
 admin.site.header = 'Law Firm'
 
 admin.site.register(CaseTask)
 admin.site.register(PriorityLevel)
+admin.site.register(CaseFile)
+admin.site.register(CaseArchive)
+
+
 
 
 @admin.register(Case)

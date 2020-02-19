@@ -77,6 +77,8 @@
                                     <div class="quantity mt-3 ">
                                         <!-- <input class="form-control" type="number" min="0" value="0"
                                             id="example-number-input"> -->
+                                        {% if request.user.is_superuser %}
+
                                         <button href="" class="btn btn-gradient-primary text-white px-4 d-inline-block"
                                             data-toggle="modal" data-animation="bounce"
                                             data-target=".bs-example-modal-lg"><i class="mdi mdi-pencil mr-2"></i>Edit
@@ -86,6 +88,7 @@
                                             data-toggle="modal" data-animation="bounce"
                                             data-target=".bs-example-modal-center"> <i
                                                 class="mdi mdi-trash mr-2"></i>Delete</button>
+                                        {% endif %}
                                     </div>
 
 

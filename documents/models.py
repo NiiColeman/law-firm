@@ -85,10 +85,10 @@ class DocumentRecord(models.Model):
     requested_by = models.ForeignKey(
         "lawyers.Lawyer",  on_delete=models.CASCADE)
     approved_by = models.ForeignKey(
-        "lawyers.OtherStaff", null=True, related_name='staff',on_delete=models.CASCADE)
+        "lawyers.OtherStaff", null=True, related_name='staff', on_delete=models.CASCADE)
     date_requested = models.DateTimeField(auto_now=True)
     date_approved = models.DateTimeField(auto_now=True)
-    approved=models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
     # TODO: Define fields here
 
@@ -111,6 +111,58 @@ class DocumentRecord(models.Model):
     def get_delete_url(self):
         return reverse("documents:record_delete", kwargs={"pk": self.pk})
 
-
     def get_request_url(self):
         return reverse("documents:record_request", kwargs={"pk": self.pk})
+
+
+class DocumentArchive(models.Model):
+    document = models.CharField(max_length=350)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now=False)
+    status = models.CharField(max_length=350)
+    category = models.CharField(max_length=350)
+    added_by = models.CharField(max_length=250)
+    deleted = models.BooleanField(default=False)
+    location = models.CharField(max_length=250)
+
+    """Model definition for DocumentArchive."""
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for DocumentArchive."""
+
+        verbose_name = 'DocumentArchive'
+        verbose_name_plural = 'DocumentArchives'
+
+    def __str__(self):
+        """Unicode representation of DocumentArchive."""
+        return self.document
+
+
+class RequestArchive(models.Model):
+    """Model definition for RequestArchive."""
+
+    document = models.CharField(max_length=350)
+    description = models.TextField()
+    date_added = models.DateTimeField(auto_now=False)
+    status = models.CharField(max_length=350)
+    category = models.CharField(max_length=350)
+    added_by = models.CharField(max_length=350)
+    approved_by = models.CharField(default="", max_length=250)
+    requested_by = models.CharField(max_length=350, null=True)
+    date_requested = models.DateTimeField(auto_now=True)
+    date_approved = models.DateTimeField(auto_now=True)
+    deleted = models.BooleanField(default=False)
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for RequestArchive."""
+
+        verbose_name = 'RequestArchive'
+        verbose_name_plural = 'RequestArchives'
+
+    def __str__(self):
+        """Unicode representation of RequestArchive."""
+        return self.document

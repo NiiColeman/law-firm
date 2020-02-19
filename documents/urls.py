@@ -3,7 +3,7 @@ from .views import (document_detail, document_list, record_detail, record_list, 
                     add_document, record_list,
                     document_request,
                     document_request_list,
-                    document_delete_view, request_doc, record_update, record_delete, approve_request
+                    document_delete_view, request_doc, record_update, record_delete, approve_request, document_archive_list, record_archive_list
 
                     )
 
@@ -35,6 +35,10 @@ urlpatterns = [
          document_request_list, name='request_list'),
     path('documents/requests/<int:pk>/approve',
          approve_request, name='approve'),
+
+    path("doccuments/archives", document_archive_list, name="doc_archives"),
+    path("doccuments/record-archives", record_archive_list, name="rec_archives"),
+
 
 
 

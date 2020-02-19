@@ -1,3 +1,4 @@
+{% load auth_extras %}
 <div class="table-responsive dash-social">
     <table id="datatable" class="table">
         <thead class="thead-light">
@@ -48,9 +49,11 @@
                     <a href="{{req.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
                             class="mdi mdi-eye"></i></a>
 
+
+                    {% if request.user|has_group:"FrontDesk" %}
                     <a href="{% url 'documents:approve' req.id %}"
                         class="btn btn-gradient-primary waves-effect waves-light"><i class="mdi mdi-eye">Approve</i></a>
-
+                    {% endif %}
 
                 </td>
             </tr>

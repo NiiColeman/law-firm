@@ -1,9 +1,11 @@
-<form action="{% url 'cases:add_case' %}" method="POST" enctype="multipart/form-data">
+{% load crispy_forms_tags %}
+<form action="{% url 'cases:new_case' %}" method="POST">
 
 
-    {% include 'cases/snippets/form.html' %}
+    {% csrf_token %}
+    {{form|crispy}}
 
 
 
-    <button class="btn btn-success">Update Case</button>
+    <input type="submit" value="Add case">
 </form>

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import DocumentRecord, DocumentRecord, DocumentStatus, Document
+from .models import DocumentRecord, DocumentRecord, DocumentStatus, Document,DocumentArchive,DocumentRecord,RequestArchive
 # Create your views here.
 from django.contrib import messages
 from .forms import DocumentForm,RequestDocumentForm,DocumentRecordForm
@@ -9,8 +9,8 @@ from lawyers.models import User,Lawyer,OtherStaff
 from accounts.decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-
+# from datetime import datetime, timedelta, timezone
+from django.utils import timezone
 
 @login_required
 def document_list(request):
@@ -44,6 +44,8 @@ def add_document(request):
         form = DocumentForm(request.POST or None)
 
         if form.is_valid():
+
+            person="{} {}".format(request.user.first_name,request.user.last_name)
             form.instance.added_by = request.user
             doc = Document()
             doc.title = form.instance.title
@@ -52,6 +54,8 @@ def add_document(request):
             doc.storage_location = form.instance.storage_location
             doc.category = form.instance.category
             doc.date_added = form.instance.date_added
+            archive=DocumentArchive.objects.create(document=doc.title,location=doc.storage_location,status=doc.status,date_added=doc.date_added,description=doc.description,added_by=person,category=doc.category)
+            print(archive)
             doc.save()
 
             messages.success(request, 'Document has been added!')
@@ -66,6 +70,10 @@ def add_document(request):
     return render(request, "documents/add_doc.html", {'form': form})
 
 
+    
+
+
+
 @login_required
 def update_document(request, pk):
     doc =get_object_or_404(Document, pk=pk)
@@ -73,13 +81,46 @@ def update_document(request, pk):
     if request.method == "POST":
         form = DocumentForm(request.POST or None, instance=doc)
         if form.is_valid():
+            # form.instance.added_by=request.user
             form.save()
+
+
+            
+                # archive=DocumentArchive.objects.create(document=form.instance.title,location=form.instance.storage_location,status=form.instance.status,date_added=form.instance.date_added,description=form.instance.description)
+                # print(archive)
+            try:
+                req_archive=get_request_archive(doc.title)
+                req_archive.document=form.instance.title
+                print(req_archive)
+                # req_archive
+                # req_archive
+
+
+
+                archive=get_document_archive(doc.title)
+                print(archive)
+                archive.document=form.instance.title
+                archive.description=form.instance.description
+                archive.location=form.instance.storage_location
+                # archive.added_by=doc.added_by
+                archive.date_added=form.instance.date_added
+                archive.category=form.instance.category
+                archive.save()
+            except:
+                print('document doesnt exist')
+
+            try:
+                req_archive=get_request_archive(doc.title)
+                req_archive.document=form.instance.title
+                print(req_archive)
+            except:
+                print('document doesnt exist')
 
             messages.success(
                 request, "{} has been updated".format(form.instance.title))
             return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.id]))
         else:
-            messages.error(request, "failed to update case")
+            messages.error(request, "failed to update Document")
 
     else:
         form = DocumentForm()
@@ -292,6 +333,9 @@ def approve_request(request,pk):
     rec.approved=True
     rec.save()
     messages.success(request,'{} has been approved'.format(rec.document.title))
+
+    archive=RequestArchive.objects.create(document=rec.document.title,description=rec.document.description,date_added=rec.document.date_added,date_requested=rec.date_requested,approved_by=request.user,date_approved=timezone.now(),requested_by=rec.requeted_by)
+    print(archive)
     return redirect('documents:record_list')
 
 
@@ -304,6 +348,52 @@ def get_otherstaff(user):
 
 
     if qs:
+        return qs
+    else:
+        return None
+
+
+
+
+
+
+
+def get_document_archive(doc):
+    
+    rec=DocumentArchive.objects.filter(document=doc)
+    if rec[0]:
+        return rec
+    else:
+        return None
+
+
+
+def document_archive_list(request):
+    archives=DocumentArchive.objects.all()
+
+    context={
+        'archives':archives
+    }
+
+
+    return render(request,'documents/archive_list.html',context)
+
+
+
+
+def record_archive_list(request):
+    records=RequestArchive.objects.all()
+    
+    context={
+        'records':records
+    }
+
+    return render(request,"documents/request_list.html",context)
+
+
+def get_request_archive(doc):
+    qs=RequestArchive.objects.filter(doc)
+    if qs[0]:
         return qs
     else:
         return None

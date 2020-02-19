@@ -50,41 +50,16 @@ Case List
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
-                            data-animation="bounce" data-target=".bs-example-modal-lg"><i
-                                class="mdi mdi-plus-circle-outline mr-2"></i>Add New Case</button>
-
-
-
-                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
-                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Add New
-                                            Case</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                            aria-hidden="true">×</button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{% url 'cases:add_case' %}" method="POST"
-                                            enctype="multipart/form-data">
-
-                                            {% csrf_token %}
-                                            {{form|crispy}}
-
-
-                                            <button class="btn btn-success">Add Case</button>
-                                        </form>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div>
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" btn-lg btn-block"
+                            data-toggle="modal" data-target=".bd-example-modal-xl"></i>Add New Case</button>
 
 
 
 
-                        <h4 class="header-title mt-0">Cases Details</h4>
+
+
+
+
                         <div class="table-responsive dash-social">
                             <table id="datatable" class="table">
                                 <thead class="thead-light">
@@ -96,7 +71,10 @@ Case List
                                         <th>Added By</th>
 
 
+
+
                                         <th>Action</th>
+
                                     </tr>
                                     <!--end tr-->
                                 </thead>
@@ -110,6 +88,21 @@ Case List
                 <!--end card-->
             </div>
             <!--end col-->
+        </div>
+
+
+        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0" id="myModalLabel">Edit Case/h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        {% include 'cases/new_case.html'  %}
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
         </div>
 
 

@@ -1,0 +1,14 @@
+{% load crispy_forms_tags %}
+
+
+
+
+
+<form action="{% url 'cases:upload_files' case.pk %}" method="post" enctype="multipart/form-data">
+
+
+
+    {% csrf_token %}
+    {{file_form|crispy}}
+    <button type="submit" class="btm btn-secondary">Add Files</button>
+</form>

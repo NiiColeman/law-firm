@@ -22,22 +22,41 @@
                     <h4 class="page-title">Staff Details</h4>
                 </div>
                 <!--end page-title-box-->
+
+
+
             </div>
             <!--end col-->
+
+
         </div>
         <!-- end page title end breadcrumb -->
+
+
+        {% include 'messages/messages.html' %}
+
         <div class="row">
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body profile-card">
                         <div class="media align-items-center">
+
+                            {% if staff.user.avatar %}
+                            <img src="{{staff.user.avatar.url}}" alt="user" class="rounded-circle thumb-lg">
+
+
+                            {% else %}
+
+
                             <img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"
                                 class="rounded-circle thumb-lg">
+                            {% endif %}
+
+
                             <div class="media-body ml-3 align-self-center">
                                 <h5 class="pro-title">{{staff.user.first_name|title}} {{staff.user.last_name|title}}
                                 </h5>
-                                <p class="mb-1 text-muted">Role: {{staff.role|title}} | Email:
-                                    {{staff.user.email}}</p>
+                                <p class="mb-1 text-muted">Username: @{{staff.user.username}}</p>
 
 
                             </div>
@@ -58,17 +77,19 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-4 align-self-center">
-                                        <div class="icon-info">
+                                    <div class="col-0 align-self-center">
+                                        <!-- <div class="icon-info">
                                             <i class="mdi mdi-account-group text-warning"></i>
-                                        </div>
+                                        </div> -->
                                     </div>
-                                    <div class="col-8 align-self-center text-right">
+                                    <div class="col-12 ">
                                         <div class="ml-2">
                                             <p class="mb-1 text-muted"></p>
 
 
 
+                                            <p class="mb-1 text-muted">Role: {{staff.role|title}} | Email:
+                                                {{staff.user.email}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -98,9 +119,10 @@
                                     <div class="col-8 align-self-center text-right">
                                         <div class="ml-2">
                                             <div class="ml-2">
-                                                <p class="mb-0 text-muted">Pending Cases</p>
+                                                <p class="mb-0 text-muted">Documents Added
+                                                </p>
                                                 <h4 class="mt-0 mb-1 d-inline-block text-purple font-22">
-                                                    {{completed.count}}</h4>
+                                                    {{doc.count}}</h4>
                                                 <span class="badge badge-soft-success mt-1 shadow-none">Active</span>
                                             </div>
                                         </div>
@@ -128,8 +150,9 @@
                                     </div>
                                     <div class="col-8 align-self-center text-right">
                                         <div class="ml-2">
-                                            <p class="mb-0 text-muted">Closed Cases</p>
-                                            <h4 class="mt-0 mb-1 d-inline-block text-pink font-22">{{pending.count}}
+                                            <p class="mb-0 text-muted">Documents Approved </p>
+                                            <h4 class="mt-0 mb-1 d-inline-block text-pink font-22">
+                                                {{rec.count}}
                                             </h4>
                                         </div>
                                     </div>
@@ -154,34 +177,124 @@
 
         <div class="row">
             <div class="col-12">
+
                 <div class="card">
                     <div class="card-body">
-                        <!-- <button type="button" class="btn btn-gradient-primary waves-effect waves-light float-right mb-3"
-                            data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg">+ Add
-                            New</button> -->
-                        <h4 class="header-title mt-0 mb-3">ALl Associated Cases</h4>
-                        <div class="table-responsive dash-social">
-                            <table id="datatable" class="table">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Case Title</th>
-                                        <th>Category</th>
-                                        <th>Status</th>
-                                        <th>Date Added</th>
-                                        <th>Added By</th>
 
 
-                                        <th>Action</th>
-                                    </tr>
-                                    <!--end tr-->
-                                </thead>
+                        <div class="accordion" id="accordionExample-faq">
+                            <div class="card shadow-none border mb-1">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="my-0">
+                                        <button class="btn btn-link ml-4 shadow-none" type="button"
+                                            data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Document Approved By {{staff.user.first_name}}
+                                            {{staff.user.last_name}}
+                                        </button>
+                                    </h5>
+                                </div>
 
-                                {% include 'cases/snippets/list.html' with cases=cases %}
-                            </table>
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordionExample-faq">
+                                    <div class="card-body">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <!-- <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" 
+                                                    data-toggle="modal" data-animation="bounce"
+                                                    data-target=".bs-example-modal-lg"><i
+                                                        class="mdi mdi-plus-circle-outline mr-2"></i>Add New Request</button> -->
+
+
+
+
+
+
+
+
+
+
+                                                <div class="table-responsive dash-social">
+                                                    <table id="datatable" class="table">
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Document Title</th>
+
+                                                                <th>Requested By</th>
+                                                                <th>Date Requested</th>
+                                                                <th>Approved By</th>
+                                                                <th>Date Approved</th>
+
+
+
+
+
+
+
+                                                                <th>Action</th>
+                                                            </tr>
+                                                            <!--end tr-->
+                                                        </thead>
+
+                                                        {% include 'records/snippets/list.html' with recs=rec %}
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <!--end card-body-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none border mb-1">
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="my-0">
+                                        <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
+                                            type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            Documents Added by {{staff.user.first_name|title}}
+                                            {{staff.user.last_name|title}}
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordionExample-faq">
+                                    <div class="card-body">
+                                        <div class="table-responsive dash-social">
+                                            <table id="datatable" class="table">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Document Title</th>
+                                                        <th>Category</th>
+                                                        <th>Added By</th>
+                                                        <th>Status</th>
+
+
+                                                        <th>Date Added</th>
+                                                        <th>Location</th>
+
+
+                                                        <th>Action</th>
+                                                        <th> </th>
+                                                    </tr>
+                                                    <!--end tr-->
+                                                </thead>
+
+                                                {% include 'documents/snippets/list.html' with docs=doc %}
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
+                        <!--end accordion-->
                     </div>
                     <!--end card-body-->
                 </div>
+
+
+
+
                 <!--end card-->
             </div>
             <!--end col-->

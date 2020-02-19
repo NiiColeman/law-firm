@@ -1,5 +1,5 @@
 from django import forms
-from .models import Case, Category, Status, CaseTask
+from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive
 from lawyers.models import User, Lawyer
 
 
@@ -39,3 +39,19 @@ class CaseForm(forms.ModelForm):
         model = Case
         fields = ("name", "description", "category",
                   "lawyer", "status", 'date_added')
+
+
+class CaseFileForm(forms.ModelForm):
+    file = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta:
+        model = CaseFile
+        fields = ("file",)
+
+
+class CaseArchiveForm(forms.ModelForm):
+
+    class Meta:
+        model = CaseArchive
+        fields = ('archive_location',)

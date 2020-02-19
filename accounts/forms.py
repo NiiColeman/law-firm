@@ -150,3 +150,14 @@ class StaffUpdateForm(forms.ModelForm):
     def clean_password(self):
         # Password can't be changed in the admin
         return self.initial["password"]
+
+
+
+class StaffProfileForm(forms.ModelForm):
+    email = forms.EmailField()
+    # password1 = None
+    # password2 = None
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "phone", "avatar")

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% load static %}
 
 
@@ -27,7 +29,10 @@
         </div>
         <!-- end page title end breadcrumb -->
 
+
+
         {% include 'messages/messages.html' %}
+
         <div class="row">
             <div class="col-lg-4">
                 <div class="card">
@@ -43,10 +48,16 @@
 
 
                             </div>
-                            <!-- <div class="action-btn">
-                                <button class="mr-1 btn btn-sm btn-info"><i class="fas fa-pen"></i></button>
+                            <div class="action-btn">
+
+                                {% if request.user.is_superuser %}
+                                <button class="mr-1 btn btn-sm btn-info" data-toggle="modal" data-animation="bounce"
+                                    data-target=".bs-example-modal-lg"><i class="fas fa-pen"></i></button>
                                 <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
-                            </div> -->
+                                {% endif %}
+
+
+                            </div>
                         </div>
                     </div>
                     <!--end card-body-->
@@ -186,58 +197,29 @@
 
     </div><!-- container -->
     <!--  Modal content for the above example -->
+
+
+
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New Lead</h5>
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="LeadName">Name</label>
-                                    <input type="text" class="form-control" id="LeadName" required="">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="LeadEmail">Email</label>
-                                    <input type="email" class="form-control" id="LeadEmail" required="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="PhoneNo">Phone No</label>
-                                    <input type="text" class="form-control" id="PhoneNo" required="">
-                                </div>
-                            </div>
+                    <form action="{% url 'accounts:lawyers_profile' lawyer.pk %}" method="POST"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{user_form|crispy}}
+                        {{lawyer_form|crispy}}
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="status-select" class="mr-2">Country</label>
-                                    <select class="custom-select" id="status-select">
-                                        <option selected="">Select</option>
-                                        <option value="1">India</option>
-                                        <option value="2">USA</option>
-                                        <option value="3">Japan</option>
-                                        <option value="4">China</option>
-                                        <option value="5">Germany</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-primary">Save</button>
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="submit">Update Lawyer</button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    </div>
 
     {% endblock content %}
