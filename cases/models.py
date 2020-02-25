@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 class Category(models.Model):
     """Model definition for Category."""
     name = models.CharField(max_length=250)
+    date_added = models.DateTimeField(auto_now=True)
 
     # TODO: Define fields here
 
@@ -99,9 +100,7 @@ class CaseFile(models.Model):
     case = models.ForeignKey(Case, on_delete=models.CASCADE)
     title = models.CharField(default="", max_length=250)
     file = models.FileField(upload_to="attachments/")
-    """Model definition for CaseFile."""
-
-    # TODO: Define fields here
+    date_added = models.DateTimeField(auto_now=True)
 
     class Meta:
         """Meta definition for CaseFile."""
@@ -207,3 +206,18 @@ class CaseArchive(models.Model):
 
     def get_update_url(self):
         return reverse("cases:archive_update", kwargs={"pk": self.pk})
+
+
+class LegalArgument(models.Model):
+    argument = models.CharField(max_length=350, unique=True)
+    authorities = models.TextField()
+    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.argument
+
+    class Meta:
+
+        verbose_name = 'LegalArgument'
+        verbose_name_plural = 'LegalArguments'

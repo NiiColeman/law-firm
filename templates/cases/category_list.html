@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+Category List
+{% endblock title %}
+
+{% load crispy_forms_tags %}
+
+
+
+
+
+
+
+{% block content %}
+<!-- Page Content-->
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Category</a></li>
+                            <li class="breadcrumb-item active">Category List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Documents</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <a class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" style="color:aliceblue;"
+                            data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg"><i
+                                class="mdi mdi-plus-circle-outline mr-2"></i>Add New Category</a>
+
+
+
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Add New
+                                            Catetory</h5>
+                                        <a type="a" class="close" data-dismiss="modal" aria-hidden="true">×</a>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'cases:cat_add' %}" method="post">
+
+                                            {% csrf_token %}
+                                            {{form|crispy}}
+                                            <button class="btn btn-secondary" type="submit">Add Category</button>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+
+
+
+
+                        <h4 class="header-title mt-0">Categories </h4>
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Category</th>
+
+
+                                        <th>Action</th>
+
+
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+
+                                <tbody> {% for cat in category_list  %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{cat.name|title}}</td>
+                                        <td><a href="{% url 'cases:cat_detail' cat.pk %}"
+                                                class="btn btn-secondary">View</a></td>
+                                    </tr>
+
+
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+        </div>
+
+
+    </div>
+
+</div>
+{% endblock content %}

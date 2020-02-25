@@ -1,0 +1,9 @@
+{% load crispy_forms_tags %}
+
+<form action="{% url 'cases:cat_update' cat.pk %}" method="post">
+    {% csrf_token %}
+    {{cat_form|crispy}}
+    {{cat_form.errors}}
+
+    <button type="submit" class="btn btn-secondary">Update</button>
+</form>

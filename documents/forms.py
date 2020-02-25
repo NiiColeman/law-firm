@@ -10,10 +10,12 @@ class DateInput(forms.DateInput):
 
 class DocumentForm(forms.ModelForm):
     date_added = forms.DateField(widget=DateInput)
+    description = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'class': 'form-control'}))
 
     class Meta:
         model = Document
-        fields = ['title', 'date_added', 'status',
+        fields = ['title', 'date_added', 'status', 'description',
                   'category', 'storage_location']
 
 

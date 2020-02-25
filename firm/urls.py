@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import index,FirmChart
+from .views import index, FirmChart
 
 
 urlpatterns = [
@@ -28,7 +28,9 @@ urlpatterns = [
     path("", index, name="index"),
     path("", include('accounts.urls')),
     path("", include('cases.urls')),
-    path("",include('documents.urls')),
+    path("", include('documents.urls')),
+    path("", include('principles.urls')),
+
 
 ]
 

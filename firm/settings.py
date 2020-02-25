@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'lawyers', 'cases', 'documents','accounts','crispy_forms', 'rest_framework','timezone_field','django_forms_bootstrap'
+    'django.contrib.staticfiles',
+    'lawyers', 'cases',
+    'documents', 'accounts',
+    'crispy_forms',
+    'rest_framework', 'timezone_field',
+    'django_forms_bootstrap', 'django_select2',
+    'principles', 'background_task',
 ]
 
 MIDDLEWARE = [
@@ -72,12 +78,11 @@ WSGI_APPLICATION = 'firm.wsgi.application'
 
 
 AUTHENTICATION_BACKENDS = (
-  
+
     'django.contrib.auth.backends.ModelBackend',
 
-   
-)
 
+)
 
 
 # Database
@@ -138,12 +143,10 @@ STATIC_ROOT = os.path.join(VENV_PATH, 'static_root')
 MEDIA_ROOT = os.path.join(VENV_PATH, 'media_root')
 
 
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
-
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -157,15 +160,11 @@ EMAIL_USE_TLS = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
-
-
-
-
 # # Twilio API
 # TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
 # TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN')
-
+# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH
+# _TOKEN')
 
 
 # DRAMATIQ_BROKER = {

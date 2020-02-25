@@ -53,7 +53,8 @@
                                 {% if request.user.is_superuser %}
                                 <button class="mr-1 btn btn-sm btn-info" data-toggle="modal" data-animation="bounce"
                                     data-target=".bs-example-modal-lg"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-animation="bounce"
+                                    data-target=".bs-example-modal-sm"><i class="far fa-trash-alt"></i></button>
                                 {% endif %}
 
 
@@ -166,7 +167,7 @@
                         <!-- <button type="button" class="btn btn-gradient-primary waves-effect waves-light float-right mb-3"
                             data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg">+ Add
                             New</button> -->
-                        <h4 class="header-title mt-0 mb-3">ALl Associated Cases</h4>
+                        <h4 class="header-title mt-0 mb-3">All Associated Cases</h4>
                         <div class="table-responsive dash-social">
                             <table id="datatable" class="table">
                                 <thead class="thead-light">
@@ -216,6 +217,28 @@
                         {{lawyer_form|crispy}}
 
                         <button type="submit">Update Lawyer</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="mySmallModalLabel">Small modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'accounts:delete_lawyer' lawyer.pk %}" method="POST">
+                        {% csrf_token %}
+                        <p>Are you sure you want to delete {{lawyer.user.first_name}} {{lawyer.user.last_name}} ?</p>
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->

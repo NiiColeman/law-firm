@@ -53,10 +53,10 @@ Document Details
                         </p>
                         <p>Category: {{doc.category|title}}</p>
                         <p>Status: {% if doc.status == "Pending" %}
-                            <span class="badge badge-md badge-boxed  badge-soft-success">{{doc.status|title}}</span>
+                            <span class="badge badge-md badge-boxed  badge-soft-">{{doc.status|title}}</span>
 
                             {% else %}
-                            <span class="badge badge-md badge-boxed  badge-soft-danger">{{doc.status|title}}</span>
+                            <span class="badge badge-md badge-boxed  badge-soft-">{{doc.status|title}}</span>
 
                             {% endif %}
 
@@ -83,76 +83,7 @@ Document Details
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card shadow-none border mb-1">
-                                    <div class="card-header" id="headingTwo">
-                                        <h5 class="my-0">
-                                            <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
-                                                type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                                aria-expanded="false" aria-controls="collapseTwo">
-                                                Assigned Lawyers
-                                            </button>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                        data-parent="#accordionExample-faq">
-                                        <div class="card-body">
 
-                                            <div class="row">
-                                                {% for lawyer in lawyers  %}
-                                                <div class="col-lg-6">
-
-
-
-
-
-
-                                                    <div class="card profile-card">
-                                                        <div class="card-body p-0">
-                                                            <div class="media p-3  align-items-center">
-                                                                <img src="{% static './assets/images/users/user-4.jpg' %} "
-                                                                    alt="user" class="rounded-circle thumb-xl">
-                                                                <div class="media-body ml-3 align-self-center">
-                                                                    <h5 class="pro-title">
-                                                                        {{lawyer.user.first_name|title}}
-                                                                        {{lawyer.user.last_name|title}}</h5>
-                                                                    <p class="mb-2 text-muted">{{lawyer.user.email}}</p>
-                                                                    <p class="mb-2 text-muted">@{{lawyer.user.username}}
-                                                                    </p>
-
-                                                                    <ul
-                                                                        class="list-inline list-unstyled profile-socials mb-0">
-                                                                        <!-- <li class="list-inline-item">
-                                                                        <a href="#" class="btn btn-primary"><i
-                                                                                class=""></i>View</a>
-                                                                    </li> -->
-
-                                                                    </ul>
-                                                                </div>
-                                                                <!-- <div class="action-btn">
-                                                                <a href="" class=""><i
-                                                                        class="fas fa-pen text-info mr-2"></i></a>
-                                                                <a href="" class=""><i
-                                                                        class="fas fa-trash-alt text-danger"></i></a>
-                                                            </div> -->
-                                                            </div>
-                                                        </div>
-
-
-                                                        <!--end card-body-->
-                                                    </div>
-
-                                                    <!--end card-->
-                                                </div>
-                                                {% endfor %}
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                    </div>
-                                </div>
                                 <!-- <div class="card shadow-none border mb-1">
                                     <div class="card-header" id="headingThree">
                                         <h5 class="my-0">
@@ -203,8 +134,7 @@ Document Details
             <div class="col-md-12 col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="mt-0 header-title">Have More Questions</h4>
-                        <p class="text-muted">Don't Worry ! Email us your Questions or you can send us twitter.</p>
+
 
                         <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>

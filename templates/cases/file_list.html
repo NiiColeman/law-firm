@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+{% block title %}
+Case Files
+
+
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'cases:case_detail' case.pk %}">Detail</a></li>
+                            <li class="breadcrumb-item active">Case Files</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">{{case.name|title}}</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                            data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add
+                            Files</button>
+
+                        <h4 class="mt-0 header-title">Case Lists</h4>
+
+
+                        <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>File Name</th>
+                                    <th>Date Aded</th>
+                                    <th>Action</th>
+                                    <th>&nbsp; &nbsp;</th>
+                                    < </tr>
+                            </thead>
+
+
+                            <!-- load -->
+
+
+                            <tbody>
+
+                                {% for file in  file_list %}
+                                <tr>
+                                    <td>
+                                        {{forloop.counter}}
+
+                                    <td>{{file.title|title}}</td>
+
+
+
+
+                                    <td> {{file.date_added}} | {{file.date_added|timesince}} Ago</td>
+
+
+
+                                    {% if request.user|has_group:"Lawyer" %}
+                                    <td>
+
+                                        <a href="{{file.file.url}}"
+                                            class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                class="dripicons-download file-download-icon"></i>Download</a>
+
+
+                                    </td>
+                                    {% endif %}
+                                    <td>
+                                        <form action="{% url 'cases:delete_file' file.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger"> &nbsp; Delete</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+
+
+
+                                {% endfor %}
+
+
+
+                                <!--end tr-->
+
+
+
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- sample modal content -->
+                    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">Modal Heading</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    {% include 'cases/snippets/upload_files.html' %}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    {% endblock content %}

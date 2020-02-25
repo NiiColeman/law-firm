@@ -1,62 +1,9 @@
-{% extends 'base.html' %}
-{% load static %}
-
 {% load crispy_forms_tags %}
-{% block title %}
-Change Password
-{% endblock title %}
 
 
-
-{% block content %}
-
-{% include 'messages/messages.html' %}
-
-
-<div class="page-content">
-
-    <div class="container-fluid">
-        <!-- Page-Title -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-title-box">
-                    <div class="float-right">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">S.K.BOAFO AND ASSOCIATES</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'cases:case_list' %};">Cases</a></li>
-                            <li class="breadcrumb-item active">New Case</li>
-                        </ol>
-
-                    </div>
-
-                </div>
-                <!--end page-title-box-->
-            </div>
-            <!--end col-->
-        </div>
-        <!-- end page title end breadcrumb -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="page-title text-center">New Case</h4>
-
-
-                        <form action="{% url 'cases:add_case' %}" method="POST">
-                            {% csrf_token %}
-                            {{ form|crispy }}
-                            {{form.errors}}
-                            <button type="submit" class="btn btn-secondary">Save changes</button>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-{% endblock content %}
+<form action="{% url 'cases:add_case' %}" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {{form.errors}}
+    <button type="submit" class="btn btn-secondary">Save changes</button>
+</form>

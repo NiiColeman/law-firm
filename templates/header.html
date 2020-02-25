@@ -202,7 +202,7 @@
                 </li> -->
 
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-briefcase"></i>
+                    <a href="javascript: void(0);"><i class="ti-folder"></i>
                         <span>Documents</span>
 
                         <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
@@ -221,11 +221,13 @@
 
                 {% if request.user|has_group:"Lawyer" %}
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-shopping-cart-full"></i><span>Cases</span><span
+                    <a href="javascript: void(0);"><i class="ti-briefcase"></i><span>Cases</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:case_list' %}"><i
                                     class="ti-control-record"></i>Case List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:cat_list' %}"><i
+                                    class="ti-control-record"></i>Case Categrory</a></li>
 
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
@@ -251,7 +253,7 @@
                 {% else %}
 
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-shopping-cart-full"></i><span>Cases</span><span
+                    <a href="javascript: void(0);"><i class="ti-briefcase"></i><span>Cases</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
 
@@ -274,10 +276,27 @@
                 {% endif %}
 
 
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-medall"></i>
+                        <span>Principles</span>
+
+                        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:principle_list' %}"><i
+                                    class="ti-control-record"></i>Principle List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:authority_list' %}"><i
+                                    class="ti-control-record"></i>Authority List</a></li>
+
+
+                    </ul>
+                </li>
+
 
                 {% if request.user.is_superuser %}
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-signal"></i><span>User Management</span><span
+                    <a href="javascript: void(0);"><i class="ti-user"></i><span>User Management</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:lawyer_list' %}"><i

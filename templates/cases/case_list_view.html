@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+{% block title %}
+Case List
+
+
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Cases</a></li>
+                            <li class="breadcrumb-item active">Case List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Cases</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                            data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
+                            Case</button>
+
+                        <h4 class="mt-0 header-title">Case Lists</h4>
+
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Status</th>
+                                        <th>Date Added</th>
+                                        <th>Added By</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+
+                                <!-- load -->
+
+
+                                <tbody>
+
+                                    {% for case  in  case_list %}
+                                    <tr>
+                                        <td>
+                                            {{case.name|title}}
+
+                                        <td>{{case.category|title}}</td>
+
+
+                                        {% if case.status|stringformat:"s" == "Pending" %}
+                                        <td> <span class="badge badge-md   badge-soft-danger">{{case.status}}</span>
+                                        </td>
+                                        {% else %}
+                                        <td> <span class="badge badge-md   badge-soft-success">{{case.status}}</span>
+                                        </td>
+                                        {% endif %}
+
+
+                                        <td> {{case.date_added}} | {{case.date_added|timesince}} Ago</td>
+                                        <td>{{case.added_by|title}}</td>
+
+
+                                        {% if request.user|has_group:"Lawyer" %}
+                                        <td>
+
+                                            <a href="{{case.get_absolute_url}}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                    class="mdi mdi-eye"></i></a>
+
+
+                                        </td>
+                                        {% elif request.user|has_group:"FrontDesk" %}
+                                        <td>
+
+                                            <a href="{% url 'cases:archive_new' case.pk %}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light">Archive
+                                                Case</a>
+
+
+                                        </td>
+                                        {% endif %}
+
+                                    </tr>
+
+
+
+                                    {% endfor %}
+
+
+
+                                    <!--end tr-->
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- sample modal content -->
+                    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">Modal Heading</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    {% include "cases/add_case.html" %}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    {% endblock content %}

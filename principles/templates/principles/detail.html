@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}
+Principle Details
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'principles:principle_list' %}">Principles</a>
+                            </li>
+                            <li class="breadcrumb-item active">Princple Details</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="mt-0 header-title text-center">
+                            {{prin.principle|title}}
+                        </h2>
+                        <p class="text-muted text-center">{{prin.date_add}}
+
+                        </p>
+                        <p class="text-muted text-center">By:{{prin.added_by.user.first_name}}
+                            {{prin.added_by.user.last_name}}
+
+                        </p>
+
+
+                        <ul class="p-0 mt-4 list-inline">
+
+                            {% for tag in prin.authority.all  %}
+                            <li class="list-inline-item"><a href="{% url 'principles:tag_list' tag.pk %}"><span
+                                        class="badge badge-secondary px-3">{{tag.title|title}}</span></a> </li>
+                            {% endfor %}
+                        </ul>
+
+
+
+
+                        <div class="card">
+
+
+                            <div class="card-body">
+                                {{prin.description|safe}}
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+                    <!--end row-->
+                </div>
+                <!--end card-body-->
+            </div>
+            <!--end card-->
+
+            <!--end col-->
+
+
+            <div class="col-md-12 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-lg">Edit</button>
+
+
+                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-center">Delete</button>
+
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+
+
+
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Edit
+                                Principle</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+
+                            {% include 'principles/update.html' with form=form  %}
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+
+
+
+            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="exampleModalLabel">Delete doc</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>AreYou Sure You Want TO Delete {{prin.title|title}}</p>
+
+
+                            <form action="{% url 'principles:principle_delete' prin.pk %}" method="POST">
+                                {% csrf_token %}
+                                <button class="btn btn-secondary" data-dismiss="modal"
+                                    aria-label="Close">Cancel</button>
+
+                                <input type="submit" value="Delete" class="btn btn-danger">
+                            </form>
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+        </div>
+    </div>
+    {% endblock content %}

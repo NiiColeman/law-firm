@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from lawyers.models import Lawyer, OtherStaff, User
-from .forms import UserForm, OtherStaffForm, LawyerForm,OtherStaffForm,UpdateUserForm,UpdateForm,StaffUpdateForm,StaffProfileForm,LawyerProfileForm
+from .forms import UserForm, OtherStaffForm, LawyerForm, OtherStaffForm, UpdateUserForm, UpdateForm, StaffUpdateForm, StaffProfileForm, LawyerProfileForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 # Create your views here.
@@ -14,8 +14,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from .decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from documents.models import DocumentRecord,Document,DocumentStatus
-from cases.forms import CaseForm
+from documents.models import DocumentRecord, Document, DocumentStatus
+from cases.forms import CaseForms
+from principles.forms import PrinciplesForm
+
 
 def accounts(request):
     lawyer_form = LawyerForm()
@@ -105,13 +107,16 @@ def lawyer_list(request):
 
 
 def lawyer_profile(request, pk):
-    lawyer = get_object_or_404(Lawyer, pk=pk)
-    user_form =  LawyerProfileForm(request.POST or None, instance=request.user)
-    lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+    user = get_object_or_404(User, pk=pk)
+    lawyer = get_lawyer(user)
+    user_form = LawyerProfileForm(request.POST or None, instance=request.user)
+    lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
     cases = Case.objects.filter(lawyer=lawyer)
+    # cases = Case.objects.select_related('lawyer').filter(lawyer__user=user)
+    print(cases)
     pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
     completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
-    case_form=CaseForm()
+    case_form = CaseForms()
     context = {
         'lawyer': lawyer,
         'user_form': user_form,
@@ -119,7 +124,8 @@ def lawyer_profile(request, pk):
         'cases': cases,
         'pending': pending,
         'completed': completed,
-        'form':case_form
+        'form': case_form,
+        'p_form': PrinciplesForm(request.POST or None)
     }
 
     return render(request, 'accounts/lawyer-profile.html', context)
@@ -127,19 +133,12 @@ def lawyer_profile(request, pk):
 
 def lawyer_detail(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
-    # cases= Case.objects.select_related(
-    #     'lawyer').filter(lawyer__title='Available')
+
     cases = Case.objects.filter(lawyer=lawyer)
     pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
     completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
-    user_form =  StaffUpdateForm(request.POST or None, instance=lawyer.user)
-    lawyer_form=LawyerForm(request.POST or None, instance=lawyer)
-
-
-    for case in cases:
-        print(case.status)
-        print(pending)
-        print(completed)
+    user_form = StaffUpdateForm(request.POST or None, instance=lawyer.user)
+    lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
 
     print(cases)
     print(cases.count())
@@ -148,8 +147,8 @@ def lawyer_detail(request, pk):
         'cases': cases,
         'pending': pending,
         'completed': completed,
-        'user_form':user_form,
-        'lawyer_form':lawyer_form
+        'user_form': user_form,
+        'lawyer_form': lawyer_form
     }
 
     return render(request, 'accounts/lawyer_detail.html', context)
@@ -157,13 +156,13 @@ def lawyer_detail(request, pk):
 
 def other_staff(request):
     staff_list = OtherStaff.objects.all()
-    staff_form=OtherStaffForm()
-    user_form=UserForm()
+    staff_form = OtherStaffForm()
+    user_form = UserForm()
 
     context = {
         'staff_list': staff_list,
-        'staff_form':staff_form,
-        'user_form':user_form
+        'staff_form': staff_form,
+        'user_form': user_form
     }
 
     return render(request, 'accounts/staff_list.html', context)
@@ -177,51 +176,38 @@ def get_status(id):
         return None
 
 
-def update_lawyer_profile(request,pk):
-    lawyer = get_object_or_404(Lawyer, pk=pk)
-
+def update_lawyer_profile(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    lawyer = get_lawyer(user)
     if request.method == 'POST':
 
-        user_form =  LawyerProfileForm(request.POST or None, instance=request.user)
-        lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+        user_form = LawyerProfileForm(
+            request.POST or None, request.FILES or None, instance=request.user)
+        lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
 
         if user_form.is_valid() and lawyer_form.is_valid():
             user = user_form.save(commit=False)
 
-            lawyer_form.instance.user=request.user
-            
+            lawyer_form.instance.user = request.user
+
             user.save()
             lawyer_form.save()
-            messages.success(request,"profile has been updated")
+            messages.success(request, "profile has been updated")
             print("success")
-            
-            return HttpResponseRedirect(reverse('accounts:lawyer_profile',args=[lawyer.pk]))
+
+            return HttpResponseRedirect(reverse('accounts:lawyer_profile', args=[user.pk]))
 
         else:
             print("failed")
-            return HttpResponseRedirect(reverse('accounts:lawyer_profile',args=[lawyer.pk]))
-
-
-            
-
-            
-            
-
+            return HttpResponseRedirect(reverse('accounts:lawyer_profile', args=[user.pk]))
 
     else:
 
-        user_form =  LawyerProfileForm(request.POST or None, instance=request.user)
-        lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+        user_form = LawyerProfileForm(
+            request.POST or None, instance=request.user)
+        lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
 
-
-    
-    return render(request,"accounts/lawyer-profile.html",{'lawyer_form':lawyer_form,'user_form':user_form})
-
-                
-
-
-           
-
+    return render(request, "accounts/lawyer-profile.html", {'lawyer_form': lawyer_form, 'user_form': user_form})
 
 
 def change_password(request):
@@ -230,7 +216,8 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(
+                request, 'Your password was successfully updated!')
             return redirect('logout')
         else:
             messages.error(request, 'Please correct the error below.')
@@ -241,13 +228,11 @@ def change_password(request):
     })
 
 
-
-
 def add_staff(request):
 
-    if request.method=="POST":
-        staff_form=OtherStaffForm(request.POST or None)
-        user_form=UserForm(request.POST or None)
+    if request.method == "POST":
+        staff_form = OtherStaffForm(request.POST or None)
+        user_form = UserForm(request.POST or None)
 
         if user_form.is_valid() and staff_form.is_valid():
 
@@ -257,176 +242,153 @@ def add_staff(request):
             password = user_form.cleaned_data.get('password1')
             email = user_form.cleaned_data.get('email')
             user.set_password(password)
-            
-            new_user=User.objects.create(first_name=user_form.instance.first_name,last_name=user_form.instance.last_name,username=user_form.instance.username,email=email,password=user.password)
-            new_user.save(0)
-            
 
-            staff_form.instance.user=new_user
+            new_user = User.objects.create(first_name=user_form.instance.first_name, last_name=user_form.instance.last_name,
+                                           username=user_form.instance.username, email=email, password=user.password)
+            new_user.save(0)
+
+            staff_form.instance.user = new_user
             staff_form.save()
             print('success')
             return redirect('accounts:staff_list')
         else:
             print('failed to add user')
             return redirect('accounts:staff_list')
-    
+
     else:
-        staff_form=OtherStaffForm()
-        user_form=UserForm()
+        staff_form = OtherStaffForm()
+        user_form = UserForm()
 
-    
-    return render(request,"accounts/add_staff.html",{'staff_form':staff_form,'user_form':user_form})
-
-
-def staff_details(request,pk):
-    staff=get_object_or_404(OtherStaff,pk=pk)
-    user_form=StaffUpdateForm(instance=staff.user)
-    staff_form=OtherStaffForm(instance=staff)
+    return render(request, "accounts/add_staff.html", {'staff_form': staff_form, 'user_form': user_form})
 
 
-    doc=Document.objects.filter(added_by=staff.user)
-    rec=DocumentRecord.objects.filter(approved_by=staff)
+def staff_details(request, pk):
+    staff = get_object_or_404(OtherStaff, pk=pk)
+    user_form = StaffUpdateForm(instance=staff.user)
+    staff_form = OtherStaffForm(instance=staff)
+
+    doc = Document.objects.filter(added_by=staff.user)
+    rec = DocumentRecord.objects.filter(approved_by=staff)
     print(rec)
     not_available = Document.objects.select_related(
         'status').filter(status__title='Not Available')
 
-    context={
-        'staff':staff,
-        'user_form':user_form,
-        'staff_form':staff_form,
-        'rec':rec,
-        'doc':doc,
+    context = {
+        'staff': staff,
+        'user_form': user_form,
+        'staff_form': staff_form,
+        'rec': rec,
+        'doc': doc,
     }
 
+    return render(request, 'accounts/staff_detail.html', context)
 
 
-    return render(request,'accounts/staff_detail.html',context)
+def update_staff(request, pk):
+    staff = get_object_or_404(OtherStaff, pk=pk)
 
-
-def update_staff(request,pk):
-    staff=get_object_or_404(OtherStaff,pk=pk)
-
-    if request.method=="POST":
-        user_form=StaffUpdateForm(request.POST ,request.FILES , instance=staff.user)
-        staff_form=OtherStaffForm(request.POST or None,instance=staff)
+    if request.method == "POST":
+        user_form = StaffUpdateForm(
+            request.POST, request.FILES, instance=staff.user)
+        staff_form = OtherStaffForm(request.POST or None, instance=staff)
 
         if user_form.is_valid() and staff_form.is_valid():
 
             user_form.save()
-            staff_form.instance.user=staff.user
+            staff_form.instance.user = staff.user
             staff.save()
 
-            messages.success(request,'User has been Updated')
-            
+            messages.success(request, 'User has been Updated')
 
-            return HttpResponseRedirect(reverse('accounts:staff_detail',args=[staff.pk]))
+            return HttpResponseRedirect(reverse('accounts:staff_detail', args=[staff.pk]))
         else:
             print(user_form.errors)
             print(staff_form.errors)
-            messages.error(request,'Failed to update user')
-            return HttpResponseRedirect(reverse('accounts:staff_detail',args=[staff.pk]))
+            messages.error(request, 'Failed to update user')
+            return HttpResponseRedirect(reverse('accounts:staff_detail', args=[staff.pk]))
     else:
-        user_form=StaffUpdateForm
-        staff_form=OtherStaffForm()
+        user_form = StaffUpdateForm
+        staff_form = OtherStaffForm()
 
-    return renser(request,"accounts/staff_detail.html",{'user_form':user_form,'staff_form':staff_form})
+    return renser(request, "accounts/staff_detail.html", {'user_form': user_form, 'staff_form': staff_form})
 
-def staff_detail_view(request,pk):
-    staff=get_object_or_404(OtherStaff,pk=pk)
-    user_form =  StaffProfileForm(request.POST or None, instance=request.user)
-    staff_form =OtherStaffForm(request.POST or None , instance=staff)
-    doc=Document.objects.filter(added_by=request.user)
-    rec=DocumentRecord.objects.select_related('approved_by').filter(approved_by__user=request.user)
+
+def staff_detail_view(request, pk):
+    staff = get_object_or_404(OtherStaff, pk=pk)
+    user_form = StafUpdateForm(request.POST or None, instance=request.user)
+    staff_form = OtherStaffForm(request.POST or None, instance=staff)
+    doc = Document.objects.filter(added_by=request.user)
+    rec = DocumentRecord.objects.select_related(
+        'approved_by').filter(approved_by__user=request.user)
     print(rec)
     not_available = Document.objects.select_related(
         'status').filter(status__title='Not Available')
 
-
-
-    context={
-        'staff':staff,
-        'rec':rec,
-        'doc':doc,
-        'not_status':not_available,
-        'user_form':user_form,
-        'staff_form':staff_form
+    context = {
+        'staff': staff,
+        'rec': rec,
+        'doc': doc,
+        'not_status': not_available,
+        'user_form': user_form,
+        'staff_form': staff_form
     }
 
-    return render(request,"accounts/staff_profile.html",context)
+    return render(request, "accounts/staff_profile.html", context)
 
 
-
-        
-
-
-
-
-def update_staff_profile(request,pk):
+def update_staff_profile(request, pk):
     staff = get_object_or_404(OtherStaff, pk=pk)
 
     if request.method == 'POST':
 
-        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
-        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+        user_form = StaffProfileForm(
+            request.POST or None, instance=request.user)
+        staff_form = OtherStaffForm(request.POST or None, instance=staff)
 
         if user_form.is_valid() and staff_form.is_valid():
             user = user_form.save(commit=False)
 
-            staff_form.instance.user=request.user
-            
+            staff_form.instance.user = request.user
+
             user.save()
             staff_form.save()
-            messages.success(request,"profile has been updated")
+            messages.success(request, "profile has been updated")
             print("success")
-            
-            return HttpResponseRedirect(reverse('accounts:staff_profile',args=[staff.pk]))
+
+            return HttpResponseRedirect(reverse('accounts:staff_profile', args=[staff.pk]))
 
         else:
             print("failed")
-            return HttpResponseRedirect(reverse('accounts:staff_profile',args=[staff.staff]))
-
-            
-
-            
-            
-
+            return HttpResponseRedirect(reverse('accounts:staff_profile', args=[staff.staff]))
 
     else:
 
-        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
-        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+        user_form = StaffProfileForm(
+            request.POST or None, instance=request.user)
+        staff_form = OtherStaffForm(request.POST or None, instance=staff)
+
+    return render(request, "accounts/lawyer-profile.html", {'staff_form': lawyer_form, 'staff_form': user_form})
 
 
-    
-    return render(request,"accounts/lawyer-profile.html",{'staff_form':lawyer_form,'staff_form':user_form})
-
-
-
-
-
-
-
-
-def update_lawyers_profile(request,pk):
+def update_lawyers_profile(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
 
     if request.method == 'POST':
 
-        user_form =  StaffProfileForm(request.POST or None, instance=lawyer.user)
-        lawyer_form =LawyerForm(request.POST or None , instance=lawyer)
+        user_form = StaffUpdateForm(
+            request.POST or None, request.FILES or None, instance=lawyer.user)
+        lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
 
         if user_form.is_valid() and lawyer_form.is_valid():
-            user = user_form.save(commit=False)
 
-            
-            user.save()
+            user_form.save()
+            print(user_form.errors)
             # lawyer_form.instance.user=request.user
 
             lawyer_form.save()
-            messages.success(request,"profile has been updated")
-            print("success")
-            
-            return HttpResponseRedirect(reverse('accounts:lawyer_detail',args=[lawyer.pk]))
+            messages.success(request, "profile has been updated")
+
+            return HttpResponseRedirect(reverse('accounts:lawyer_detail', args=[lawyer.pk]))
 
         else:
             print("failed")
@@ -434,19 +396,42 @@ def update_lawyers_profile(request,pk):
             print(lawyer_form.errors)
             print(user_form.errors)
 
-            return HttpResponseRedirect(reverse('accounts:lawyer_detail',args=[lawyer.pk]))
-
-            
-
-            
-            
-
+            return HttpResponseRedirect(reverse('accounts:lawyer_detail', args=[lawyer.pk]))
 
     else:
 
-        user_form =  StaffProfileForm(request.POST or None, instance=request.user)
-        staff_form =OtherStaffForm(request.POST or None , instance=staff)
+        user_form = StaffUpdateForm(
+            request.POST or None, instance=request.user)
+        staff_form = OtherStaffForm(request.POST or None, instance=staff)
+
+    return render(request, "accounts/lawyer-profile.html", {'lawyer_form': lawyer_form, 'user_form': user_form})
 
 
-    
-    return render(request,"accounts/lawyer-profile.html",{'lawyer_form':lawyer_form,'user_form':user_form})
+def get_lawyer(user):
+    lawyer = Lawyer.objects.get(user=user)
+    if lawyer:
+        return lawyer
+    else:
+        return None
+
+
+def delete_lawyer(request, pk):
+    lawyer = get_object_or_404(Lawyer, pk=pk)
+    if request.method == "POST":
+        lawyer.delete()
+        messages.success(request, "Lawyer has been deleted")
+
+        return redirect("accounts:lawyer_list")
+
+    return render(redirect, "accounts/lawyer.html")
+
+
+def delete_staff(request, pk):
+    staff = get_object_or_404(staff, pk=pk)
+    if request.method == "POST":
+        lawyer.delete()
+        messages.success(request, "Staff has been deleted")
+
+        return redirect("accounts:staff_list")
+
+    return render(redirect, "accounts/staff_list.html")

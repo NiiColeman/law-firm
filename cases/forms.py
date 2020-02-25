@@ -1,5 +1,5 @@
 from django import forms
-from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive
+from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive, LegalArgument
 from lawyers.models import User, Lawyer
 
 
@@ -55,3 +55,30 @@ class CaseArchiveForm(forms.ModelForm):
     class Meta:
         model = CaseArchive
         fields = ('archive_location',)
+
+
+class CaseForms(forms.ModelForm):
+    description = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'class': 'form-control'}))
+    name = forms.CharField(required=True, widget=forms.TextInput(
+        attrs={'class': 'form-control'}))
+
+    date_added = forms.DateField(widget=DateInput(
+        attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Case
+        fields = ['name', 'description',  'category',
+                  'lawyer', 'status', 'date_added', 'court']
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', ]
+
+
+class LegalArgumentForm(forms.ModelForm):
+    class Meta:
+        model = LegalArgument
+        fields = ['argument', 'authorities']

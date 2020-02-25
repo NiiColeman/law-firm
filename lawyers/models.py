@@ -48,8 +48,8 @@ class LawyerStatus(models.Model):
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to="avatars/",null=True, blank=True)
-    phone = models.CharField(default="+233 24 4123 456", max_length=50)
+    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+    phone = models.CharField(default="024 412 3456", max_length=50)
 
     is_lawyer = models.BooleanField(default=False)
     # is_other_staff = models.BooleanField(default=False)
@@ -62,6 +62,9 @@ class User(AbstractUser):
 
     def get_delete_url(self):
         return reverse("lawyers:user_delete", kwargs={"pk": self.pk})
+
+    def __str__(self):
+        return "{} {}".format(self.first_name, self.last_name)
 
 
 class Lawyer(models.Model):

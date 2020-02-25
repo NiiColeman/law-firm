@@ -152,9 +152,9 @@ class StaffUpdateForm(forms.ModelForm):
         return self.initial["password"]
 
 
-
 class StaffProfileForm(forms.ModelForm):
     email = forms.EmailField()
+
     # password1 = None
     # password2 = None
 
