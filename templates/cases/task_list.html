@@ -22,8 +22,8 @@ Case Tasks
                 <div class="page-title-box">
                     <div class="float-right">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Metrica</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Pages</a></li>
+                            <li class="breadcrumb-item"><a href="/">Sk Boafo & Co.</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'cases:case_detail' case.pk %}">Case Detail</a>
                             <li class="breadcrumb-item active">Timeline</li>
                         </ol>
                     </div>
@@ -38,29 +38,36 @@ Case Tasks
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="header-title mt-0 mb-3">Timeline</h4>
+                        <h4 class="header-title mt-0 mb-3">Completed Tasks</h4>
                         <div class="slimscroll activity-scroll">
                             <div class="activity">
+
+                                {% for task in tasks  %}
+
+                                {% if task.complete %}
                                 <i class="mdi mdi-checkbox-marked-circle-outline icon-success"></i>
                                 <div class="time-item">
                                     <div class="item-info">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="m-0">Task finished</h6>
-                                            <span class="text-muted">5 minutes ago</span>
+                                            <h6 class="m-0">{{task.task|title}}</h6>
+                                            <span class="text-muted">Completed :{{task.date_modefied|timesince}}
+                                                Ago</span>
                                         </div>
-                                        <p class="text-muted mt-3">There are many variations of passages of Lorem Ipsum
-                                            available, but the majority have suffered alteration.
-                                            <a href="#" class="text-info">[more info]</a>
+                                        <p class="text-muted mt-3">{{task.description|title}}
+                                            <!-- <a href="#" class="text-info">[more info]</a> -->
                                         </p>
                                         <div>
-                                            <span class="badge badge-soft-secondary">Design</span>
-                                            <span class="badge badge-soft-secondary">HTML</span>
-                                            <span class="badge badge-soft-secondary">Css</span>
+
 
                                         </div>
                                     </div>
                                 </div>
-                                <i class="mdi mdi-timer-off icon-pink"></i>
+                                {% endif %}
+
+
+                                {% endfor %}
+
+                                <!-- <i class="mdi mdi-timer-off icon-pink"></i>
                                 <div class="time-item">
                                     <div class="item-info">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -102,9 +109,9 @@ Case Tasks
                                             <a href="#" class="text-info">[more info]</a>
                                         </p>
                                     </div>
-                                </div>
+                                </div> -->
 
-                                <i class="mdi mdi-thumb-up icon-info"></i>
+                                <!-- <i class="mdi mdi-thumb-up icon-info"></i>
                                 <div class="time-item">
                                     <div class="item-info">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -119,7 +126,7 @@ Case Tasks
                                             <span class="badge badge-soft-secondary">Python</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <!--end activity-->
                         </div>
@@ -134,71 +141,113 @@ Case Tasks
 
 
                 <div class="card">
+                    <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                        data-animation="bounce" data-target=".bs-example-modal-lg"><i
+                            class="mdi mdi-plus-circle-outline mr-2"></i>Add New Task</button>
+
+
+
+                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Add New
+                                        Task</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+
+
+                                    <form action="{% url 'cases:add_task' case.pk %}" method="post">
+
+                                        {% csrf_token %}
+                                        {{ task_form|crispy }}
+
+                                        <button type="submit" class="btn btn-secondary">Add Task</button>
+
+
+                                    </form>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
+
                     <div class="card-body">
+
+
                         <h4 class="header-title mt-0 mb-3">Timeline</h4>
                         <div class="main-timeline mt-3">
-                            <div class="timeline">
-                                <span class="timeline-icon"></span>
-                                <span class="year">Feb 2019</span>
-                                <div class="timeline-content">
-                                    <h5 class="title">Highest Account Value</h5>
-                                    <span class="post">14 Feb 2019</span>
-                                    <p class="description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis justo id
-                                        pulvinar suscipit.
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div class="timeline">
-                                <span class="timeline-icon"></span>
-                                <span class="year">Jan 2018</span>
-                                <div class="timeline-content">
-                                    <h5 class="title">Monthly Report</h5>
-                                    <span class="post">26 Jan 2018</span>
-                                    <p class="description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis justo id
-                                        pulvinar suscipit.
-                                    </p>
-                                </div>
-                            </div>
 
+
+
+                            {% for task in page_obj  %}
+
+
+                            {% if forloop.first or forloop.last %}
                             <div class="timeline">
                                 <span class="timeline-icon"></span>
-                                <span class="year">April 2018</span>
+                                <span class="year">{{task.deadline|date:"d M, Y"}}</span>
                                 <div class="timeline-content">
-                                    <h5 class="title">Second Trade</h5>
-                                    <span class="post">1 April 2018</span>
-                                    <p class="description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis justo id
-                                        pulvinar suscipit.
+                                    <h5 class="title">{{task.task|title}}</h5>
+                                    <span class="post">{{task.date_modefied}}</span>
+                                    <hr>
+                                    <p class="">
+                                        {{task.description|safe}}
                                     </p>
                                 </div>
                             </div>
+                            {% endif %}
+
+
+
+                            {% if not forloop.first and not forloop.last %}
                             <div class="timeline">
                                 <span class="timeline-icon"></span>
-                                <span class="year">Aug 2017</span>
+                                <span class="year">{{task.deadline|date:"d M, Y"}}</span>
+
+
                                 <div class="timeline-content">
-                                    <h5 class="title">Sign Up</h5>
-                                    <span class="post">15 Aug 2017</span>
-                                    <p class="description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis justo id
-                                        pulvinar suscipit.
+                                    <h5 class="title">{{task.task|title}}</h5>
+                                    <span class="post">{{task.date_modefied|date:"d M, Y"}}</span>
+                                    <hr>
+
+                                    <p class="">
+                                        {{task.description|safe}}
                                     </p>
                                 </div>
                             </div>
-                            <div class="timeline">
-                                <span class="timeline-icon"></span>
-                                <span class="year">Dec 2017</span>
-                                <div class="timeline-content">
-                                    <h5 class="title">First Trade</h5>
-                                    <span class="post">24 Dec 2017</span>
-                                    <p class="description">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mattis justo id
-                                        pulvinar suscipit.
-                                    </p>
+                            {% endif %}
+                            {% endfor %}
+
+
+                            <hr>
+                            <center>
+                                <div class="pagination">
+                                    <span class="step-links">
+                                        {% if page_obj.has_previous %}
+                                        <a href="?page=1" class="btn btn-info">&laquo; first</a>
+                                        <a href="?page={{ page_obj.previous_page_number }}"
+                                            class="btn btn-info">previous</a>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                        </span>
+
+                                        {% if page_obj.has_next %}
+                                        <a href="?page={{ page_obj.next_page_number }}" class="btn btn-info">next</a>
+                                        <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info">last
+                                            &raquo;</a>
+                                        {% endif %}
+                                    </span>
                                 </div>
-                            </div>
+                            </center>
+
                         </div>
                     </div>
                     <!--end card-body-->

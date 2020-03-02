@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+Filter Cases
+{% endblock title %}
+
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">SK Boafo & Co.</a></li>
+
+                            <li class="breadcrumb-item"><a href="{% url 'cases:case_list' %}">Cases</a></li>
+                            <li class="breadcrumb-item active">Case List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Cases</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <form method="get" class="form-group">
+
+
+                                {{filter.form|crispy}}
+                                <button type="submit" class="btn btn-info">Search</button>
+                            </form>
+                            <hr>
+
+
+
+                            {% for obj in filter.qs %}
+                            {{ obj.name }} - ${{ obj.price }}<br />
+                            {% endfor %}
+
+                            {% endblock content %}
+
+
+
+
+
+
+
+                        </div>

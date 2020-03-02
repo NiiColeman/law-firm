@@ -32,8 +32,8 @@ class CaseForm(forms.ModelForm):
         attrs={'class': 'form-control', 'id': 'date-format'}))
     # lawyer = forms.MultipleChoiceField(widget=forms.SelectMultiple(
     #     attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}), choices=User.objects.all().values_list('id', 'first_name'))
-    lawyer = forms.ModelMultipleChoiceField(widget=forms.SelectMultiple(
-        attrs={'class': 'select2 mb-3 select2-multiple', 'placeholder': 'Select Lawyers'}), required=True, queryset=Lawyer.objects.all())
+    lawyer = forms.ModelChoiceField(queryset=Lawyer.objects.all(), widget=forms.SelectMultiple(
+        attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}),)
 
     class Meta:
         model = Case

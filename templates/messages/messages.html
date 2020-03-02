@@ -5,28 +5,28 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"><i class="mdi mdi-close"></i></span>
     </button>
-    <strong>{{message}}</strong>
+    <strong>{{message|title}}</strong>
 </div>
 {% elif message.tags == 'info'%}
 <div class="alert alert-info alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"><i class="mdi mdi-close"></i></span>
     </button>
-    <strong>{{message}}</strong>
+    <strong>{{message|title}}</strong>
 </div>
 {% elif message.tags == 'warning'%}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"><i class="mdi mdi-close"></i></span>
     </button>
-    <strong>{{message}}</strong>
+    <strong>{{message|title}}</strong>
 </div>
 {% elif message.tags == 'error'%}
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"><i class="mdi mdi-close"></i></span>
     </button>
-    <strong>{{message}}</strong>
+    <strong>{{message|title}}</strong>
 </div>
 {% endif %}
 {% endfor %}

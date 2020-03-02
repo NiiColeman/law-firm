@@ -15,7 +15,8 @@ from django.urls import reverse_lazy
 from .models import CaseArchive
 from django.utils.crypto import get_random_string
 from .tasks import notify_user
-
+from django.core.paginator import Paginator
+from .filters import CaseFilter
 # @login_required
 # def case_list(request):
 #     form = CaseForm()
@@ -81,7 +82,7 @@ def case_detail(request, pk):
     case = get_object_or_404(Case, pk=pk)
     task_form = CaseTaskForm()
     file_form = CaseFileForm(request.POST or None, request.FILES or None)
-    arguments = LegalArgument.objects.filter(case=case)
+    arguments = LegalArgument.objects.filter(case=case)[:4]
 
     lawyers = case.lawyer.all()
 # print(case.lawyer_set.user)
@@ -213,8 +214,9 @@ def add_task(request, pk):
                 msg1 = "NEW TASK : {} !!".format(task_form.instance.task)
                 msg2 = "Dear {}, you have a task scheduled for {}.Remember to check your mail for further notifcations".format(
                     l.user,  task_form.instance.deadline)
-                notify_user(l.user.id, repeat=300,
+                notify_user(msg1, msg2, l.user.id, repeat=300,
                             repeat_until=task_form.instance.deadline)
+
             messages.success(request, "Task has been added")
             return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
         else:
@@ -336,9 +338,33 @@ def archive_list_view(request):
 
 @login_required
 def archive_detail_view(request, pk):
-    arhcive = get_object_or_404(CaseArchive, pk=pk)
+    archive = get_object_or_404(CaseArchive, pk=pk)
+    case = archive.case
+    task_form = CaseTaskForm()
+    file_form = CaseFileForm(request.POST or None, request.FILES or None)
+    arguments = LegalArgument.objects.filter(case=case)
+
+    lawyers = case.lawyer.all()
+# print(case.lawyer_set.user)
+    task_list = CaseTask.objects.filter(case=case)[:5]
+    # print(lawyers)
+    form = CaseForm(instance=case)
+    case_files = CaseFile.objects.filter(case=case)[:5]
+    users = []
+    for lawyer in lawyers:
+        users.append(lawyer.user)
     context = {
-        'archive': archive
+        'case': case,
+        'archive': archive,
+        'lawyers': lawyers,
+        'form': form,
+        'task_list': task_list,
+        'task_form': task_form,
+        'file_form': file_form,
+        'case_files': case_files,
+        'users': users,
+        'arg_form': LegalArgumentForm(request.POST or None),
+        'arguments': arguments
     }
 
     return render(request, "cases/archives/detail.html", context)
@@ -571,11 +597,144 @@ def task_view(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
     tasks = CaseTask.objects.filter(case=case)
+    task_list = CaseTask.objects.filter(case=case)
+
+    paginator = Paginator(task_list, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     task_form = CaseTaskForm(request.POST or None)
     context = {
 
         'tasks': tasks,
+        'page_obj': page_obj,
+        'case': case,
+        'task_form': task_form
+
     }
 
     return render(request, "cases/task_list.html", context)
+
+# def task_list_view
+
+
+def task_list_view(request, pk):
+    case = get_object_or_404(Case, pk=pk)
+
+    tasks = CaseTask.objects.filter(case=case)
+    task_list = CaseTask.objects.filter(case=case)
+
+    paginator = Paginator(task_list, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    task_form = CaseTaskForm(request.POST or None)
+    context = {
+
+        'tasks': tasks,
+        'page_obj': page_obj,
+        'task_form': task_form,
+        'case': case,
+
+    }
+
+    return render(request, "cases/list_tasks.html", context)
+
+
+def completed(request, pk):
+
+    task = get_object_or_404(CaseTask, pk=pk)
+    case = task.case
+
+    if task.complete == False:
+        task.complete = True
+        task.save()
+
+        messages.success(request, "Task has been completed")
+        return HttpResponseRedirect(reverse('cases:list_tasks', args=[case.pk]))
+
+    else:
+        task.complete = False
+        task.save()
+        messages.success(request, "Task has been  masrked as pending")
+
+        return HttpResponseRedirect(reverse('cases:list_tasks', args=[case.pk]))
+
+    return render(request, "cases/list_tasks.html", context)
+
+
+def delete_task(request, pk):
+    task = get_object_or_404(CaseTask, pk=pk)
+    case = task.case
+    if task:
+        task.delete()
+        messages.success(request, "Task has been deleted")
+        return HttpResponseRedirect(reverse('cases:list_tasks', args=[case.pk]))
+
+    return render(request, "cases/list_tasks.html", context)
+
+
+def argument_list(request, pk):
+    case = get_object_or_404(Case, pk=pk)
+    argument_list = LegalArgument.objects.filter(case=case)
+
+    context = {
+        'form': LegalArgumentForm(request.POST or None),
+        'argument_list': argument_list,
+        'case': case
+    }
+
+    return render(request, 'cases/arg_list.html', context)
+
+
+def argument_detail(request, pk):
+    arg = get_object_or_404(LegalArgument, pk=pk)
+    case = arg.case
+    context = {
+        'arg': arg,
+        'case': case,
+        'form': LegalArgumentForm(request.POST or None, instance=arg)
+    }
+
+    return render(request, "cases/arg_detail.html", context)
+
+
+def arg_update(request, pk):
+    arg = get_object_or_404(LegalArgument, pk=pk)
+    if request.method == "POST":
+        form = LegalArgumentForm(request.POST or None, instance=arg)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Argument has Been Updated")
+            return HttpResponseRedirect(reverse('cases:argument_detail', args=[arg.pk]))
+
+        else:
+            messages.error(request, "Argument could not be updated")
+            return HttpResponseRedirect(reverse('cases:argument_detail', args=[arg.pk]))
+
+    else:
+        form = LegalArgumentForm()
+
+    return render(request, 'cases/arg_detail.html', {'form': form, 'case': arg.case})
+
+
+def arg_delete(request, pk):
+    arg = get_object_or_404(LegalArgument, pk=pk)
+    case = arg.case
+
+    if arg:
+        arg.delete()
+        messages.success(request, "Argument has Been Deleted")
+        return HttpResponseRedirect(reverse('cases:argument_list', args=[case.pk]))
+    else:
+        messages.error(request, "Argument could not be deleted")
+        return HttpResponseRedirect(reverse('cases:argument_detail', args=[arg.pk]))
+
+    return render(request, 'cases/arg_detail.html')
+
+
+def case_filter(request):
+    f = CaseFilter(request.GET, queryset=Case.objects.all())
+    return render(request, 'cases/filter.html', {'filter': f})
+
+

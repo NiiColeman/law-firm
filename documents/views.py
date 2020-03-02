@@ -328,6 +328,9 @@ def approve_request(request, pk):
     archive = RequestArchive.objects.create(document=rec.document.title, description=rec.document.description, date_added=rec.document.date_added,
                                             date_requested=rec.date_requested, approved_by=request.user, date_approved=timezone.now(), requested_by=rec.requeted_by)
     print(archive)
+    msg2 = " Dear {} , your reqeust for {} has been approved."
+    msg1 = "Request Approved!"
+    notify_approve(request.user, msg1, msg2)
     return redirect('documents:record_list')
 
 

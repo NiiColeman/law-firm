@@ -51,6 +51,8 @@ class Document(models.Model):
     status = models.ForeignKey(
         DocumentStatus, related_name='docstatus', on_delete=models.CASCADE)
     storage_location = models.CharField(max_length=50, default="room 1")
+    shelf_number = models.CharField(max_length = 150, null=True)
+    
     category = models.ForeignKey(
         DocCategory, default=DOC_CATEGORY_ID, on_delete=models.SET_DEFAULT)
 

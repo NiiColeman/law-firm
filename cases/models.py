@@ -139,6 +139,7 @@ class CaseTask(models.Model):
     deadline = models.DateTimeField(auto_now=False)
     priority_level = models.ForeignKey(
         PriorityLevel, null=True, on_delete=models.SET_NULL)
+    complete=models.BooleanField(default=False)
 
     # TODO: Define fields here
 

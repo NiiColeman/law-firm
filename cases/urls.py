@@ -5,7 +5,7 @@ from .views import (case_detail, add_case, update_case,
                     new_case, archive_list_view, add_to_archives,
                     archive_detail_view, pending_list, completed_list, CaseList, CaseCreateView, CategoryListView,
                     delete_cat, cat_update, cat_add, add_argument, cat_detail, file_list,
-                    delete_files, task_view
+                    delete_files, task_view, task_list_view, completed, delete_task, argument_list, argument_detail, arg_update, arg_delete, case_filter
 
                     )
 
@@ -16,6 +16,8 @@ app_name = "cases"
 urlpatterns = [
 
     path('cases/list/', CaseList.as_view(), name='case_list'),
+    path('cases/list/filter-cases', case_filter, name='case_filter'),
+
 
 
 
@@ -53,6 +55,23 @@ urlpatterns = [
     path("cases/<int:pk>/case-files", file_list, name="file_list"),
     path("cases/<int:pk>/delete_file", delete_files, name="delete_file"),
     path("cases/tasks/<int:pk>/list", task_view, name="task_list"),
+    path("cases/tasks/<int:pk>/list-tasks", task_list_view, name="list_tasks"),
+    path("cases/tasks/<int:pk>/completed", completed, name="completed"),
+    path("cases/tasks/<int:pk>/delete", delete_task, name="delete_task"),
+    path("cases/<int:pk>/legal_arguments/list",
+         argument_list, name="argument_list"),
+    path("cases/<int:pk>/legal_arguments/detail",
+         argument_detail, name="argument_detail"),
+    path("cases/<int:pk>/legal_arguments/update",
+         arg_update, name="argument_update"),
+    path("cases/<int:pk>/legal_arguments/delete",
+         arg_delete, name="argument_delete"),
+
+
+
+
+
+
 
 
 

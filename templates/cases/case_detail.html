@@ -18,7 +18,7 @@ Case Details
                 <div class="page-title-box">
                     <div class="float-right">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Law Firm</a></li>
+                            <li class="breadcrumb-item"><a href="/">SK Boafo & Co.</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'cases:case_list' %}">Cases</a></li>
                             <li class="breadcrumb-item active">Case Details</li>
                         </ol>
@@ -178,7 +178,7 @@ Case Details
 
 
                                             <h4 class="header-title my-3"><a
-                                                    href="{% url 'cases:task_list' case.pk %}">View More Tasks</a>
+                                                    href="{% url 'cases:list_tasks' case.pk %}">View More Tasks</a>
                                             </h4>
                                             <div class="main-timeline mt-3">
 
@@ -270,14 +270,21 @@ Case Details
                                 <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo"
                                     data-parent="#accordionExample-faq">
                                     <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4 class="header-title my-3"> <a
+                                                        href="{% url 'cases:argument_list' case.pk  %}"
+                                                        rel="noopener noreferrer"> View More</a>
+                                                </h4>
+                                            </div>
+                                        </div>
 
                                         <div class="row">
+
+
+
                                             {% for arg in arguments  %}
                                             <div class="col-lg-6">
-
-
-
-
 
 
                                                 <div class="card profile-card">
@@ -287,7 +294,9 @@ Case Details
                                                                 alt="user" class="rounded-circle thumb-xl"> -->
                                                             <div class="media-body ml-3 align-self-center">
                                                                 <h5 class="pro-title">
+
                                                                     {{arg.argument|title}}
+
                                                                 </h5>
                                                                 <p class="mb-2 text-muted">{{arg.authorities}}</p>
 
