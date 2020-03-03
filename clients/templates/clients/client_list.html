@@ -63,6 +63,7 @@ Task List
                                         <th>Phone</th>
                                         <th>Added By</th>
                                         <td>Category</td>
+                                        <td>Action</td>
 
                                     </tr>
                                 </thead>
@@ -80,40 +81,22 @@ Task List
                                         <td>{{client.name|title}}</td>
                                         <td>{{client.email}}</td>
                                         <td>{{client.phone}}</td>
-                                        <td>{{client.user.first_name|title}} {{client.user.last_name|title}}</td>
-                                        <td>{{client.category|title}}</td>
-
-
-
-
-
-                                        <td> {{task.deadline}} | {{case.date_added|timesince}} Ago</td>
-
-
-
-
-                                        <td>
-
-                                            <a href="" class="btn btn-gradient-secondary waves-effect waves-light"><i
-                                                    class="mdi mdi-eye"></i></a>
-
-
-
-
-                                            {% if task.complete %}
-                                            <a href="{% url 'cases:completed' task.pk %}" class="btn btn-dark">Mark as
-                                                pending</a>
-                                            {% else %}
-                                            <a href="{% url 'cases:completed' task.pk %}" class="btn btn-dark">Mark as
-                                                completed</a>
-
-                                            {% endif %}
-
-                                            <a href="{% url 'cases:delete_task' task.pk %}"
-                                                class="btn btn-danger">Delete</a>
-
-
+                                        <td>{{client.added_by.first_name|title}} {{client.added_by.last_name|title}}
                                         </td>
+                                        <td>{{client.category|title}}</td>
+                                        <td><a href="{{client.get_absolute_url}}" class="btn btn-secondary">View</a>
+                                        </td>
+
+
+
+
+
+
+
+
+
+
+
 
                                     </tr>
 
@@ -152,12 +135,17 @@ Task List
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title mt-0" id="myModalLabel">New Task</h5>
+                                    <h5 class="modal-title mt-0" id="myModalLabel">New Client</h5>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">×</button>
                                 </div>
                                 <div class="modal-body">
-                                    {% include 'cases/tasks/task_form.html' with task_form=task_form case=case %}
+                                    <form action="{% url 'clients:client_add' %}" method="post">
+
+
+                                        {% include "clients/snippets/form.html" %}
+                                        <button type="submit" class="btn btn-secondary">Add New Client</button>
+                                    </form>
 
                                 </div>
                                 <div class="modal-footer">

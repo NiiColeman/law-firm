@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 # from django.views.generic import TemplateView,ListView,CreateView,UpdateView,DeleteView
-
+from django.urls import reverse
 from .forms import ClientForm, ClientCategory
 # Create your views here.
 from .models import Client, ClientCategory
@@ -19,7 +19,7 @@ def client_create_view(request):
                                            email=form.instance.email, added_by=request.user, category=form.instance.category, address=form.instance.address)
             messages.success(
                 request, "{} has been added to your client list".format(client.name))
-            return HttpResponseRedirect(reverse('client:client_detail', args=[cliint.pk]))
+            return HttpResponseRedirect(reverse('clients:client_detail', args=[client.pk]))
 
         else:
             messages.error(

@@ -18,6 +18,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import index, FirmChart
+# from ajax_select import urls
+# from ajax_select import urls as ajax_select_url
+from ajax_select import urls as ajax_select_urls
+
+admin.autodiscover()
 
 
 urlpatterns = [
@@ -32,7 +37,13 @@ urlpatterns = [
     path("", include('principles.urls')),
     path("", include('clients.urls')),
 
-    path('select2/', include('django_select2.urls'))
+
+
+
+
+    # path('ajax_select/', include('ajax_select.urls'))
+    path('ajax_select/', include(ajax_select_urls)),
+
 
 
 ]

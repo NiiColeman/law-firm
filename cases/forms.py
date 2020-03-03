@@ -1,6 +1,7 @@
 from django import forms
 from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive, LegalArgument
 from lawyers.models import User, Lawyer
+from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
 
 class DateInput(forms.DateInput):
@@ -32,13 +33,13 @@ class CaseForm(forms.ModelForm):
         attrs={'class': 'form-control', 'id': 'date-format'}))
     # lawyer = forms.MultipleChoiceField(widget=forms.SelectMultiple(
     #     attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}), choices=User.objects.all().values_list('id', 'first_name'))
-    lawyer = forms.ModelChoiceField(queryset=Lawyer.objects.all(), widget=forms.SelectMultiple(
-        attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}),)
+    lawyer = AutoCompleteSelectMultipleField(
+        'lawyers', required=True, help_text=None)
 
     class Meta:
         model = Case
         fields = ("name", "description", "category",
-                  "lawyer", "status", 'date_added')
+                  "status", 'date_added')
 
 
 class CaseFileForm(forms.ModelForm):

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework', 'timezone_field',
     'django_forms_bootstrap', 'django_select2',
-    'principles', 'background_task', 'django_filters', 'widget_tweaks','clients'
+    'principles', 'background_task', 'django_filters', 'widget_tweaks', 'clients', 'ajax_select'
 ]
 
 MIDDLEWARE = [

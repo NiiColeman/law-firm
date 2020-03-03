@@ -9,7 +9,7 @@ class ClientCategory(models.Model):
     title = models.CharField(max_length=250)
 
     def __str__(self):
-        pass
+        return self.title
 
     class Meta:
 

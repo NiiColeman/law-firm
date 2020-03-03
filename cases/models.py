@@ -62,6 +62,8 @@ class Case(models.Model):
     description = models.TextField()
     category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
     lawyer = models.ManyToManyField("lawyers.Lawyer")
+    client = models.ForeignKey(
+        "clients.Client", null=True, on_delete=models.SET_NULL)
     date_updated = models.DateTimeField(auto_now=True)
     date_added = models.DateTimeField(auto_now=False)
     status = models.ForeignKey(
@@ -139,7 +141,7 @@ class CaseTask(models.Model):
     deadline = models.DateTimeField(auto_now=False)
     priority_level = models.ForeignKey(
         PriorityLevel, null=True, on_delete=models.SET_NULL)
-    complete=models.BooleanField(default=False)
+    complete = models.BooleanField(default=False)
 
     # TODO: Define fields here
 
