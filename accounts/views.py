@@ -73,23 +73,24 @@ def lawyer_profile_view(request):
             password = user_form.cleaned_data.get('password1')
             email = user_form.cleaned_data.get('email')
             user.set_password(password)
-            user.save(commit=True)
-            user = authenticate(request, username=email, password=password)
+            user.save()
+            # user = authenticate(request, username=email, password=password)
 
-            lawyer = lawyer_form.save(commit=False)
+            lawyer = Lawyer.objects.create(
+                user=user, bar_number=lawyer_form.instance.bar_number, lawyer_status=lawyer_form.instance.lawyer_status)
 
-            lawyer.user = user
-            lawyer.save()
+            # lawyer.user = user
+            # lawyer.save()
 
             # Lawyer.objects.create(user=user.username, bar_number=lawyer_form.instance.bar_number,
             #                       lawyer_status=lawyer_form.instance.lawyer_status)
             # messages.success(request, 'Welcome {} !!'.format(user.username))
-            print('success')
-            login(request, user)
-            return redirect('index')
+            messages.success(request, "Lawyer has been added")
+
+            return HttpResponseRedirect(reverse('accounts:lawyer_detail', args=[lawyer.pk]))
 
     else:
-        print('error')
+        messages.error(request, "Lawyer could not be added")
 
         lawyer_form = LawyerForm()
         user_form = UserForm()
@@ -99,8 +100,12 @@ def lawyer_profile_view(request):
 
 def lawyer_list(request):
     lawyers = Lawyer.objects.all()
+    user_form = UserForm(request.POST or None)
+    lawyer_form = LawyerForm(request.POST or None)
     context = {
-        'lawyers': lawyers
+        'lawyers': lawyers,
+        'lawyer_form':lawyer_form,
+        'user_form':user_form
     }
 
     return render(request, 'accounts/lawyers.html', context)
@@ -114,8 +119,8 @@ def lawyer_profile(request, pk):
     cases = Case.objects.filter(lawyer=lawyer)
     # cases = Case.objects.select_related('lawyer').filter(lawyer__user=user)
     print(cases)
-    pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
-    completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
+    pending = Case.objects.filter(closed=False)
+    completed = Case.objects.filter(closed=True)
     case_form = CaseForms()
     context = {
         'lawyer': lawyer,
@@ -135,8 +140,8 @@ def lawyer_detail(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
 
     cases = Case.objects.filter(lawyer=lawyer)
-    pending = Case.objects.filter(lawyer=lawyer, status=get_status(1))
-    completed = Case.objects.filter(lawyer=lawyer, status=get_status(2))
+    pending = Case.objects.filter(lawyer=lawyer, closed=False)
+    completed = Case.objects.filter(lawyer=lawyer, closed=True)
     user_form = StaffUpdateForm(request.POST or None, instance=lawyer.user)
     lawyer_form = LawyerForm(request.POST or None, instance=lawyer)
 

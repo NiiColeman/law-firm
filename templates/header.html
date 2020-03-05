@@ -49,7 +49,7 @@
                     </div>
                 </li> -->
 
-                <li class="dropdown notification-list">
+                <!-- <li class="dropdown notification-list">
                     <a class="nav-link dropdown-toggle arrow-none waves-light waves-effect" data-toggle="dropdown"
                         href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <i class="dripicons-bell noti-icon"></i>
@@ -98,7 +98,7 @@
                         </a>
                     </div>
                 </li>
-
+ -->
 
 
 
@@ -234,13 +234,13 @@
 
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
-                                    class="ti-control-record"></i>Completed
+                                    class="ti-control-record"></i>Closed Cases
                                 {% if request.session.completed %}
                                 <span class="badge badge-success float-right mr-2">{{request.session.completed}}</span>
                                 {% endif %}
                             </a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:pending_list' %}"><i
-                                    class="ti-control-record"></i>Pending {% if request.session.pending %}
+                                    class="ti-control-record"></i>Open Cases {% if request.session.pending %}
                                 <span class="badge badge-pink float-right mr-2">{{request.session.pending}}</span>
                                 {% endif %}</a></li>
                         <!-- 
@@ -263,7 +263,7 @@
 
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
-                                    class="ti-control-record"></i>Completed Cases</a></li>
+                                    class="ti-control-record"></i>Closed Cases</a></li>
 
                         <!-- 
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
@@ -479,13 +479,13 @@
 
 
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Clients</span><span
+                    <a href="javascript: void(0);"><i class="ti-link"></i><span>Clients</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'clients:client_list' %}"><i
                                     class="ti-control-record"></i>Client List</a></li>
-                        <!-- <li class="nav-item"><a class="nav-link" href="{% url 'documents:rec_archives' %}"><i
-                                    class="ti-control-record"></i>Records</a></li> -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'clients:cat_list' %}"><i
+                                    class="ti-control-record"></i>CLient Categories</a></li>
 
 
                     </ul>

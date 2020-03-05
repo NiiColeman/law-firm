@@ -51,17 +51,34 @@ Case Details
 
                         </p>
                         <p>Category: {{case.category|title}}</p>
-                        <p>Status: {% if case.status == "Pending" %}
-                            <span class="badge badge-md badge-boxed  badge-soft-success">{{case.status|title}}</span>
+                        <p>Client: {{case.client.name|title}}</p>
 
+                        <p>Status :
+                            {% if case.closed %}
+                            <td> <span class="badge badge-md   badge-soft-success">Closed</span> </td>
                             {% else %}
-                            <span class="badge badge-md badge-boxed  badge-soft-danger">{{case.status|title}}</span>
-
+                            <td> <span class="badge badge-md   badge-soft-danger">Open</span> </td>
                             {% endif %}
                         </p>
 
 
+
+
                         {% if user in users %}
+
+                        {% if case.closed %}
+                        <p> <a href="{% url 'cases:complete_case' case.pk %}" class="btn btn-sm btn-success">Reopen
+                                Case</a></p>
+
+                        {% else %}
+
+                        <p> <a href="{% url 'cases:complete_case' case.pk %}" class="btn btn-sm btn-dark">Close
+                                Case</a>
+                        </p>
+                        {% endif %}
+
+
+
 
 
                         <div class="accordion" id="accordionExample-faq">

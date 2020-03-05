@@ -5,7 +5,7 @@ from .views import (case_detail, add_case, update_case,
                     new_case, archive_list_view, add_to_archives,
                     archive_detail_view, pending_list, completed_list, CaseList, CaseCreateView, CategoryListView,
                     delete_cat, cat_update, cat_add, add_argument, cat_detail, file_list,
-                    delete_files, task_view, task_list_view, completed, delete_task, argument_list, argument_detail, arg_update, arg_delete, case_filter
+                    delete_files, task_view, task_list_view, completed, delete_task, argument_list, argument_detail, arg_update, arg_delete, case_filter, complete_case
 
                     )
 
@@ -66,6 +66,10 @@ urlpatterns = [
          arg_update, name="argument_update"),
     path("cases/<int:pk>/legal_arguments/delete",
          arg_delete, name="argument_delete"),
+
+    path("cases/<int:pk>/case-update-status",
+         complete_case, name="complete_case"),
+
 
 
 

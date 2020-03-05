@@ -11,15 +11,15 @@ from django.db import models
 
 class Role(models.Model):
 
-    CLERK = 1
+    OFFICE_MANAGER = 1
 
     FRONT_DESK = 2
 
     SECRETARY = 3
 
     ROLE_CHOICES = (
-        (CLERK, 'clerk'),
-        (FRONT_DESK, 'front desk'),
+        (OFFICE_MANAGER, 'Office Manager'),
+        (FRONT_DESK, 'Front Desk'),
         (SECRETARY, 'secretary'),
 
     )

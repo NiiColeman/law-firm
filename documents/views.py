@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .models import DocumentRecord, DocumentRecord, DocumentStatus, Document, DocumentArchive, DocumentRecord, RequestArchive
+from .models import DocumentRecord, DocumentRecord, DocumentStatus, Document, DocumentArchive, DocumentRecord, RequestArchive, DocFile
 # Create your views here.
 from django.contrib import messages
-from .forms import DocumentForm, RequestDocumentForm, DocumentRecordForm
+from .forms import DocumentForm, RequestDocumentForm, DocumentRecordForm, DocFileForm
 from lawyers.models import User, Lawyer, OtherStaff
 from accounts.decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # from datetime import datetime, timedelta, timezone
 from django.utils import timezone
 from cases.tasks import notify_staff, notify_approve
+from django.utils.crypto import get_random_string
 
 
 @login_required
@@ -33,10 +34,14 @@ def document_list(request):
 def document_detail(request, pk):
     doc = get_object_or_404(Document, pk=pk)
     form = DocumentForm(request.POST or None, instance=doc)
+    files = DocFile.objects.filter(document=doc)
+    file_form = DocFileForm(request.POST or None, request.FILES or None)
 
     context = {
         'doc': doc,
-        'form': form
+        'form': form,
+        'files': files,
+        'file_form': file_form
     }
     return render(request, 'documents/doc_detail.html', context)
 
@@ -378,3 +383,54 @@ def get_request_archive(doc):
         return qs
     else:
         return None
+
+
+def upload_files(request, pk):
+    doc = get_object_or_404(Document, pk=pk)
+
+    if request.method == "POST":
+
+        file_form = DocFileForm(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist('file')
+        if file_form.is_valid():
+            for f in files:
+                unique_id = get_random_string(length=2)
+                case_title = "{}".format(f.name)
+                new_files = DocFile.objects.create(
+                    document=doc, file_name=case_title, file=f)
+                print(f.name)
+                print(new_files)
+
+            messages.success(request, "Files have been added")
+            return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.pk]))
+
+        else:
+                # return HttpResponseRedirect('')
+            messages.error(
+                request, "Failed to add Files, please check your form")
+            return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.pk]))
+
+    else:
+        file_form = DocFileForm()
+        return render(request, "documents/doc_detail.html", {'file_form': file_form})
+
+
+
+ 
+def delete_file(request,pk):
+    file=get_object_or_404(DocFile,pk=pk)
+    doc=file.document
+
+    if file:
+        file.delete()
+        messages.success(request,"file has been deleted")
+        return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.pk] ))
+    else:
+        messages.error(request,"file could not deleted")
+
+
+    return render(request,"documents/doc_detail.html")
+
+        
+    
+        

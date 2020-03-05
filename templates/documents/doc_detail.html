@@ -2,6 +2,9 @@
 
 {% load static %}
 
+{% load crispy_forms_tags %}
+
+{% load auth_extras %}
 {% block title %}
 Document Details
 {% endblock title %}
@@ -52,6 +55,7 @@ Document Details
 
                         </p>
                         <p>Category: {{doc.category|title}}</p>
+                        <p>Case: {{doc.case|title}}</p>
                         <p>Status: {% if doc.status == "Pending" %}
                             <span class="badge badge-md badge-boxed  badge-soft-">{{doc.status|title}}</span>
 
@@ -84,13 +88,13 @@ Document Details
                                     </div>
                                 </div>
 
-                                <!-- <div class="card shadow-none border mb-1">
+                                <div class="card shadow-none border mb-1">
                                     <div class="card-header" id="headingThree">
                                         <h5 class="my-0">
                                             <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
                                                 data-toggle="collapse" data-target="#collapseThree"
                                                 aria-expanded="false" aria-controls="collapseThree">
-                                                Attachments
+                                                Files
                                             </button>
                                         </h5>
                                     </div>
@@ -99,23 +103,78 @@ Document Details
 
 
                                         <div class="card-body">
-                                            <div class="file-box-content">
-                                                <div class="file-box">
-                                                    <a href="{{doc.attachments.url}}" class="download-icon-link">
-                                                        <i class="dripicons-download file-download-icon"></i>
-                                                    </a>
-                                                    <div class="text-center">
-                                                        <i class="far fa-file-alt text-primary"></i>
-                                                        <h6 class="text-truncate">{{doc.attachments}}</h6>
+                                            <div class="table-responsive dash-social">
+                                                <table id="datatable" class="table">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>File Name</th>
+                                                            <th>Date Aded</th>
+                                                            <th>Action</th>
+                                                            <th>&nbsp; &nbsp;</th>
+                                                        </tr>
+                                                    </thead>
 
-                                                    </div>
-                                                </div>
 
+                                                    <!-- load -->
+
+
+                                                    <tbody>
+
+                                                        {% for file in  files  %}
+                                                        <tr>
+                                                            <td>
+                                                                {{forloop.counter}}
+
+                                                            <td>{{file.file_name|title}}</td>
+
+
+
+
+                                                            <td> {{file.timestamp}}</td>
+
+
+
+                                                            {% if request.user|has_group:"Lawyer" %}
+                                                            <td>
+
+                                                                <a href="{{file.file.url}}"
+                                                                    class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                                        class="dripicons-download file-download-icon"></i>Download</a>
+
+
+                                                            </td>
+                                                            {% endif %}
+                                                            <td>
+                                                                <a href="{% url 'documents:delete_files' file.pk %}"
+                                                                    class="btn btn-danger">Delete</a>
+                                                            </td>
+
+                                                        </tr>
+
+
+
+                                                        {% endfor %}
+
+
+
+                                                        <!--end tr-->
+
+
+
+
+                                                    </tbody>
+                                                </table>
                                             </div>
+
+
+
+
+
                                         </div>
 
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
 
 
@@ -139,14 +198,52 @@ Document Details
                         <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>
 
-
+                        {% if user.is_authenticated %}
+                        {% if user.is_superuser %}
                         <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center">Delete</button>
+                        {% endif %}
+
+                        {% endif %}
+
 
                     </div>
                     <!--end card-body-->
                 </div>
+
+
+
                 <!--end card-->
+
+
+
+
+
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal"
+                            data-animation="bounce" data-target=".bs-example-modal-sm">Upload Files</button>
+
+
+
+
+
+
+
+
+                    </div>
+                    <!--end card-body-->
+
+
+                    <!-- <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal"
+            data-animation="bounce" data-target=".bs-example-modal-center">Upload Case Files</button> -->
+
+
+                </div>
+
+
             </div>
 
 
@@ -198,8 +295,42 @@ Document Details
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
+
+
+
+
+
             </div>
 
         </div>
+    </div>
+
+
+
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="mySmallModalLabel">Add Files</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="{% url 'documents:upload_files' doc.pk %}" method="post"
+                        enctype="multipart/form-data">
+
+                        {% csrf_token %}
+                        {{ file_form|crispy }}
+
+
+                        <button type="submit" class="btn btn-primary">Upload Files</button>
+                    </form>
+
+
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
     {% endblock content %}

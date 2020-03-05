@@ -69,6 +69,7 @@ class Case(models.Model):
     status = models.ForeignKey(
         Status, default=DEFAULT_STATUS_ID, on_delete=models.CASCADE)
     court = models.CharField(default='District Court', max_length=250)
+    closed=models.BooleanField(default=False)
     # attachments = models.ForeignKey(
     #     Attachment, null=True, on_delete=models.SET_NULL)
 

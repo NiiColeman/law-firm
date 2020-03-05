@@ -1,4 +1,4 @@
-<form action="{{doc.get_update_url}}" method="post">
+<form action="{{doc.get_update_url}}" method="post" enctype="multipart/form-data">
 
 
     {% include 'documents/snippets/form.html' with form=form %}

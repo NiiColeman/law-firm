@@ -41,11 +41,9 @@ def pending_list(request):
 
     # completed_cases = Case.objects.select_related('status').filter(status__title == "Complete")
     # pending_cases = Case.objects.select_related('status').filter(status__title == "Pending")
-    pending = Case.objects.select_related(
-        'status').filter(status__title="Pending")
-
+    pending = Case.objects.filter(closed=False)
     request.session['pending'] = pending.count()
-    print(pending)
+    # print(pending)
 
     context = {
 
@@ -61,11 +59,9 @@ def pending_list(request):
 def completed_list(request):
     form = CaseForms()
 
-    completed = Case.objects.select_related(
-        'status').filter(status__title="Complete")
-    # pending=Case.objects.select_related('status').filter(status__title="Pending")
+    completed = Case.objects.filter(closed=True)
     request.session['completed'] = completed.count()
-    print(completed)
+    # print(completed)
 
     context = {
 
@@ -738,3 +734,23 @@ def case_filter(request):
     return render(request, 'cases/filter.html', {'filter': f})
 
 
+
+
+def complete_case(request,pk):
+    case=get_object_or_404(Case,pk=pk)
+
+    if case.closed:
+        case.closed=False
+        case.save()
+        messages.success(request,"case has been reopened")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk] ))
+
+    else:
+        case.closed=True
+        case.save()
+        messages.success(request,"case has been closed")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk] ))
+
+    return render(request,"cases/case_detail.html")
+
+        

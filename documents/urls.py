@@ -3,7 +3,7 @@ from .views import (document_detail, document_list, record_detail, record_list, 
                     add_document, record_list,
                     document_request,
                     document_request_list,
-                    document_delete_view, request_doc, record_update, record_delete, approve_request, document_archive_list, record_archive_list
+                    document_delete_view, request_doc, record_update, record_delete, approve_request, document_archive_list, record_archive_list, upload_files, delete_file
 
                     )
 
@@ -38,6 +38,11 @@ urlpatterns = [
 
     path("doccuments/archives", document_archive_list, name="doc_archives"),
     path("doccuments/record-archives", record_archive_list, name="rec_archives"),
+    path("documents/files/<int:pk>/add-files",
+         upload_files, name="upload_files"),
+    path("documents/files/<int:pk>/delete-files",
+         delete_file, name="delete_files")
+
 
 
 

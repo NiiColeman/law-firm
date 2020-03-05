@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+
+
+
+{% block content %}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Sk Boafo Co.</a></li>
+
+                            <li class="breadcrumb-item"><a href="{% url 'clients:client_list' %}">Client List</a></li>
+                            <li class="breadcrumb-item active">Client Details</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Client Details</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+
+
+        {% include 'messages/messages.html' %}
+        <div class="row">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body  met-pro-bg">
+                        <div class="met-profile">
+                            <div class="row">
+                                <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                                    <div class="met-profile-main">
+
+                                        <div class="met-profile_user-detail">
+                                            <h5 class="met-user-name">{{client.name|title}}</h5>
+                                            <p class="mb-0 met-user-name-post">{{client.category.title|title}}
+
+                                            </p>
+                                            <p><button class="mr-1 btn btn-sm btn-info" data-toggle="modal"
+                                                    data-animation="bounce" data-target=".bs-example-modal-lg"><i
+                                                        class="fas fa-pen"></i></button>
+                                                <button class="btn btn-sm btn-danger" data-toggle="modal"
+                                                    data-animation="bounce" data-target=".bs-example-modal-sm"><i
+                                                        class="far fa-trash-alt"></i></button></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-4 ml-auto">
+                                    <ul class="list-unstyled personal-detail">
+                                        <li class=""><i class="dripicons-phone mr-2 text-info font-18"></i> <b> phone
+                                            </b> : {{client.phone}}</li>
+                                        <li class="mt-2"><i class="dripicons-mail text-info font-18 mt-2 mr-2"></i> <b>
+                                                Email </b> :{{client.email}}</li>
+                                        <li class="mt-2"><i class="dripicons-map text-info font-18 mt-2 mr-2"></i> <b>
+                                                Address </b> :{{client.address|title}}</li>
+                                        <!-- <li class="mt-2"><i class="dripicons-location text-info font-18 mt-2 mr-2"></i> <b>Location</b> : USA</li> -->
+                                        <li class="mt-2"><i class="dripicons-user text-info font-18 mt-2 mr-2"></i>
+                                            <b>
+                                                Added By</b> :{{client.added_by.first_name|title}}
+                                            {{client.added_by.last_name|title}}</li>
+                                    </ul>
+
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </div>
+                        <!--end f_profile-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- <button type="button" class="btn btn-gradient-primary waves-effect waves-light float-right mb-3"
+                            data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg">+ Add
+                            New</button> -->
+                        <h4 class="header-title mt-0 mb-3">All Associated Cases</h4>
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Case Title</th>
+                                        <th>Category</th>
+
+                                        <th>Status</th>
+                                        <th>Date Added</th>
+                                        <th>Added By</th>
+                                        <th>client</th>
+
+
+
+                                        <th>Action</th>
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+
+
+                                {% load auth_extras %}
+                                <tbody>
+
+                                    {% for case  in  client_cases %}
+                                    <tr>
+                                        <td>
+                                            {{case.name|title}}
+
+                                        <td>{{case.category|title}}</td>
+
+
+                                        {% if case.closed %}
+                                        <td> <span class="badge badge-md   badge-soft-successr">Closed</span> </td>
+                                        {% else %}
+                                        <td> <span class="badge badge-md   badge-soft-danger">Open</span> </td>
+                                        {% endif %}
+
+
+                                        <td> {{case.date_added}} | {{case.date_added|timesince}} Ago</td>
+                                        <td>{{case.added_by|title}}</td>
+                                        <td>{{case.client.name|title}}</td>
+
+
+                                        {% if request.user|has_group:"Lawyer" %}
+                                        <td>
+
+                                            <a href="{{case.get_absolute_url}}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                    class="mdi mdi-eye"></i></a>
+
+
+                                        </td>
+                                        {% elif request.user|has_group:"FrontDesk" %}
+                                        <td>
+
+                                            <a href="{% url 'cases:archive_new' case.pk %}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light">Archive
+                                                Case</a>
+
+
+                                        </td>
+                                        {% endif %}
+
+                                    </tr>
+
+
+
+                                    {% endfor %}
+
+
+                                    <!--end tr-->
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div><!-- container -->
+    <!--  Modal content for the above example -->
+
+
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Update Client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{client.get_update_url}}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        {{form.errors}}
+
+                        <button type="submit" class="btn btn-secondary">Update Client</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="mySmallModalLabel">Delete Client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{client.get_delete_url}}" method="POST">
+                        {% csrf_token %}
+                        <p>Are you sure you want to delete {{client.name|title}} ?</p>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+    {% endblock content %}

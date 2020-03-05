@@ -1,6 +1,10 @@
 <tbody>
 
     {% for doc  in  docs %}
+
+
+
+    {% if doc.case.closed or doc.case == None %}
     <tr>
         <td>
             {{doc.title|title}}
@@ -12,6 +16,8 @@
         <td><span class="badge badge-md   badge-soft-danger">{{doc.status}}</span> </td>
         {% else %}
         <td><span class="badge badge-md   badge-soft-success">{{doc.status}}</span> </td>
+
+        <td>{{doc.case|title}}</td>
 
         {% endif %}
 
@@ -42,6 +48,9 @@
             {% endif %}
             {%  endif %}</td>
     </tr>
+
+
+    {% endif %}
 
 
 

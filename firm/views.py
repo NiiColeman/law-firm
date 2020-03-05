@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime, date
 from datetime import datetime, timedelta
 from cases.tasks import notify_user
+from clients.models import Client
 
 
 @login_required
@@ -24,6 +25,11 @@ def index(request):
     document = Document.objects.all()
     user = request.user
 
+    pending = Case.objects.filter(closed=False)
+    request.session['pending'] = pending.count()
+
+    completed = Case.objects.filter(closed=True)
+    request.session['completed'] = completed.count()
     # request.session['other_staff']=Otherstaff.objects.get(user=request.user)
     date_me = datetime.now()+timedelta(15)
     close = CaseTask.objects.filter(
@@ -55,20 +61,21 @@ class FirmChart(APIView):
             'status').filter(status__title='Available')
         not_available = Document.objects.select_related(
             'status').filter(status__title='Not Available')
-        complete = Case.objects.select_related(
-            'status').filter(status__title="Complete")
-        pending = Case.objects.select_related(
-            'status').filter(status__title="Pending")
+        complete = Case.objects.filter(closed=True)
+        pending = Case.objects.filter(closed=False)
+
+        clients = Client.objects.all()
+        client_count = clients.count()
 
         case_count = case.count()
         comp_count = complete.count()
         pend_count = pending.count()
         doc_count = doc.count()
-        default = [case_count, comp_count, pend_count]
+        default = [client_count, case_count, comp_count, pend_count]
         avail_count = available.count()
 
         labels = [
-            'Cases', 'Completed Cases', 'Pending Cases'
+            'Clients', 'Cases', 'Closed Cases', 'Open Cases'
         ]
 
         data2 = [doc_count, available.count(), not_available.count()]

@@ -33,12 +33,11 @@ class CaseForm(forms.ModelForm):
         attrs={'class': 'form-control', 'id': 'date-format'}))
     # lawyer = forms.MultipleChoiceField(widget=forms.SelectMultiple(
     #     attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}), choices=User.objects.all().values_list('id', 'first_name'))
-    lawyer = AutoCompleteSelectMultipleField(
-        'lawyers', required=True, help_text=None)
+   
 
     class Meta:
         model = Case
-        fields = ("name", "description", "category",
+        fields = ("name", "client", "description","lawyer", "category",
                   "status", 'date_added')
 
 
@@ -69,7 +68,7 @@ class CaseForms(forms.ModelForm):
 
     class Meta:
         model = Case
-        fields = ['name', 'description',  'category',
+        fields = ['name', 'client', 'description',  'category',
                   'lawyer', 'status', 'date_added', 'court']
 
 

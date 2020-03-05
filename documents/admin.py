@@ -1,13 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Document, DocumentStatus, DocumentRecord, DocCategory, RequestArchive, DocumentArchive
+from .models import Document, DocumentStatus, DocumentRecord, DocCategory, RequestArchive, DocumentArchive, DocFile
 
 
 admin.site.register(DocCategory)
 
 admin.site.register(DocumentArchive)
 admin.site.register(RequestArchive)
+admin.site.register(DocFile)
 
 
 @admin.register(Document)

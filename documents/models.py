@@ -42,6 +42,9 @@ class DocumentStatus(models.Model):
 
 
 class Document(models.Model):
+    case = models.ForeignKey(
+        "cases.Case", on_delete=models.SET_NULL, null=True)
+
     title = models.CharField(max_length=50, unique=True)
     date_modified = models.DateTimeField(auto_now=True)
     date_added = models.DateTimeField(auto_now=False)
@@ -51,8 +54,8 @@ class Document(models.Model):
     status = models.ForeignKey(
         DocumentStatus, related_name='docstatus', on_delete=models.CASCADE)
     storage_location = models.CharField(max_length=50, default="room 1")
-    shelf_number = models.CharField(max_length = 150, null=True)
-    
+    shelf_number = models.CharField(max_length=150, null=True)
+
     category = models.ForeignKey(
         DocCategory, default=DOC_CATEGORY_ID, on_delete=models.SET_DEFAULT)
 
@@ -78,6 +81,19 @@ class Document(models.Model):
 
     def get_delete_url(self):
         return reverse("documents:document_delete", kwargs={"pk": self.pk})
+
+
+class DocFile(models.Model):
+    file_name = models.CharField(max_length=500)
+    file = models.FileField(upload_to="doc_uploads/")
+    document = models.ForeignKey(Document, null=True, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.file_name
+
+    def get_absolute_url(self):
+        return reverse("documents:file_details", kwargs={"pk": self.pk})
 
 
 class DocumentRecord(models.Model):

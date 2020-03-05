@@ -12,20 +12,20 @@
         <td>{{case.category|title}}</td>
 
 
-        {% if case.status|stringformat:"s" == "Pending" %}
-        <td> <span class="badge badge-md   badge-soft-danger">{{case.status}}</span> </td>
+        {% if case.closed %}
+        <td> <span class="badge badge-md   badge-soft-success">Closed</span> </td>
         {% else %}
-        <td> <span class="badge badge-md   badge-soft-success">{{case.status}}</span> </td>
+        <td> <span class="badge badge-md   badge-soft-danger">Open</span> </td>
         {% endif %}
 
 
         <td> {{case.date_added}} | {{case.date_added|timesince}} Ago</td>
         <td>{{case.added_by|title}}</td>
-        
-        
+
+
         {% if request.user|has_group:"Lawyer" %}
         <td>
-            
+
             <a href="{{case.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
                     class="mdi mdi-eye"></i></a>
 
@@ -33,13 +33,14 @@
         </td>
         {% elif request.user|has_group:"FrontDesk" %}
         <td>
-            
-            <a href="{% url 'cases:archive_new' case.pk %}" class="btn btn-gradient-secondary waves-effect waves-light">Archive Case</a>
+
+            <a href="{% url 'cases:archive_new' case.pk %}"
+                class="btn btn-gradient-secondary waves-effect waves-light">Archive Case</a>
 
 
         </td>
         {% endif %}
-            
+
     </tr>
 
 

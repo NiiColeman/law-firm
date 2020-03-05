@@ -1,5 +1,15 @@
 from django import forms
-from .models import Document, DocumentStatus, DocumentRecord
+from .models import Document, DocumentStatus, DocumentRecord, DocFile
+from cases.models import Case
+
+
+class DocFileForm(forms.ModelForm):
+    file = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    class Meta:
+        model = DocFile
+        fields = ("file",)
 
 
 class DateInput(forms.DateInput):
@@ -13,10 +23,16 @@ class DocumentForm(forms.ModelForm):
     description = forms.CharField(required=True, widget=forms.Textarea(
         attrs={'class': 'form-control'}))
 
+    case = forms.ModelChoiceField(
+        queryset=Case.objects.filter(closed=True), required=False)
+
+    # files = forms.FileField(
+    #     widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
     class Meta:
         model = Document
-        fields = ['title', 'date_added', 'status', 'description',
-                  'category', 'storage_location']
+        fields = ['title', 'case', 'date_added', 'status', 'description',
+                  'category', 'storage_location', ]
 
 
 class DocumentRecordForm(forms.ModelForm):
