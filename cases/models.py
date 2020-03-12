@@ -5,6 +5,25 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 
 
+class Court(models.Model):
+    name = models.CharField(max_length=250)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    """Model definition for Courts."""
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for Courts."""
+
+        verbose_name = 'Courts'
+        verbose_name_plural = 'Courts'
+
+    def __str__(self):
+        """Unicode representation of Courts."""
+        return self.name
+
+
 class Category(models.Model):
     """Model definition for Category."""
     name = models.CharField(max_length=250)
@@ -68,8 +87,9 @@ class Case(models.Model):
     date_added = models.DateTimeField(auto_now=False)
     status = models.ForeignKey(
         Status, default=DEFAULT_STATUS_ID, on_delete=models.CASCADE)
-    court = models.CharField(default='District Court', max_length=250)
-    closed=models.BooleanField(default=False)
+    court = models.ForeignKey(Court, null=True, on_delete=models.SET_NULL)
+    closed = models.BooleanField(default=False)
+    pro_bono = models.BooleanField(default=False)
     # attachments = models.ForeignKey(
     #     Attachment, null=True, on_delete=models.SET_NULL)
 

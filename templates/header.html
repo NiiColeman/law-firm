@@ -231,6 +231,8 @@
                                     class="ti-control-record"></i>Case List</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:cat_list' %}"><i
                                     class="ti-control-record"></i>Case Categrory</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:court_list' %}"><i
+                                    class="ti-control-record"></i>Courts</a></li>
 
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
@@ -306,6 +308,24 @@
                                     class="ti-control-record"></i>Lawyers</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:staff_list' %}"><i
                                     class="ti-control-record"></i>Front Desk</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="../crm/crm-opportunities.html"><i
+                    class="ti-control-record"></i>Opportunities</a></li>
+        <li class="nav-item"><a class="nav-link" href="../crm/crm-leads.html"><i
+                    class="ti-control-record"></i>Leads</a></li>
+        <li class="nav-item"><a class="nav-link" href="../crm/crm-customers.html"><i
+                    class="ti-control-record"></i>Customers</a></li> -->
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if request.user.is_superuser %}
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-user"></i><span>Visitors</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'visitors:visitor_list' %}"><i
+                                    class="ti-control-record"></i>Visitor List</a></li>
+
                         <!-- <li class="nav-item"><a class="nav-link" href="../crm/crm-opportunities.html"><i
                     class="ti-control-record"></i>Opportunities</a></li>
         <li class="nav-item"><a class="nav-link" href="../crm/crm-leads.html"><i

@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import client_create_view, client_delete, client_detail, client_list, client_detail, client_update, cat_delete, cat_detail, category_list, add_cat, update_cat, client_cat
+from .views import (client_create_view, client_delete,
+                    client_detail, client_list,
+                    client_detail, client_update,
+                    cat_delete, cat_detail,
+                    category_list, add_cat,
+                    update_cat,
+                    client_cat,
+
+                    )
 
 
 app_name = 'clients'
@@ -22,6 +30,9 @@ urlpatterns = [
     path("clients/categroy/list", category_list, name="cat_list"),
     path("clients/clients/categroy/<int:pk>/list",
          client_cat, name="client_cat"),
+
+    #     path('')
+
 
 
 

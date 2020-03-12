@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<div class="container">
+
+
+
+
+    <form class="" action="{% url 'schedules:add' %}" method="POST">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="message">Purpose</label>
+                    <textarea class="form-control" name="purpose" rows="5" id="message"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="my-3">Start Date</label>
+                    <input type="datetime-local" class="form-control" name="start_time" placeholder="Start date"
+                        id="date-start">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="my-3">End Date</label>
+                    <input type="datetime-local" class="form-control" name="end_time" placeholder="End date"
+                        id="date-end">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 text-left">
+                <button type="submit" class="btn btn-gradient-primary px-5 py-2">Submit</button>
+            </div>
+        </div>
+    </form>
+
+
+
+
+</div>
+
+{% endblock %}

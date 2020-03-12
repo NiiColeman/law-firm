@@ -1,5 +1,5 @@
 from django import forms
-from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive, LegalArgument
+from .models import Case, Category, Status, CaseTask, CaseFile, CaseArchive, LegalArgument, Court
 from lawyers.models import User, Lawyer
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
@@ -15,7 +15,7 @@ class CaseTaskForm(forms.ModelForm):
 
     class Meta:
         model = CaseTask
-        fields = ("task", "description", "priority_level", "deadline")
+        fields = ("task", "description", "deadline")
 
 
 # choice=User.objects.a
@@ -33,11 +33,10 @@ class CaseForm(forms.ModelForm):
         attrs={'class': 'form-control', 'id': 'date-format'}))
     # lawyer = forms.MultipleChoiceField(widget=forms.SelectMultiple(
     #     attrs={'class': 'form-control select2  select2-multiple', 'multiple': 'multiple', 'data-placeholder': 'Select Lawyer'}), choices=User.objects.all().values_list('id', 'first_name'))
-   
 
     class Meta:
         model = Case
-        fields = ("name", "client", "description","lawyer", "category",
+        fields = ("name", "client", "description", "lawyer", "category",
                   "status", 'date_added')
 
 
@@ -82,3 +81,10 @@ class LegalArgumentForm(forms.ModelForm):
     class Meta:
         model = LegalArgument
         fields = ['argument', 'authorities']
+
+
+class CourtForm(forms.ModelForm):
+
+    class Meta:
+        model = Court
+        fields = ("name",)

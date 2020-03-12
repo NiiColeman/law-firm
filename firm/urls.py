@@ -36,6 +36,11 @@ urlpatterns = [
     path("", include('documents.urls')),
     path("", include('principles.urls')),
     path("", include('clients.urls')),
+    path("", include('schedules.urls')),
+    path("", include('visitors.urls')),
+
+
+
 
 
 

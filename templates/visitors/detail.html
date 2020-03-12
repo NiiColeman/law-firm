@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}
+Visitor Details
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Sk Boafo & Co.</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'visitors:visitor_list'  %}">Visitor Detail</a>
+                            </li>
+                            <li class="breadcrumb-item active">Visitor Details</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Visitors</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="mt-0 header-title text-center">
+                            {{vis.name|title}}
+                        </h2>
+                        <p class="text-muted text-center">{{vis.timestamp}}
+
+                        </p>
+                        <p>Email:{{vis.email}}
+                            <p>Phone:{{vis.phone}}</p>
+                            <p>Address: {{vis.address|title}}</p>
+
+                            <hr>
+                            <h3 class="mt-0 header-title text-center">
+                                Purpose
+                            </h3>
+
+                            <p>{{vis.purpose}}</p>
+
+
+
+
+
+
+
+
+
+
+                            <!-- <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-tviset="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Attachments
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample-faq">
+
+
+                                        <div class="card-body">
+                                            <div class="file-box-content">
+                                                <div class="file-box">
+                                                    <a href="{{vis.attachments.url}}" class="download-icon-link">
+                                                        <i class="dripicons-download file-download-icon"></i>
+                                                    </a>
+                                                    <div class="text-center">
+                                                        <i class="far fa-file-alt text-primary"></i>
+                                                        <h6 class="text-truncate">{{vis.attachments}}</h6>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div> -->
+
+
+
+
+
+                            <!--end row-->
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+
+
+            <div class="col-md-12 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        {% if user.is_superuser or user.is_staff %}
+                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-lg">Edit</button>
+
+
+                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-center">Delete</button>
+                        {% endif %}
+
+
+
+
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+
+
+
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLviseModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0 text text-center" id="myLviseModalLabel">Edit
+                                vis</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+
+
+
+                            <form action="{% url 'visitors:visitor_update' vis.pk %}" method="post">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                                {{form.erorrs}}
+                                <button type="submit" class="btn btn-secondary btn-block">Update</button>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+
+
+
+            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="exampleModalLabel">Delete vis</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>AreYou Sure You Want TO Delete {{vis.title|title}}</p>
+
+                            <a type="submit" href="{% url 'visitors:delete' vis.pk %}" class="btn btn-danger">Delete</a>
+
+
+
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+        </div>
+    </div>
+    {% endblock content %}

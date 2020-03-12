@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Case, Category, Status, CaseTask, Appointment, CaseFile, LegalArgument
+from .models import Case, Category, Status, CaseTask, Appointment, CaseFile, LegalArgument, Court
 from lawyers.models import Lawyer, OtherStaff, User
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from .forms import CaseForm, CaseTaskForm, CaseFileForm, CaseArchiveForm, CaseForms, CategoryForm, LegalArgumentForm
+from .forms import CaseForm, CaseTaskForm, CaseFileForm, CaseArchiveForm, CaseForms, CategoryForm, LegalArgumentForm, CourtForm
 from django.urls import reverse
 from accounts.decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
@@ -17,6 +17,9 @@ from django.utils.crypto import get_random_string
 from .tasks import notify_user
 from django.core.paginator import Paginator
 from .filters import CaseFilter
+from datetime import datetime, timedelta
+from django.utils import timezone
+
 # @login_required
 # def case_list(request):
 #     form = CaseForm()
@@ -206,12 +209,25 @@ def add_task(request, pk):
             lawyers = case.lawyer.all()
             print(lawyers)
 
+            days = task_form.instance.deadline-timezone.now()
+            # print("{}".format(days.days))
+            check = int(days.days)
+            print('{} days'.format(check))
+
             for l in lawyers:
                 msg1 = "NEW TASK : {} !!".format(task_form.instance.task)
                 msg2 = "Dear {}, you have a task scheduled for {}.Remember to check your mail for further notifcations".format(
                     l.user,  task_form.instance.deadline)
-                notify_user(msg1, msg2, l.user.id, repeat=300,
-                            repeat_until=task_form.instance.deadline)
+
+                if check >= 28:
+                    notify_user(msg1, msg2, l.user.id, repeat=432000,
+                                repeat_until=task_form.instance.deadline)
+                elif check > 6 and check < 15:
+                    notify_user(msg1, msg2, l.user.id, repeat=259200,
+                                repeat_until=task_form.instance.deadline)
+                else:
+                    notify_user(msg1, msg2, l.user.id, repeat=129600,
+                                repeat_until=task_form.instance.deadline)
 
             messages.success(request, "Task has been added")
             return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
@@ -734,23 +750,97 @@ def case_filter(request):
     return render(request, 'cases/filter.html', {'filter': f})
 
 
-
-
-def complete_case(request,pk):
-    case=get_object_or_404(Case,pk=pk)
+def complete_case(request, pk):
+    case = get_object_or_404(Case, pk=pk)
 
     if case.closed:
-        case.closed=False
+        case.closed = False
         case.save()
-        messages.success(request,"case has been reopened")
-        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk] ))
+        messages.success(request, "case has been reopened")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
 
     else:
-        case.closed=True
+        case.closed = True
         case.save()
-        messages.success(request,"case has been closed")
-        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk] ))
+        messages.success(request, "case has been closed")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
 
-    return render(request,"cases/case_detail.html")
+    return render(request, "cases/case_detail.html")
 
-        
+
+def court_list(request):
+    courts = Court.objects.all()
+    form = CourtForm
+
+    context = {
+        'courts': courts,
+        'form': form
+    }
+    return render(request, 'cases/courts/court_list.html', context)
+
+
+def court_detail(request, pk):
+    court = get_object_or_404(Court, pk=pk)
+
+    context = {
+        'court': court,
+        'form': CourtForm(request.POST or None, instance=court)
+    }
+
+    return render(request, 'cases/courts/court_detail.html', context)
+
+
+def add_court(request):
+    if request.method == "POST":
+        form = CourtForm(request.POST or None)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "court has been added")
+            return redirect('cases:court_list')
+    else:
+        form = CourtForm()
+
+    return render(request, 'cases/courts/courts_list.html', {'form': form})
+
+
+def update_court(request, pk):
+    court = get_object_or_404(Court, pk=pk)
+
+    if request.method == "POST":
+        form = CourtForm(request.POST or None, instance=court)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "court has been updated")
+            return HttpResponseRedirect(reverse('cases:court_detail', args=[court.pk]))
+        else:
+            messages.error(request, "court could not updated")
+            return HttpResponseRedirect(reverse('cases:court_detail', args=[court.pk]))
+    else:
+        form = CourtForm()
+
+    return render(request, "cases/courts/court_detail.html", {'form': form})
+
+
+def court_delete(request, pk):
+    court = get_object_or_404(Court, pk=pk)
+    if request.method == "POST":
+        court.delete()
+        messages.success(request, "court has been deleted")
+        return redirect('cases:court_list')
+    else:
+        messages.error(request, "court could not deleted")
+        return HttpResponseRedirect(reverse('cases:court_detail', args=[cat.pk]))
+
+    return render(request, 'cases/courts/court_detail.html')
+
+
+def case_court(request, pk):
+    court = get_object_or_404(Court, pk=pk)
+    courts = Client.objects.filter(category=cat)
+
+    context = {
+        'court_list': courts
+    }
+
+    return render(request, 'cases/case_list_view.html', context)

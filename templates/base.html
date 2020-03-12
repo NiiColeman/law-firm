@@ -16,6 +16,10 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{% static './assets/images/favicon.ico' %} ">
 
+    {% block extra_head %}
+
+    {% endblock extra_head %}
+
     <!-- DataTables -->
     <link href="{% static './assets/plugins/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="
         text/css" />
@@ -38,6 +42,8 @@
 
     <!-- App css -->
     <link href="{% static './assets/css/bootstrap.min.css' %} " rel="stylesheet" type="text/css" />
+    <link href="{% static './assets/css/bootstrap-datetimepicker.min.css' %} " rel="stylesheet" type="text/css" />
+
     <link href="{% static './assets/css/icons.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static './assets/css/metisMenu.min.css' %} " rel="stylesheet" type="text/css" />
     <link href="{% static './assets/css/style.css' %} " rel="stylesheet" type="text/css" />

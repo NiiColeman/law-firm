@@ -25,9 +25,9 @@ SECRET_KEY = 'el4*ad0)o)u6tq@(mkvi*b%h(-z&9lx=6os%ud@%8aw&d-a4r5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.8.119']
+# ALLOWED_HOSTS = ['192.168.8.119']
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework', 'timezone_field',
     'django_forms_bootstrap', 'django_select2',
-    'principles', 'background_task', 'django_filters', 'widget_tweaks', 'clients', 'ajax_select'
+    'principles', 'background_task', 'django_filters', 'widget_tweaks', 'clients', 'ajax_select', 'schedules', 'visitors', 'import_export',
 ]
 
 MIDDLEWARE = [
@@ -149,16 +149,27 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
 
+#
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com.'  # mail service smtp
-EMAIL_HOST_USER = 'nii.cole@outlook.com'
-DEFAULT_FROM_EMAIL = 'nii.cole@outlook.com'
-EMAIL_FROM = 'nii.cole@outlook.com'  # email id
-EMAIL_HOST_PASSWORD = 'coleman0'  # password
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp-mail.outlook.com.'  # mail service smtp
+# EMAIL_HOST_USER = 'skboafoandco@outlook.com'
+# DEFAULT_FROM_EMAIL = 'skboafoandco@outlook.com'
+# EMAIL_FROM = 'skboafoandco@outlook.com'  # email id
+# EMAIL_HOST_PASSWORD = 'Mangafox123'  # password
+# EMAIL_PORT = 587
+# # EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "skboafoaandcodmin@gmail.com"
+EMAIL_HOST_PASSWORD = "hydration"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+DEFAULT_FROM_EMAIL = "skboafoaandcodmin@gmail.com"
 
 
 # # Twilio API
@@ -183,3 +194,6 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 #         "django_dramatiq.middleware.DbConnectionsMiddleware",
 #     ]
 # }
+
+
+BACKGROUND_TASK_RUN_ASYNC = True

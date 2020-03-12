@@ -5,7 +5,8 @@ from .views import (case_detail, add_case, update_case,
                     new_case, archive_list_view, add_to_archives,
                     archive_detail_view, pending_list, completed_list, CaseList, CaseCreateView, CategoryListView,
                     delete_cat, cat_update, cat_add, add_argument, cat_detail, file_list,
-                    delete_files, task_view, task_list_view, completed, delete_task, argument_list, argument_detail, arg_update, arg_delete, case_filter, complete_case
+                    delete_files, task_view, task_list_view, completed, delete_task, argument_list, argument_detail, arg_update, arg_delete, case_filter, complete_case,
+                    court_list, add_court, court_detail, update_court, court_delete,
 
                     )
 
@@ -69,6 +70,20 @@ urlpatterns = [
 
     path("cases/<int:pk>/case-update-status",
          complete_case, name="complete_case"),
+
+    path('cases/courts/list', court_list, name='court_list'),
+    path('cases/courts/<int:pk>/court-detail',
+         court_detail, name="court_detail"),
+    path('cases/courts/<int:pk>/court-update',
+         update_court, name="court_update"),
+    path('cases/courts/add', add_court, name="court_add"),
+    path('cases/courts/<int:pk>/court-delete',
+         court_delete, name="court_delete"),
+
+
+
+
+
 
 
 

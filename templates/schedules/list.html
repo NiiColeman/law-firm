@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+Schedule List
+
+
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Sk Boafo & Co.</a></li>
+
+                            </li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                            data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Book
+                            Conference Room</button>
+
+                        <h4 class="mt-0 header-title"></h4>
+
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>Name</th>
+                                        <th>Purpose</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+
+
+                                    </tr>
+                                </thead>
+
+
+                                <!-- load -->
+
+
+                                <tbody>
+
+                                    {% for sch in  schedule_list %}
+                                    <tr>
+
+
+                                        <td> <a href="">{{sch.user.first_name|title}} {{sch.user.last_name|title}}</a>
+                                        </td>
+                                        <td>{{sch.purpose|title}}</td>
+                                        <td>{{sch.start_time}}</td>
+                                        <td>{{sch.end_time}}</td>
+
+
+                                        {% if sch.expired %}
+                                        <td><span class="badge badge-md   badge-soft-danger"> <i class="ti-close"></i>
+                                            </span></td>
+                                        {% else %}
+                                        <td><span class="badge badge-md   badge-soft-success"> <i
+                                                    class="ti-check-box"></i> </span></td>
+                                        {% endif %}
+
+
+                                        <td>
+
+                                            {% if user == sch.user %}
+                                            <a href="{% url 'schedules:delete' sch.pk %}"
+                                                class="btn btn-danger">Delete</a>
+                                            {% endif %}
+
+                                        </td>
+
+
+
+
+
+
+
+
+
+
+                                    </tr>
+
+
+
+                                    {% endfor %}
+
+
+
+                                    <!--end tr-->
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- sample modal content -->
+                    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+
+
+
+                                    <form class="" action="{% url 'schedules:add' %}" method="POST">
+                                        {% csrf_token %}
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="message">Purpose</label>
+                                                    <textarea class="form-control" name="purpose" rows="5"
+                                                        id="message"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="my-3">Start Date</label>
+                                                    <input type="datetime-local" class="form-control" name="start_time"
+                                                        placeholder="Start date" id="date-start">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="my-3">End Date</label>
+                                                    <input type="datetime-local" class="form-control" name="end_time"
+                                                        placeholder="End date" id="date-end">
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12 text-left">
+                                                <button type="submit"
+                                                    class="btn btn-gradient-primary px-5 py-2">Submit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    {% endblock content %}

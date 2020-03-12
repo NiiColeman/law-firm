@@ -121,6 +121,8 @@ Document List
 
 
                         <div class="accordion" id="accordionExample-faq">
+                            {% if user|has_group:"FrontDesk" %}
+
                             <div class="card shadow-none border mb-1">
                                 <div class="card-header" id="headingOne">
                                     <h5 class="my-0">
@@ -138,7 +140,9 @@ Document List
                                         {% include 'records/request.html' %}
                                     </div>
                                 </div>
+
                             </div>
+                            {% endif %}
                             <div class="card shadow-none border mb-1">
                                 <div class="card-header" id="headingTwo">
                                     <h5 class="my-0">

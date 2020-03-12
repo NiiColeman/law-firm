@@ -62,9 +62,15 @@
 
                             </div>
                             <div class="action-btn">
+                                {% if user.is_superuser %}
                                 <button class="mr-1 btn btn-sm btn-info" data-toggle="modal" data-animation="bounce"
                                     data-target=".bs-example-modal-lg"><i class="fas fa-pen"></i></button>
-                                <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button>
+                                <!-- <button class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button> -->
+                                <button class="btn btn-sm btn-danger" data-toggle="modal" data-animation="bounce"
+                                    data-target=".bs-example-modal-sm"><i class="far fa-trash-alt"></i></button>
+                                {% endif %}
+
+
                             </div>
                         </div>
                     </div>
@@ -322,4 +328,26 @@
         </div><!-- /.modal-dialog -->
     </div>
 
+
+
+
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="mySmallModalLabel">Delete User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'accounts:delete_staff' staff.pk %}" method="POST">
+                        {% csrf_token %}
+                        <p>Are you sure you want to delete {{staff.user.first_name}} {{staff.user.last_name}} ?</p>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     {% endblock content %}

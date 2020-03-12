@@ -331,11 +331,11 @@ def approve_request(request, pk):
         request, '{} has been approved'.format(rec.document.title))
 
     archive = RequestArchive.objects.create(document=rec.document.title, description=rec.document.description, date_added=rec.document.date_added,
-                                            date_requested=rec.date_requested, approved_by=request.user, date_approved=timezone.now(), requested_by=rec.requeted_by)
+                                            date_requested=rec.date_requested, approved_by=request.user, date_approved=timezone.now(), requested_by=rec.requested_by)
     print(archive)
-    msg2 = " Dear {} , your reqeust for {} has been approved."
+    msg2 = "Dear {} , your reqeust for {} has been approved."
     msg1 = "Request Approved!"
-    notify_approve(request.user, msg1, msg2)
+    notify_approve(rec.requested_by.user.id, msg1, msg2)
     return redirect('documents:record_list')
 
 
@@ -415,22 +415,15 @@ def upload_files(request, pk):
         return render(request, "documents/doc_detail.html", {'file_form': file_form})
 
 
-
- 
-def delete_file(request,pk):
-    file=get_object_or_404(DocFile,pk=pk)
-    doc=file.document
+def delete_file(request, pk):
+    file = get_object_or_404(DocFile, pk=pk)
+    doc = file.document
 
     if file:
         file.delete()
-        messages.success(request,"file has been deleted")
-        return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.pk] ))
+        messages.success(request, "file has been deleted")
+        return HttpResponseRedirect(reverse('documents:document_detail', args=[doc.pk]))
     else:
-        messages.error(request,"file could not deleted")
+        messages.error(request, "file could not deleted")
 
-
-    return render(request,"documents/doc_detail.html")
-
-        
-    
-        
+    return render(request, "documents/doc_detail.html")

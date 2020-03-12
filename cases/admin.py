@@ -1,3 +1,5 @@
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
 from django.contrib import admin
 
 # Register your models here.
@@ -14,17 +16,19 @@ admin.site.register(LegalArgument)
 
 
 @admin.register(Case)
-class CaseAdmin(admin.ModelAdmin):
+class CaseAdmin(ImportExportModelAdmin):
     '''Admin View for Case'''
 
-    # list_display = ('',)
-    # list_filter = ('',)
+    list_display = ('name', 'category', 'court',
+                    'date_added', 'added_by', 'closed')
+    list_filter = ('category', 'court', 'closed', 'date_updated')
     # inlines = [
     #     Inline,
     # ]
     # raw_id_fields = ('',)
     # readonly_fields = ('',)
-    # search_fields = ('',)
+    search_fields = ('name', 'description', 'category__name',
+                     'lawyer__user__username', 'lawyer__user__first_name', 'lawyer__user__last_name')
     # date_hierarchy = ''
     # ordering = ('',)
 
