@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
+{% block title %}
+Staff List
+{% endblock title %}
 
 {% block content %}
 
@@ -18,10 +20,10 @@
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Sk Boafo Co.</a></li>
 
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Users</a></li>
-                            <li class="breadcrumb-item active">Staff</li>
+                            <li class="breadcrumb-item active">Other Staff</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Contacts</h4>
+                    <h4 class="page-title"></h4>
                 </div>
                 <!--end page-title-box-->
             </div>
@@ -38,7 +40,7 @@
                         <button class="btn btn-gradient-primary px-4 btn-rounded float-right mt-0 mb-3"
                             data-toggle="modal" data-animation="bounce" data-target=".bs-example-modal-lg">+ Add
                             New</button>
-                        <h4 class="header-title mt-0">Contacts Details</h4>
+                        <h4 class="header-title mt-0">Staff</h4>
                         <div class="table-responsive dash-social">
                             <table id="datatable" class="table">
                                 <thead>
@@ -71,7 +73,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
+                            <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         </div>
                         <div class="modal-body">

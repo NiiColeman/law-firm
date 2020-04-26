@@ -445,7 +445,7 @@ Case Details
                 <div class="card">
                     <div class="card-body center">
 
-                        {% if request.user.is_superuser %}
+
 
                         <h5 class="pro-title text text-center">ACTIONS</h5>
                         <button class="btn btn-primary  btn-lg btn-block" data-toggle="modal"
@@ -453,7 +453,7 @@ Case Details
                             Edit
                         </button>
 
-
+ {% if user.is_superuser %}
                         <button class="btn btn-danger  btn-lg btn-block" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center"> Delete </button>
                         {% endif %}

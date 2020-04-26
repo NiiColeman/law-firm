@@ -31,14 +31,7 @@
 
 
         </td>
-        {% elif request.user|has_group:"FrontDesk" %}
-        <td>
 
-            <a href="{% url 'cases:archive_new' case.pk %}"
-                class="btn btn-gradient-secondary waves-effect waves-light">Archive Case</a>
-
-
-        </td>
         {% endif %}
 
     </tr>

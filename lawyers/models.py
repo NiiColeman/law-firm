@@ -48,7 +48,7 @@ class LawyerStatus(models.Model):
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True, default='avatars/avatar.jpg')
     phone = models.CharField(default="024 412 3456", max_length=50)
 
     is_lawyer = models.BooleanField(default=False)

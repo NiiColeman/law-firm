@@ -7,8 +7,11 @@ from .forms import ClientForm, ClientCategoryForm
 from .models import Client, ClientCategory
 from django.contrib import messages
 from cases.models import Case
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required
 def client_create_view(request):
 
     if request.method == "POST":
@@ -32,7 +35,7 @@ def client_create_view(request):
 
     return render(request, 'clients/client_list.html', {'form': form})
 
-
+@login_required
 def client_list(request):
     client_list = Client.objects.all()
     form = ClientForm(request.POST or None)
@@ -44,7 +47,7 @@ def client_list(request):
 
     return render(request, 'clients/client_list.html', context)
 
-
+@login_required
 def client_detail(request, pk):
     client = get_object_or_404(Client, pk=pk)
     form = ClientForm(request.POST or None, instance=client)
@@ -59,7 +62,7 @@ def client_detail(request, pk):
 
     return render(request, "clients/client_detail.html", context)
 
-
+@login_required
 def client_update(request, pk):
     client = get_object_or_404(Client, pk=pk)
 
@@ -78,7 +81,7 @@ def client_update(request, pk):
 
     return render(request, 'clients/client_detail.html', {'form': form})
 
-
+@login_required
 def client_delete(request, pk):
     client = get_object_or_404(Client, pk=pk)
 
@@ -89,7 +92,7 @@ def client_delete(request, pk):
 
     return render(request, 'clients/clients_detail.html')
 
-
+@login_required
 def category_list(request):
     cats = ClientCategory.objects.all()
     form = ClientCategoryForm
@@ -100,7 +103,7 @@ def category_list(request):
     }
     return render(request, 'clients/cat_list.html', context)
 
-
+@login_required
 def cat_detail(request, pk):
     cat = get_object_or_404(ClientCategory, pk=pk)
 
@@ -108,10 +111,10 @@ def cat_detail(request, pk):
         'cat': cat,
         'form': ClientCategoryForm(request.POST or None, instance=cat)
     }
-    
+
     return render(request, 'clients/cat_detail.html', context)
 
-
+@login_required
 def add_cat(request):
     if request.method == "POST":
         form = ClientCategoryForm(request.POST or None)
@@ -125,7 +128,7 @@ def add_cat(request):
 
     return render(request, 'clients/cat_list.html', {'form': form})
 
-
+@login_required
 def update_cat(request, pk):
     cat = get_object_or_404(ClientCategory, pk=pk)
 
@@ -143,7 +146,7 @@ def update_cat(request, pk):
 
     return render(request, "clients/cat_detail.html", {'form': form})
 
-
+@login_required
 def cat_delete(request, pk):
     cat = get_object_or_404(ClientCategory, pk=pk)
     if request.method == "POST":
@@ -156,7 +159,7 @@ def cat_delete(request, pk):
 
     return render(request, 'clients/cat_detail.html')
 
-
+@login_required
 def client_cat(request, pk):
     cat = get_object_or_404(ClientCategory, pk=pk)
     client = Client.objects.filter(category=cat)

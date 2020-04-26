@@ -356,7 +356,7 @@ def get_document_archive(doc):
     else:
         return None
 
-
+@login_required
 def document_archive_list(request):
     archives = DocumentArchive.objects.all()
 
@@ -366,7 +366,7 @@ def document_archive_list(request):
 
     return render(request, 'documents/archive_list.html', context)
 
-
+@login_required
 def record_archive_list(request):
     records = RequestArchive.objects.all()
 
@@ -384,7 +384,7 @@ def get_request_archive(doc):
     else:
         return None
 
-
+@login_required
 def upload_files(request, pk):
     doc = get_object_or_404(Document, pk=pk)
 
@@ -414,7 +414,7 @@ def upload_files(request, pk):
         file_form = DocFileForm()
         return render(request, "documents/doc_detail.html", {'file_form': file_form})
 
-
+@login_required
 def delete_file(request, pk):
     file = get_object_or_404(DocFile, pk=pk)
     doc = file.document

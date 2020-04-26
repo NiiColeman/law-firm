@@ -10,12 +10,12 @@ import datetime
 # form django.contrib import messages
 from django.contrib import messages
 from datetime import date
-
+from django.contrib.auth.decorators import login_required
 
 # from datetime import datetime
 # book conference room
 
-
+@login_required
 def schedule_room(request):
 
     if request.method == "POST":
@@ -43,13 +43,8 @@ def schedule_room(request):
         schedule = Schedule.objects.create(
             user=request.user, start_time=start_date, end_time=end_date, purpose=purpose)
         print('success')
-        start_schedule(schedule.id, "Your session has started",
-
-
-
-                       request.user.id, schedule=start_date)
-        end_schedule(schedule.id, "Your has ended, kindly move out of the meeting room",
-                     request.user.id, schedule=end_date)
+        start_schedule(schedule.id,request.user.id, schedule=start_date)
+        end_schedule(schedule.id,request.user.id, schedule=end_date)
 
         messages.success(
             request, "You have Scheduled to use the Conference Room at {}".format(start_date))
@@ -60,7 +55,7 @@ def schedule_room(request):
 
     return render(request, 'schedules/add.html')
 
-
+@login_required
 def list_schedules(request):
     schedule_list = Schedule.objects.filter(
         start_time__icontains=datetime.date.today())
@@ -74,7 +69,7 @@ def list_schedules(request):
 
     return render(request, "schedules/list.html", context)
 
-
+@login_required
 def delete_booking(request, pk):
     sch = get_object_or_404(Schedule, pk=pk)
 

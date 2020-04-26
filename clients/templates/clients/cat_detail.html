@@ -113,10 +113,10 @@ Legal Argument Details
                         <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>
 
-
+                        {% if user.is_superuser %}
                         <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center">Delete</button>
-
+                        {% endif %}
                     </div>
                     <!--end card-body-->
                 </div>

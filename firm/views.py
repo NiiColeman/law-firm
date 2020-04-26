@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from cases.models import Case
-from documents.models import Document
+from documents.models import Document,DocumentRecord
 from lawyers.models import Lawyer, User, OtherStaff
 from cases.models import Case, CaseTask
 from documents.models import Document
@@ -24,7 +24,8 @@ def index(request):
     case = Case.objects.all()
     document = Document.objects.all()
     user = request.user
-
+    recs = DocumentRecord.objects.filter(approved=False)
+    request.session['recs'] = recs.count()
     pending = Case.objects.filter(closed=False)
     request.session['pending'] = pending.count()
 

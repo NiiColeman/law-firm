@@ -6,8 +6,11 @@ from .forms import AuthorityForm, PrinciplesForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 
 
+
+@login_required
 def auth_list(request):
     print(Authority.objects.all())
     context = {
@@ -17,7 +20,7 @@ def auth_list(request):
 
     return render(request, "authorities/authority_list.html", context)
 
-
+@login_required
 def add_auth(request):
 
     if request.method == "POST":
@@ -36,7 +39,7 @@ def add_auth(request):
 
     return render(request, "authorities/create_authority.html", {'form': form})
 
-
+@login_required
 def authority_update(request, pk):
     auth = get_object_or_404(Authority, pk=pk)
     form = AuthorityForm(request.POST or None, instance=auth)
@@ -57,7 +60,7 @@ def authority_update(request, pk):
 
     return render(request, "authorities/update.html", {'form': form})
 
-
+@login_required
 def authority_detail(request, pk):
     auth = get_object_or_404(Authority, pk=pk)
     form = AuthorityForm(request.POST or None, instance=auth)
@@ -70,7 +73,7 @@ def authority_detail(request, pk):
 
     return render(request, "authorities/detail.html", context)
 
-
+@login_required
 def authority_delete(request, pk):
     auth = get_object_or_404(Authority, pk=pk)
 
@@ -84,7 +87,7 @@ def authority_delete(request, pk):
         return redirect('principles:authority_list')
     return render(request, "authorities/delete.html")
 
-
+@login_required
 def principle_list(request):
     prin = Principles.objects.all()
     paginator = Paginator(prin, 8)
@@ -98,7 +101,7 @@ def principle_list(request):
 
     return render(request, "principles/list.html", context)
 
-
+@login_required
 def principle_detail(request, pk):
     prin = get_object_or_404(Principles, pk=pk)
     form = PrinciplesForm(request.POST or None, instance=prin)
@@ -110,7 +113,7 @@ def principle_detail(request, pk):
 
     return render(request, "principles/detail.html", context)
 
-
+@login_required
 def principle_update(request, pk):
     prin = get_object_or_404(Principles, pk=pk)
 
@@ -131,7 +134,7 @@ def principle_update(request, pk):
 
     return render(request, "principles/detail.html", {'form': form})
 
-
+@login_required
 def principle_delete(request, pk):
     prin = get_object_or_404(Principles, pk=pk)
 
@@ -146,7 +149,7 @@ def principle_delete(request, pk):
 
     return render(request, "principles/detail")
 
-
+@login_required
 def tag_list(request, pk):
     tag = get_object_or_404(Authority, pk=pk)
 
@@ -160,7 +163,7 @@ def tag_list(request, pk):
 
     return render(request, "principles/list.html", context)
 
-
+@login_required
 def add_principle(request):
 
     if request.method == 'POST':

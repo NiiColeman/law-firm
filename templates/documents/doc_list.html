@@ -86,6 +86,7 @@ Document List
                                         <th>Added By</th>
                                         <th>Status</th>
                                         <th>Case</th>
+                                        <th>Client</th>
 
 
                                         <th>Date Added</th>
@@ -99,7 +100,80 @@ Document List
                                     <!--end tr-->
                                 </thead>
 
-                                {% include 'documents/snippets/list.html' with docs=docs %}
+
+
+                                <tbody>
+
+                                    {% for doc  in  docs %}
+
+
+
+                                    {% if doc.case.closed or doc.case == None %}
+                                    <tr>
+                                        <td>
+                                            {{doc.title|title}}
+
+                                        <td>{{doc.category|title}}</td>
+
+                                        <td>{{doc.added_by|title}}</td>
+                                        {% if doc.status|stringformat:"s" == 'Not Available' %}
+                                        <td><span class="badge badge-md   badge-soft-danger">{{doc.status}}</span> </td>
+                                        {% else %}
+                                        <td><span class="badge badge-md   badge-soft-success">{{doc.status}}</span>
+                                        </td>
+
+                                        <td>{{doc.case|title}}</td>
+
+                                        {% if doc.case %}
+                                        <td>{{doc.case.client.name|title}}</td>
+                                        {% else %}
+                                        <td>None</td>
+
+                                        {% endif %}
+
+
+                                        {% endif %}
+
+
+                                        <td> {{doc.date_added}} | {{doc.date_added|timesince}} Ago</td>
+                                        <td>{{doc.storage_location|title}}</td>
+                                        <td>
+                                            <a href="{{doc.get_absolute_url}}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                    class="mdi mdi-eye"></i></a>
+
+
+
+
+
+                                        </td>
+
+
+                                        <td>
+                                            {% if user.is_authenticated %}
+                                            {% if doc.status|stringformat:"s" == 'Available' %}
+                                            <form action="{% url 'documents:record_request' doc.id %}" method="post">
+
+                                                {% csrf_token %}
+                                                <button class="btn btn-secondary">Request</button>
+
+                                            </form>
+
+                                            {% endif %}
+                                            {%  endif %}</td>
+                                    </tr>
+
+
+                                    {% endif %}
+
+
+
+                                    {% endfor %}
+
+
+                                    <!--end tr-->
+
+                                </tbody>
                             </table>
                         </div>
                     </div>

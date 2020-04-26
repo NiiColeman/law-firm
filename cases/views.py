@@ -309,7 +309,7 @@ def upload_files(request, pk):
         file_form = CaseFileForm()
         return render(request, "cases/case_detail.html", {'file_form': file_form})
 
-
+@login_required
 def new_case(request):
 
     if request.method == "POST":
@@ -579,7 +579,7 @@ def cat_detail(request, pk):
 
     return render(request, 'cases/category/detail.html', context)
 
-
+@login_required
 def file_list(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
@@ -593,7 +593,7 @@ def file_list(request, pk):
 
     return render(request, 'cases/file_list.html', context)
 
-
+@login_required
 def delete_files(request, pk):
     file = get_object_or_404(CaseFile, pk=pk)
     case = file.case
@@ -604,7 +604,7 @@ def delete_files(request, pk):
 
     return render(request, "cases/file_list.html")
 
-
+@login_required
 def task_view(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
@@ -629,7 +629,7 @@ def task_view(request, pk):
 
 # def task_list_view
 
-
+@login_required
 def task_list_view(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
@@ -652,7 +652,7 @@ def task_list_view(request, pk):
 
     return render(request, "cases/list_tasks.html", context)
 
-
+@login_required
 def completed(request, pk):
 
     task = get_object_or_404(CaseTask, pk=pk)
@@ -674,7 +674,7 @@ def completed(request, pk):
 
     return render(request, "cases/list_tasks.html", context)
 
-
+@login_required
 def delete_task(request, pk):
     task = get_object_or_404(CaseTask, pk=pk)
     case = task.case
@@ -685,7 +685,7 @@ def delete_task(request, pk):
 
     return render(request, "cases/list_tasks.html", context)
 
-
+@login_required
 def argument_list(request, pk):
     case = get_object_or_404(Case, pk=pk)
     argument_list = LegalArgument.objects.filter(case=case)
@@ -698,7 +698,7 @@ def argument_list(request, pk):
 
     return render(request, 'cases/arg_list.html', context)
 
-
+@login_required
 def argument_detail(request, pk):
     arg = get_object_or_404(LegalArgument, pk=pk)
     case = arg.case
@@ -710,7 +710,7 @@ def argument_detail(request, pk):
 
     return render(request, "cases/arg_detail.html", context)
 
-
+@login_required
 def arg_update(request, pk):
     arg = get_object_or_404(LegalArgument, pk=pk)
     if request.method == "POST":
@@ -729,7 +729,7 @@ def arg_update(request, pk):
 
     return render(request, 'cases/arg_detail.html', {'form': form, 'case': arg.case})
 
-
+@login_required
 def arg_delete(request, pk):
     arg = get_object_or_404(LegalArgument, pk=pk)
     case = arg.case
@@ -749,7 +749,7 @@ def case_filter(request):
     f = CaseFilter(request.GET, queryset=Case.objects.all())
     return render(request, 'cases/filter.html', {'filter': f})
 
-
+@login_required
 def complete_case(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
@@ -767,7 +767,7 @@ def complete_case(request, pk):
 
     return render(request, "cases/case_detail.html")
 
-
+@login_required
 def court_list(request):
     courts = Court.objects.all()
     form = CourtForm
@@ -778,7 +778,7 @@ def court_list(request):
     }
     return render(request, 'cases/courts/court_list.html', context)
 
-
+@login_required
 def court_detail(request, pk):
     court = get_object_or_404(Court, pk=pk)
 
@@ -789,7 +789,7 @@ def court_detail(request, pk):
 
     return render(request, 'cases/courts/court_detail.html', context)
 
-
+@login_required
 def add_court(request):
     if request.method == "POST":
         form = CourtForm(request.POST or None)
@@ -803,7 +803,7 @@ def add_court(request):
 
     return render(request, 'cases/courts/courts_list.html', {'form': form})
 
-
+@login_required
 def update_court(request, pk):
     court = get_object_or_404(Court, pk=pk)
 
@@ -821,7 +821,7 @@ def update_court(request, pk):
 
     return render(request, "cases/courts/court_detail.html", {'form': form})
 
-
+@login_required
 def court_delete(request, pk):
     court = get_object_or_404(Court, pk=pk)
     if request.method == "POST":
@@ -834,7 +834,7 @@ def court_delete(request, pk):
 
     return render(request, 'cases/courts/court_detail.html')
 
-
+@login_required
 def case_court(request, pk):
     court = get_object_or_404(Court, pk=pk)
     courts = Client.objects.filter(category=cat)

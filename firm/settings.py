@@ -27,7 +27,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['192.168.8.119']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['skboafoandco.pythonanywhere.com']
 
 
 # Application definition

@@ -35,8 +35,15 @@
             <div class="icon-contain">
               <div class="row">
                 <div class="col-8 align-self-center">
+                  {% if user.is_superuser %}
+                  <h5 class=""> <a href="{% url 'accounts:lawyer_list' %}">All Lawyers</a> </h5>
+                  <p class="text mb-0"> <a href="{% url 'accounts:lawyer_list' %}">{{lawyer.count}}</a> <i
+                      class="mdi mdi-menu-up text-success font-16"></i></p>
+                  {% else %}
                   <h5 class="">All Lawyers</h5>
                   <p class="text mb-0">{{lawyer.count}} <i class="mdi mdi-menu-up text-success font-16"></i></p>
+                  {% endif %}
+
                 </div>
                 <!--end col-->
                 <div class="col-4 drop-shadow">
@@ -60,8 +67,9 @@
             <div class="icon-contain">
               <div class="row">
                 <div class="col-8 align-self-center">
-                  <h5 class="">All Cases</h5>
-                  <p class="text mb-0">{{case.count}} <i class="mdi mdi-menu-down text-danger font-16"></i></p>
+                  <h5 class=""><a href="{% url 'cases:case_list' %}">All Cases</a></h5>
+                  <p class="text mb-0"> <a href="{% url 'cases:case_list' %}">{{case.count}}</a> <i
+                      class="mdi mdi-menu-down text-danger font-16"></i></p>
                 </div>
                 <!--end col-->
                 <div class="col-4 drop-shadow">
@@ -85,8 +93,9 @@
             <div class="icon-contain">
               <div class="row">
                 <div class="col-8 align-self-center">
-                  <h5 class="">All Documents</h5>
-                  <p class="text mb-0">{{document.count}}<i class="mdi mdi-menu-up text-success font-16"></i></p>
+                   <h5 class=""><a href="{% url 'documents:doc_list' %}">All Documents</a></h5>
+                  <p class="text mb-0"> <a href="{% url 'documents:doc_list' %}">{{document.count}}</a> <i
+                      class="mdi mdi-menu-up text-success font-16"></i></p>
                 </div>
                 <!--end col-->
                 <div class="col-4 text-right drop-shadow">

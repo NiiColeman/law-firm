@@ -3,7 +3,7 @@ from import_export import resources
 from django.contrib import admin
 
 # Register your models here.
-from .models import Case, Status, Category, PriorityLevel, CaseTask, CaseFile, CaseArchive, LegalArgument
+from .models import Case, Status, Category, PriorityLevel, CaseTask, CaseFile,  LegalArgument
 
 
 admin.site.header = 'Law Firm'
@@ -11,7 +11,7 @@ admin.site.header = 'Law Firm'
 admin.site.register(CaseTask)
 admin.site.register(PriorityLevel)
 admin.site.register(CaseFile)
-admin.site.register(CaseArchive)
+# admin.site.register(CaseArchive)
 admin.site.register(LegalArgument)
 
 

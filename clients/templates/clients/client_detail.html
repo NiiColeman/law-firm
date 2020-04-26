@@ -52,9 +52,11 @@
                                             <p><button class="mr-1 btn btn-sm btn-info" data-toggle="modal"
                                                     data-animation="bounce" data-target=".bs-example-modal-lg"><i
                                                         class="fas fa-pen"></i></button>
+
+                                                        {% if user.is_superuser %}
                                                 <button class="btn btn-sm btn-danger" data-toggle="modal"
                                                     data-animation="bounce" data-target=".bs-example-modal-sm"><i
-                                                        class="far fa-trash-alt"></i></button></p>
+                                                        class="far fa-trash-alt"></i></button> {% endif %}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -152,15 +154,7 @@
 
 
                                         </td>
-                                        {% elif request.user|has_group:"FrontDesk" %}
-                                        <td>
 
-                                            <a href="{% url 'cases:archive_new' case.pk %}"
-                                                class="btn btn-gradient-secondary waves-effect waves-light">Archive
-                                                Case</a>
-
-
-                                        </td>
                                         {% endif %}
 
                                     </tr>

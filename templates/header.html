@@ -214,10 +214,12 @@
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_list' %}"><i
                                     class="ti-control-record"></i>Document List</a></li>
+                       {% if user.is_superuser %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'documents:record_list' %}"><i
-                                    class="ti-control-record"></i>Records</a></li>
-
-
+                                    class="ti-control-record"></i>Records <span
+                                    class="badge badge-pink float-right mr-2">{{request.session.recs}}</span>
+                            </a></li>
+                        {% endif %}
                     </ul>
                 </li>
 
@@ -245,7 +247,7 @@
                                     class="ti-control-record"></i>Open Cases {% if request.session.pending %}
                                 <span class="badge badge-pink float-right mr-2">{{request.session.pending}}</span>
                                 {% endif %}</a></li>
-                        <!-- 
+                        <!--
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
                                     class="ti-control-record"></i>Product Detail</a></li>
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-cart.html"><i
@@ -267,7 +269,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
                                     class="ti-control-record"></i>Closed Cases</a></li>
 
-                        <!-- 
+                        <!--
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
                                     class="ti-control-record"></i>Product Detail</a></li>
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-cart.html"><i
@@ -337,7 +339,7 @@
                 {% endif %}
 
 
-                <!-- 
+                <!--
                 <li>
                     <a href="javascript: void(0);"><i class="ti-crown"></i><span>UI Kit</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
@@ -506,6 +508,18 @@
                                     class="ti-control-record"></i>Client List</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'clients:cat_list' %}"><i
                                     class="ti-control-record"></i>CLient Categories</a></li>
+
+
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-plus"></i><span>Extras</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'schedules:list' %}"><i
+                                    class="ti-control-record"></i>Use Conference Room</a></li>
 
 
                     </ul>

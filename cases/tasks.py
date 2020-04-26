@@ -27,20 +27,21 @@ def notify_approve(user_id, msg1, msg2):
 
 
 @background
-def start_schedule(shedule_id, msg, user_id):
+def start_schedule(shedule_id, user_id):
     shedule = Schedule.objects.get(id=shedule_id)
     user = User.objects.get(pk=user_id)
-    user.email_user(msg)
+    message = 'Dear {} Schedule will end at {}'.format(
+        user.first_name, shedule.start_time)
+    user.email_user("Start Session", message)
 
-    print('your schedule has started')
 
 
 @background
-def end_schedule(shedule_id, msg, user_id):
+def end_schedule(shedule_id, user_id):
     shedule = Schedule.objects.get(id=shedule_id)
     shedule.expired = True
     shedule.save()
     user = User.objects.get(pk=user_id)
-    user.email_user(msg)
-
-    print('your schedule has ended')
+    message = 'Dear {} your session ends at {}'.format(
+        user.first_name, shedule.end_time)
+    user.email_user("End Session", message)
