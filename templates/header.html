@@ -203,26 +203,18 @@
                                     class="ti-control-record"></i>Settings</a></li>
                     </ul>
                 </li> -->
-
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-folder"></i>
-                        <span>Documents</span>
-
-                        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
-                        <!-- <span class="badge badge-pink float-right mr-2">New</span> -->
-                    </a>
+                    <a href="javascript: void(0);"><i class="ti-link"></i><span>Clients</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_list' %}"><i
-                                    class="ti-control-record"></i>Document List</a></li>
-                       {% if user.is_superuser %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:record_list' %}"><i
-                                    class="ti-control-record"></i>Records <span
-                                    class="badge badge-pink float-right mr-2">{{request.session.recs}}</span>
-                            </a></li>
-                        {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'clients:client_list' %}"><i
+                                    class="ti-control-record"></i>Client List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'clients:cat_list' %}"><i
+                                    class="ti-control-record"></i>CLient Categories</a></li>
+
+
                     </ul>
                 </li>
-
 
                 {% if request.user|has_group:"Lawyer" %}
                 <li>
@@ -283,23 +275,6 @@
                 {% endif %}
 
 
-                <li>
-                    <a href="javascript: void(0);"><i class="ti-medall"></i>
-                        <span>Principles</span>
-
-                        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
-
-                    </a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:principle_list' %}"><i
-                                    class="ti-control-record"></i>Principle List</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:authority_list' %}"><i
-                                    class="ti-control-record"></i>Authority List</a></li>
-
-
-                    </ul>
-                </li>
-
 
                 {% if request.user.is_superuser %}
                 <li>
@@ -319,6 +294,46 @@
                     </ul>
                 </li>
                 {% endif %}
+
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-folder"></i>
+                        <span>Documents</span>
+
+                        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+                        <!-- <span class="badge badge-pink float-right mr-2">New</span> -->
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_list' %}"><i
+                                    class="ti-control-record"></i>Document List</a></li>
+                        {% if user.is_superuser %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:record_list' %}"><i
+                                    class="ti-control-record"></i>Records <span
+                                    class="badge badge-pink float-right mr-2">{{request.session.recs}}</span>
+                            </a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-medall"></i>
+                        <span>Principles</span>
+
+                        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+
+                    </a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:principle_list' %}"><i
+                                    class="ti-control-record"></i>Principle List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'principles:authority_list' %}"><i
+                                    class="ti-control-record"></i>Authority List</a></li>
+
+
+                    </ul>
+                </li>
+
+
 
                 {% if request.user.is_superuser %}
                 <li>
@@ -500,26 +515,17 @@
 
 
 
-                <li>
-                    <a href="javascript: void(0);"><i class="ti-link"></i><span>Clients</span><span
-                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'clients:client_list' %}"><i
-                                    class="ti-control-record"></i>Client List</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'clients:cat_list' %}"><i
-                                    class="ti-control-record"></i>CLient Categories</a></li>
 
-
-                    </ul>
-                </li>
 
 
                 <li>
-                    <a href="javascript: void(0);"><i class="ti-plus"></i><span>Extras</span><span
-                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <a href="javascript: void(0);"><i class="ti-plus"></i><span>Extras</span><span class="menu-arrow"><i
+                                class="mdi mdi-chevron-right"></i></span></a>
                     <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'schedules:list' %}"><i
-                                    class="ti-control-record"></i>Use Conference Room</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" href="{% url 'schedules:list' %}"><i
+                                    class="ti-control-record"></i>Use Conference Room</a></li> -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'wills:will_list' %}"><i
+                                    class="ti-control-record"></i>Wills</a></li>
 
 
                     </ul>

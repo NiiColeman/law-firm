@@ -3,10 +3,13 @@ from import_export import resources
 from django.contrib import admin
 
 # Register your models here.
-from .models import Case, Status, Category, PriorityLevel, CaseTask, CaseFile,  LegalArgument
+from .models import Case, Status, Category, PriorityLevel, CaseTask, CaseFile,  LegalArgument, Representative
 
 
 admin.site.header = 'Law Firm'
+
+
+admin.site.register(Representative)
 
 admin.site.register(CaseTask)
 admin.site.register(PriorityLevel)

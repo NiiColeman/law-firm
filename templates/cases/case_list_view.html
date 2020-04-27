@@ -89,7 +89,7 @@ Case List
                                         {% endif %}
 
 
-                                        <td> {{case.date_added}} | {{case.date_added|timesince}} Ago</td>
+                                        <td> {{case.date_added|date}} | {{case.date_added|timesince}} Ago</td>
                                         <td>{{case.added_by|title}}</td>
 
 

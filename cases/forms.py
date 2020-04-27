@@ -67,7 +67,7 @@ class CaseForms(forms.ModelForm):
 
     class Meta:
         model = Case
-        fields = ['name', 'client', 'description',  'category',
+        fields = ['name', 'client', 'description',  'category', 'representative', 'court_number', 'suit_number',
                   'lawyer', 'status', 'date_added', 'court']
 
 

@@ -5,6 +5,23 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 
 
+class Representative(models.Model):
+    title = models.CharField(max_length=250)
+    """Model definition for Representative."""
+
+    # TODO: Define fields here
+
+    class Meta:
+        """Meta definition for Representative."""
+
+        verbose_name = 'Representative'
+        verbose_name_plural = 'Representatives'
+
+    def __str__(self):
+        """Unicode representation of Representative."""
+        return self.title
+
+
 class Court(models.Model):
     name = models.CharField(max_length=250)
     date_modified = models.DateTimeField(auto_now=True)
@@ -79,7 +96,12 @@ DEFAULT_STATUS_ID = 2
 class Case(models.Model):
     name = models.CharField(max_length=350)
     description = models.TextField()
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Category, null=True, on_delete=models.SET_NULL)
+    court_number = models.CharField(max_length=250)
+    suit_number = models.CharField(max_length=250)
+    representative = models.ForeignKey(
+        Representative, null=True, on_delete=models.SET_NULL)
     lawyer = models.ManyToManyField("lawyers.Lawyer")
     client = models.ForeignKey(
         "clients.Client", null=True, on_delete=models.SET_NULL)

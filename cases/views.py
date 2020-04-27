@@ -215,9 +215,9 @@ def add_task(request, pk):
             print('{} days'.format(check))
 
             for l in lawyers:
-                msg1 = "NEW TASK : {} !!".format(task_form.instance.task)
-                msg2 = "Dear {}, you have a task scheduled for {}.Remember to check your mail for further notifcations".format(
-                    l.user,  task_form.instance.deadline)
+                msg1 = "{} -{} ".format(task_form.instance.task, case.name)
+                msg2 = "Dear {},please note that you have a task ({}-{})  scheduled for {}.Remember to check your mail for further notifcations".format(
+                    l.user, task_form.instance.task, case.name,  task_form.instance.deadline)
 
                 if check >= 28:
                     notify_user(msg1, msg2, l.user.id, repeat=432000,
@@ -308,6 +308,7 @@ def upload_files(request, pk):
     else:
         file_form = CaseFileForm()
         return render(request, "cases/case_detail.html", {'file_form': file_form})
+
 
 @login_required
 def new_case(request):
@@ -579,6 +580,7 @@ def cat_detail(request, pk):
 
     return render(request, 'cases/category/detail.html', context)
 
+
 @login_required
 def file_list(request, pk):
     case = get_object_or_404(Case, pk=pk)
@@ -593,6 +595,7 @@ def file_list(request, pk):
 
     return render(request, 'cases/file_list.html', context)
 
+
 @login_required
 def delete_files(request, pk):
     file = get_object_or_404(CaseFile, pk=pk)
@@ -603,6 +606,7 @@ def delete_files(request, pk):
         return HttpResponseRedirect(reverse('cases:file_list', args=[case.pk]))
 
     return render(request, "cases/file_list.html")
+
 
 @login_required
 def task_view(request, pk):
@@ -629,6 +633,7 @@ def task_view(request, pk):
 
 # def task_list_view
 
+
 @login_required
 def task_list_view(request, pk):
     case = get_object_or_404(Case, pk=pk)
@@ -652,6 +657,7 @@ def task_list_view(request, pk):
 
     return render(request, "cases/list_tasks.html", context)
 
+
 @login_required
 def completed(request, pk):
 
@@ -674,6 +680,7 @@ def completed(request, pk):
 
     return render(request, "cases/list_tasks.html", context)
 
+
 @login_required
 def delete_task(request, pk):
     task = get_object_or_404(CaseTask, pk=pk)
@@ -684,6 +691,7 @@ def delete_task(request, pk):
         return HttpResponseRedirect(reverse('cases:list_tasks', args=[case.pk]))
 
     return render(request, "cases/list_tasks.html", context)
+
 
 @login_required
 def argument_list(request, pk):
@@ -698,6 +706,7 @@ def argument_list(request, pk):
 
     return render(request, 'cases/arg_list.html', context)
 
+
 @login_required
 def argument_detail(request, pk):
     arg = get_object_or_404(LegalArgument, pk=pk)
@@ -709,6 +718,7 @@ def argument_detail(request, pk):
     }
 
     return render(request, "cases/arg_detail.html", context)
+
 
 @login_required
 def arg_update(request, pk):
@@ -728,6 +738,7 @@ def arg_update(request, pk):
         form = LegalArgumentForm()
 
     return render(request, 'cases/arg_detail.html', {'form': form, 'case': arg.case})
+
 
 @login_required
 def arg_delete(request, pk):
@@ -749,6 +760,7 @@ def case_filter(request):
     f = CaseFilter(request.GET, queryset=Case.objects.all())
     return render(request, 'cases/filter.html', {'filter': f})
 
+
 @login_required
 def complete_case(request, pk):
     case = get_object_or_404(Case, pk=pk)
@@ -767,6 +779,7 @@ def complete_case(request, pk):
 
     return render(request, "cases/case_detail.html")
 
+
 @login_required
 def court_list(request):
     courts = Court.objects.all()
@@ -778,6 +791,7 @@ def court_list(request):
     }
     return render(request, 'cases/courts/court_list.html', context)
 
+
 @login_required
 def court_detail(request, pk):
     court = get_object_or_404(Court, pk=pk)
@@ -788,6 +802,7 @@ def court_detail(request, pk):
     }
 
     return render(request, 'cases/courts/court_detail.html', context)
+
 
 @login_required
 def add_court(request):
@@ -802,6 +817,7 @@ def add_court(request):
         form = CourtForm()
 
     return render(request, 'cases/courts/courts_list.html', {'form': form})
+
 
 @login_required
 def update_court(request, pk):
@@ -821,6 +837,7 @@ def update_court(request, pk):
 
     return render(request, "cases/courts/court_detail.html", {'form': form})
 
+
 @login_required
 def court_delete(request, pk):
     court = get_object_or_404(Court, pk=pk)
@@ -833,6 +850,7 @@ def court_delete(request, pk):
         return HttpResponseRedirect(reverse('cases:court_detail', args=[cat.pk]))
 
     return render(request, 'cases/courts/court_detail.html')
+
 
 @login_required
 def case_court(request, pk):

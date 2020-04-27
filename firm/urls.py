@@ -38,6 +38,8 @@ urlpatterns = [
     path("", include('clients.urls')),
     path("", include('schedules.urls')),
     path("", include('visitors.urls')),
+    path("", include('wills.urls')),
+
 
 
 

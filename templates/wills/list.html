@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+
+
+{% block title %}
+willument List
+{% endblock title %}
+
+
+
+
+
+
+
+
+
+{% block content %}
+<!-- Page Content-->
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Wills</a></li>
+                            <li class="breadcrumb-item active">Will List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Wills</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                            data-animation="bounce" data-target=".bs-example-modal-lg"><i
+                                class="mdi mdi-plus-circle-outline mr-2"></i>Add New Will</button>
+
+
+
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Add New
+                                            Will</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">×</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        {% include "wills/snippets/form.html" %}
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div>
+
+
+
+
+                        <h4 class="header-title mt-0">Wills</h4>
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Date Of Execution</th>
+                                        <th>Date Deposited</th>
+                                        <th>Receipt Number</th>
+                                        <th>Court</th>
+                                        <th>Lawyer</th>
+                                        <th>Internal Depository</th>
+                                        <th>Action</th>
+
+
+
+
+
+
+
+
+                                    </tr>
+                                    <!--end tr-->
+                                </thead>
+
+
+
+                                <tbody>
+
+                                    {% for will  in  wills %}
+
+
+
+
+                                    <tr>
+                                        <td>
+                                            {{will.client|title}}
+
+                                        <td>{{will.date_of_execution|date}}</td>
+                                        <td>{{will.date_deposited|date}}</td>
+
+
+
+
+                                        <td>{{will.receipt_number|title}} </td>
+
+
+
+                                        <td>{{will.court|title}}</td>
+
+
+                                        <td>{{will.user.first_name|title}}
+                                            {{will.user.last_name|title}}</td>
+
+
+
+
+
+
+
+
+
+                                        <td> {{will.internal_depository}}</td>
+
+                                        <td>
+                                            <a href="{{will.get_absolute_url}}"
+                                                class="btn btn-gradient-secondary waves-effect waves-light"><i
+                                                    class="mdi mdi-eye"></i></a>
+
+
+
+
+
+                                        </td>
+
+
+
+
+
+                                        {% endfor %}
+
+
+                                        <!--end tr-->
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+        </div>
+
+
+    </div>
+
+</div>
+{% endblock content %}

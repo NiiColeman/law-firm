@@ -18,7 +18,7 @@ Case Details
                 <div class="page-title-box">
                     <div class="float-right">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">SK Boafo & Co.</a></li>
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'cases:case_list' %}">Cases</a></li>
                             <li class="breadcrumb-item active">Case Details</li>
                         </ol>
@@ -47,11 +47,17 @@ Case Details
                         <h2 class="mt-0 header-title text-center">
                             {{case.name|title}}
                         </h2>
-                        <p class="text-muted text-center">{{case.date_added}}
+                        <p class="text-muted text-center">{{case.date_added|date}}
 
                         </p>
                         <p>Category: {{case.category|title}}</p>
                         <p>Client: {{case.client.name|title}}</p>
+                        <p>Court : {{case.court|title}}</p>
+                        <p>Court Number : {{case.court_number|title}}</p>
+                        <p>Suit Number : {{case.suit_number|title}}</p>
+                        <p>Representative : {{case.representative|title}}</p>
+
+
 
                         <p>Status :
                             {% if case.closed %}
@@ -453,7 +459,7 @@ Case Details
                             Edit
                         </button>
 
- {% if user.is_superuser %}
+                        {% if user.is_superuser %}
                         <button class="btn btn-danger  btn-lg btn-block" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center"> Delete </button>
                         {% endif %}
