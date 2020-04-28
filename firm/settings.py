@@ -149,24 +149,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'login'
 
-#
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp-mail.outlook.com.'  # mail service smtp
-# EMAIL_HOST_USER = 'skboafoandco@outlook.com'
-# DEFAULT_FROM_EMAIL = 'skboafoandco@outlook.com'
-# EMAIL_FROM = 'skboafoandco@outlook.com'  # email id
-# EMAIL_HOST_PASSWORD = 'Mangafox123'  # password
-# EMAIL_PORT = 587
-# # EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-# ACCOUNT_EMAIL_VERIFICATION = 'none'
-
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "skboafoaandcodmin@gmail.com"
-EMAIL_HOST_PASSWORD = "hydration"
+EMAIL_HOST_PASSWORD = "90909090"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "skboafoaandcodmin@gmail.com"
