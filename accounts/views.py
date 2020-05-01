@@ -18,6 +18,7 @@ from documents.models import DocumentRecord, Document, DocumentStatus
 from cases.forms import CaseForms
 from principles.forms import PrinciplesForm
 
+
 @login_required
 def accounts(request):
     lawyer_form = LawyerForm()
@@ -97,6 +98,7 @@ def lawyer_profile_view(request):
 
     return render(request, 'accounts/signup.html', {'user_form': user_form, 'lawyer_form': lawyer_form})
 
+
 @login_required
 def lawyer_list(request):
     lawyers = Lawyer.objects.all()
@@ -104,11 +106,12 @@ def lawyer_list(request):
     lawyer_form = LawyerForm(request.POST or None)
     context = {
         'lawyers': lawyers,
-        'lawyer_form':lawyer_form,
-        'user_form':user_form
+        'lawyer_form': lawyer_form,
+        'user_form': user_form
     }
 
     return render(request, 'accounts/lawyers.html', context)
+
 
 @login_required
 def lawyer_profile(request, pk):
@@ -135,6 +138,7 @@ def lawyer_profile(request, pk):
 
     return render(request, 'accounts/lawyer-profile.html', context)
 
+
 @login_required
 def lawyer_detail(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
@@ -158,6 +162,7 @@ def lawyer_detail(request, pk):
 
     return render(request, 'accounts/lawyer_detail.html', context)
 
+
 @login_required
 def other_staff(request):
     staff_list = OtherStaff.objects.all()
@@ -179,6 +184,7 @@ def get_status(id):
         return qs
     else:
         return None
+
 
 @login_required
 def update_lawyer_profile(request, pk):
@@ -214,6 +220,7 @@ def update_lawyer_profile(request, pk):
 
     return render(request, "accounts/lawyer-profile.html", {'lawyer_form': lawyer_form, 'user_form': user_form})
 
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
@@ -231,6 +238,7 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', {
         'form': form
     })
+
 
 @login_required
 def add_staff(request):
@@ -266,6 +274,7 @@ def add_staff(request):
 
     return render(request, "accounts/add_staff.html", {'staff_form': staff_form, 'user_form': user_form})
 
+
 @login_required
 def staff_details(request, pk):
     staff = get_object_or_404(OtherStaff, pk=pk)
@@ -287,6 +296,7 @@ def staff_details(request, pk):
     }
 
     return render(request, 'accounts/staff_detail.html', context)
+
 
 @login_required
 def update_staff(request, pk):
@@ -317,6 +327,7 @@ def update_staff(request, pk):
 
     return renser(request, "accounts/staff_detail.html", {'user_form': user_form, 'staff_form': staff_form})
 
+
 @login_required
 def staff_detail_view(request, pk):
     staff = get_object_or_404(OtherStaff, pk=pk)
@@ -339,6 +350,7 @@ def staff_detail_view(request, pk):
     }
 
     return render(request, "accounts/staff_profile.html", context)
+
 
 @login_required
 def update_staff_profile(request, pk):
@@ -373,6 +385,7 @@ def update_staff_profile(request, pk):
         staff_form = OtherStaffForm(request.POST or None, instance=staff)
 
     return render(request, "accounts/lawyer-profile.html", {'staff_form': lawyer_form, 'staff_form': user_form})
+
 
 @login_required
 def update_lawyers_profile(request, pk):
@@ -419,6 +432,7 @@ def get_lawyer(user):
     else:
         return None
 
+
 @login_required
 def delete_lawyer(request, pk):
     lawyer = get_object_or_404(Lawyer, pk=pk)
@@ -430,11 +444,12 @@ def delete_lawyer(request, pk):
 
     return render(redirect, "accounts/lawyer.html")
 
+
 @login_required
 def delete_staff(request, pk):
-    staff = get_object_or_404(staff, pk=pk)
+    staff = get_object_or_404(OtherStaff, pk=pk)
     if request.method == "POST":
-        lawyer.delete()
+        staff.delete()
         messages.success(request, "Staff has been deleted")
 
         return redirect("accounts:staff_list")

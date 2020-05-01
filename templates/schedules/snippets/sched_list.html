@@ -1,0 +1,52 @@
+<tbody>
+
+    {% for sch in  room %}
+    <tr>
+
+
+        <td> <a href="">{{sch.room.name|title}}</a>
+        </td>
+        <td>{{sch.purpose|title}}</td>
+        <td>{{sch.start_time}}</td>
+        <td>{{sch.end_time}}</td>
+
+
+        {% if sch.expired %}
+        <td><span class="badge badge-md   badge-soft-danger"> <i class="ti-close"></i>
+            </span></td>
+        {% else %}
+        <td><span class="badge badge-md   badge-soft-success"> <i class="ti-check-box"></i> </span></td>
+        {% endif %}
+
+
+        <td>
+
+            {% if user == sch.user %}
+            <a href="{% url 'schedules:delete' sch.pk %}" class="btn btn-danger">Delete</a>
+            {% endif %}
+
+        </td>
+
+
+
+
+
+
+
+
+
+
+    </tr>
+
+
+
+    {% endfor %}
+
+
+
+    <!--end tr-->
+
+
+
+
+</tbody>

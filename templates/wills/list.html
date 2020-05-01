@@ -3,7 +3,7 @@
 
 
 {% block title %}
-willument List
+Will List
 {% endblock title %}
 
 
@@ -141,9 +141,15 @@ willument List
                                         <td> {{will.internal_depository}}</td>
 
                                         <td>
+
+
+                                            {% if user == will.user %}
                                             <a href="{{will.get_absolute_url}}"
                                                 class="btn btn-gradient-secondary waves-effect waves-light"><i
                                                     class="mdi mdi-eye"></i></a>
+                                            {% endif %}
+
+
 
 
 

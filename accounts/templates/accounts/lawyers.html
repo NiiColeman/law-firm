@@ -15,7 +15,7 @@
                 <div class="page-title-box">
                     <div class="float-right">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Sk Boafo Co.</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">S.K. Boafo & Co.</a></li>
 
                             <li class="breadcrumb-item"><a href="{% url 'accounts:lawyer_list' %}">Lawyers</a></li>
 
@@ -91,12 +91,13 @@
 
 
 
-                                    {{lawyer_form|crispy}}
+                                {{lawyer_form|crispy}}
 
 
 
-                                    <button class="btn btn-gradient-primary  waves-effect waves-light" type="submit">Register
-                                        <i class="fas fa-sign-in-alt ml-1"></i></button>
+                                <button class="btn btn-gradient-primary  waves-effect waves-light"
+                                    type="submit">Register
+                                    <i class="fas fa-sign-in-alt ml-1"></i></button>
 
 
 
@@ -104,22 +105,22 @@
                             </div>
 
 
-                    <!--end form-group-->
+                            <!--end form-group-->
 
 
-                    <!--end form-group-->
+                            <!--end form-group-->
 
 
-                    <!--end form-group-->
-                    </form>
+                            <!--end form-group-->
+                        </form>
 
 
 
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
 
 
-</div><!-- container -->
-{% endblock content %}
+    </div><!-- container -->
+    {% endblock content %}

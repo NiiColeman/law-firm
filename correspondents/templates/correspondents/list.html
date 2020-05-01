@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+{% block title %}
+Correspondents List
+
+
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+
+                            </li>
+                            <li class="breadcrumb-item active">object List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
+                            data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
+                            Correspondent</button>
+
+                        <h4 class="mt-0 header-title">Correspondents List</h4>
+
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>Title</th>
+                                        <th>Case</th>
+
+                                        <td>Correspondent</td>
+                                        <td>Date Added</td>
+
+                                        <th>Added By</th>
+                                        <td>Action</td>
+
+                                    </tr>
+                                </thead>
+
+
+                                <!-- load -->
+
+
+                                <tbody>
+
+                                    {% for object  in  object_list %}
+                                    <tr>
+
+
+                                        <td>{{object.title|title}}</td>
+                                        <td>{{object.case|title}}</td>
+                                        <td>{{object.correspondent|title}}</td>
+                                        <td>{{object.date_added}}</td>
+                                        <td>{{object.lawyer.first_name|title}} {{object.lawyer.last_name|title}}
+                                        </td>
+
+                                        <td>
+
+                                            {% if object.lawyer == user %}
+                                            <a href="{{object.get_absolute_url}}" class="btn btn-secondary">View</a>
+                                            {% endif %}
+
+
+
+                                        </td>
+
+
+
+
+
+
+
+
+
+
+
+
+                                    </tr>
+
+
+
+                                    {% endfor %}
+
+
+
+                                    <!--end tr-->
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- sample modal content -->
+                    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">New Correspondent</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'correspondents:add' %}" method="post">
+
+
+                                        {% include "correspondents/snippets/form.html" %}
+                                        <button type="submit" class="btn btn-secondary">Add New Correspondent</button>
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    {% endblock content %}

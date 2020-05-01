@@ -1,6 +1,6 @@
 from background_task import background
 from lawyers.models import User
-from schedules.models import Schedule
+from schedules.models import Schedule, MeetingSession
 
 
 @background(schedule=60)
@@ -28,17 +28,16 @@ def notify_approve(user_id, msg1, msg2):
 
 @background
 def start_schedule(shedule_id, user_id):
-    shedule = Schedule.objects.get(id=shedule_id)
+    shedule = MeetingSession.objects.get(id=shedule_id)
     user = User.objects.get(pk=user_id)
-    message = 'Dear {} Schedule will end at {}'.format(
-        user.first_name, shedule.start_time)
+    message = 'Dear {}, your session in the {} room will start at {}'.format(
+        user.first_name, shedule.room, shedule.start_time)
     user.email_user("Start Session", message)
-
 
 
 @background
 def end_schedule(shedule_id, user_id):
-    shedule = Schedule.objects.get(id=shedule_id)
+    shedule = MeetingSession.objects.get(id=shedule_id)
     shedule.expired = True
     shedule.save()
     user = User.objects.get(pk=user_id)

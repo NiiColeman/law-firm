@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.contrib import messages
-from .models import Will
-from .forms import WillForm
+from .models import Will, Agreement, AgreementCategory
+from .forms import WillForm, AgreementForm, AgreementCategoryForm
 from django.urls import reverse
 # Create your views here.
 from .models import models
 from .forms import WillForm
+from django.contrib.auth.decorators import login_required
 
 
 def will_list(request):
@@ -92,3 +93,161 @@ def delete_will(request, pk):
         return HttpResponseRedirect(reverse('wills:detail', args=[will.pk]))
 
     return render(request, 'wills/detail.html')
+
+
+def agreement_list(request):
+    object_list = Agreement.objects.filter(user=request.user)
+    form = AgreementForm(request.POST or None)
+
+    context = {
+        'object_list': object_list,
+        'form': form
+    }
+
+    return render(request, 'wills/agreements/list.html', context)
+
+
+def add_agreement(request):
+    if request.method == "POST":
+        form = AgreementForm(request.POST or None)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            messages.success(request, "Agreement has been added")
+            return redirect('wills:agreement_list')
+        else:
+            messages.error(
+                request, "failed to add new agreement, please check the form")
+            return redirect('wills:agreement_list')
+    else:
+        form = AgreementForm()
+
+    return render(request, "wills/agreements/list.html", {'form': form})
+
+
+def agreement_detail(request, pk):
+    object = get_object_or_404(Agreement, pk=pk)
+    form = AgreementForm(request.POST or None, instance=object)
+
+    context = {
+        'agreement': object,
+        'form': form
+    }
+
+    return render(request, 'wills/agreements/detail.html', context)
+
+
+def agreement_update(request, pk):
+    object = get_object_or_404(Agreement, pk=pk)
+    if request.method == "POST":
+        form = AgreementForm(request.POST or None, instance=object)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            messages.success(request, "Agreement has been updated")
+            return HttpResponseRedirect(reverse('wills:agreement_detail', args=[object.pk]))
+        else:
+            messages.error(request, "Agreement could not be updated")
+            return HttpResponseRedirect(reverse('wills:agreement_detail', args=[object.pk]))
+
+    else:
+        form = AgreementForm()
+
+    return render(request, 'wills/agreements/detail.html', {'form': form})
+
+
+def delete_agreement(request, pk):
+    object = get_object_or_404(Agreement, pk=pk)
+
+    if request.method == "POST":
+        object.delete()
+        messages.success(request, "Agreement  Has been deleted")
+        return redirect('wills:agreement_list')
+    else:
+        messages.error(request, "Agreement could not deleted")
+        return HttpResponseRedirect(reverse('wills:agreement_detail', args=[object.pk]))
+
+    return render(request, 'wills/detail.html')
+
+
+@login_required
+def cat_list(request):
+    cats = AgreementCategory.objects.all()
+    form = AgreementCategoryForm()
+
+    context = {
+        'cats': cats,
+        'form': form
+    }
+    return render(request, 'wills/category/cat_list.html', context)
+
+
+@login_required
+def cat_detail(request, pk):
+    cat = get_object_or_404(AgreementCategory, pk=pk)
+
+    context = {
+        'cat': cat,
+        'form': AgreementCategoryForm(request.POST or None, instance=cat)
+    }
+
+    return render(request, 'wills/category/cat_detail.html', context)
+
+
+@login_required
+def add_cat(request):
+    if request.method == "POST":
+        form = AgreementCategoryForm(request.POST or None)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Category has been added")
+            return redirect('wills:cat_list')
+    else:
+        form = AgreementCategoryForm()
+
+    return render(request, 'wills/category/cat_list.html', {'form': form})
+
+
+@login_required
+def update_cat(request, pk):
+    cat = get_object_or_404(AgreementCategory, pk=pk)
+
+    if request.method == "POST":
+        form = AgreementCategoryForm(request.POST or None, instance=cat)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Category has been updated")
+            return HttpResponseRedirect(reverse('wills:cat_detail', args=[cat.pk]))
+        else:
+            messages.error(request, "Category could not updated")
+            return HttpResponseRedirect(reverse('wills:cat_detail', args=[cat.pk]))
+    else:
+        form = AgreementCategoryForm()
+
+    return render(request, "wills/category/cat_detail.html", {'form': form})
+
+
+@login_required
+def cat_delete(request, pk):
+    cat = get_object_or_404(AgreementCategory, pk=pk)
+    if request.method == "POST":
+        cat.delete()
+        messages.success(request, "Category has been deleted")
+        return redirect('wills:cat_list')
+    else:
+        messages.error(request, "Category could not deleted")
+        return HttpResponseRedirect(reverse('wills:cat_detail', args=[cat.pk]))
+
+    return render(request, 'wills/category/cat_detail.html')
+
+# @login_required
+# def client_cat(request, pk):
+#     cat = get_object_or_404(AgreementCategory, pk=pk)
+#     # client = Client.objects.filter(category=cat)
+
+#     context = {
+#         # 'client_list': client
+#     }
+
+#     return render(request, 'wills/category/client_list.html', context)

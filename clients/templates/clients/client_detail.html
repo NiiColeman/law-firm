@@ -5,7 +5,9 @@
 {% load static %}
 
 
-
+{% block title %}
+Client Details
+{% endblock title %}
 
 {% block content %}
 <div class="page-content">
@@ -17,7 +19,7 @@
                 <div class="page-title-box">
                     <div class="float-right">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Sk Boafo Co.</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">S.K. Boafo Co.</a></li>
 
                             <li class="breadcrumb-item"><a href="{% url 'clients:client_list' %}">Client List</a></li>
                             <li class="breadcrumb-item active">Client Details</li>
@@ -53,7 +55,7 @@
                                                     data-animation="bounce" data-target=".bs-example-modal-lg"><i
                                                         class="fas fa-pen"></i></button>
 
-                                                        {% if user.is_superuser %}
+                                                {% if user.is_superuser %}
                                                 <button class="btn btn-sm btn-danger" data-toggle="modal"
                                                     data-animation="bounce" data-target=".bs-example-modal-sm"><i
                                                         class="far fa-trash-alt"></i></button> {% endif %}</p>

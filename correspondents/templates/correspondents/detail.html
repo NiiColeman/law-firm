@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}
+Correspondents Details
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'correspondents:list' %}">Correspondents
+                                    List</a>
+                            </li>
+                            <li class="breadcrumb-item active">Correspondents Details</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="mt-0  text-center">
+                            {{object.title|title}}
+                        </h3>
+
+
+
+                        <div class="row">
+
+                            <br>
+                            <div class="col-lg-12">
+                                <br>
+                                <li class="mb-2 font-15 text-muted"><i
+                                        class="mdi mdi-calendar-check-outline text-success mr-3"></i> &nbsp;Date
+                                    Added: &nbsp; <strong>{{object.date_added|date}}</strong></i>
+                                </li>
+                                <!-- <p class="text-lead text-left">
+    
+                            </p> -->
+
+
+
+                                {% if object.case %}
+                                <li class="mb-2 font-15 text-muted"><i class="mdi mdi-receipt text-success mr-3"></i>
+                                    &nbsp; Case :&nbsp; <strong>{{object.case|title}}</strong></li>
+                                {% endif %}
+
+
+
+
+                                {% if object.clients %}
+
+                                <li class="mb-2 font-15 text-muted"><i class="mdi mdi-bank text-success mr-3"></i>&nbsp;
+                                    Client:
+                                    &nbsp; <strong>{{object.clients|title}}</strong> </i>
+                                    {% endif %}
+
+
+
+
+                                    <!-- <li class="mb-2 font-15 text-muted"><i class="mdi mdi-file-cabinet text-success mr-3">
+                                    </i>&nbsp;Internal Depository:&nbsp; <strong>
+                                        {{object.internal_depository|title}}</strong></li> -->
+
+
+                                <li class="mb-2 font-15 text-muted"><i
+                                        class="mdi mdi-checkbox-marked-circle-outline text-success mr-3">
+                                    </i>&nbsp;Client/Company Correspondent:&nbsp;
+                                    <strong>{{object.correspondent|title}}</strong></li>
+
+
+
+
+
+
+
+                                <li class="mb-2 font-15 text-muted"><i
+                                        class="mdi mdi-checkbox-marked-circle-outline text-success mr-3">
+                                    </i>&nbsp;Lawyer:&nbsp; <strong>{{object.lawyer.first_name|title}}
+                                        {{object.lawyer.last_name|title}}</strong></li>
+
+
+
+
+                                <h3 class="mt-0  text-center">
+                                    Description
+                                </h3>
+                                <hr>
+
+                                {{object.description|safe}}
+
+
+
+                            </div>
+
+
+                            <!--end col-->
+                        </div>
+                        <!--end row-->
+
+
+
+                        <!-- <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Attachments
+                                            </button>
+                                        </i>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample-faq">
+
+
+                                        <div class="card-body">
+                                            <div class="file-box-content">
+                                                <div class="file-box">
+                                                    <a href="{{doc.attachments.url}}" class="download-icon-link">
+                                                        <i class="dripicons-download file-download-icon"></i>
+                                                    </a>
+                                                    <div class="text-center">
+                                                        <i class="far fa-file-alt text-primary"></i>
+                                                        <h6 class="text-trunobjecte">{{doc.attachments}}</h6>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div> -->
+                        <!-- </div> -->
+
+
+
+
+
+                        <!--end row-->
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+
+
+            <div class="col-md-12 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+
+
+                        {% if user.is_superuser or object.lawyer == user %}
+                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-lg">Edit</button>
+                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-center">Delete</button>
+                        {% endif %}
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+
+
+
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Edit</h5>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+
+
+
+                            <form action="{{object.get_update_url}}" method="post">
+                                {% csrf_token %}
+                                {{form|crispy}}
+                                {{form.erorrs}}
+                                <button type="submit" class="btn btn-primary">Update</button>
+
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+
+
+
+            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="exampleModalLabel">Delete </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>AreYou Sure You Want TO Delete {{object.title|title}}</p>
+
+
+                            <form action="{{object.get_delete_url}}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+        </div>
+    </div>
+    {% endblock content %}

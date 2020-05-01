@@ -47,7 +47,7 @@ Case Details
                         <h2 class="mt-0 header-title text-center">
                             {{case.name|title}}
                         </h2>
-                        <p class="text-muted text-center">{{case.date_added|date}}
+                        <p class="text-muted text-center">{{case.date_added|date }}
 
                         </p>
                         <p>Category: {{case.category|title}}</p>
@@ -74,358 +74,364 @@ Case Details
 
                         {% if case.closed %}
                         <p> <a href="{% url 'cases:complete_case' case.pk %}" class="btn btn-sm btn-success">Reopen
-                                Case</a></p>
-
-                        {% else %}
-
-                        <p> <a href="{% url 'cases:complete_case' case.pk %}" class="btn btn-sm btn-dark">Close
                                 Case</a>
-                        </p>
-                        {% endif %}
+
+                            {% else %}
+
+                            <p> <a href="{% url 'cases:complete_case' case.pk %}" class="btn btn-sm btn-dark">Close
+                                    Case</a>
+
+                                {% endif %}
+
+                                <a href="{% url 'correspondents:case-list' case.pk %}" class="btn btn-pink">View Case
+                                    Correspondents</a>
+                            </p>
 
 
 
 
 
-                        <div class="accordion" id="accordionExample-faq">
-                            <div class="card shadow-none border mb-1">
-                                <div class="card-header" id="headingOne">
-                                    <h5 class="my-0">
-                                        <button class="btn btn-link ml-4 shadow-none" type="button"
-                                            data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
-                                            Case Description
-                                        </button>
-                                    </h5>
-                                </div>
-                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
-                                    data-parent="#accordionExample-faq">
-                                    <div class="card-body">
-                                        {{case.description|safe}}
+                            <div class="accordion" id="accordionExample-faq">
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                Case Description
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                        data-parent="#accordionExample-faq">
+                                        <div class="card-body">
+                                            {{case.description|safe}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card shadow-none border mb-1">
-                                <div class="card-header" id="headingTwo">
-                                    <h5 class="my-0">
-                                        <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
-                                            type="button" data-toggle="collapse" data-target="#collapseTwo"
-                                            aria-expanded="false" aria-controls="collapseTwo">
-                                            Assigned Lawyers
-                                        </button>
-                                    </h5>
-                                </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                    data-parent="#accordionExample-faq">
-                                    <div class="card-body">
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
+                                                type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                Assigned Lawyers
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample-faq">
+                                        <div class="card-body">
 
-                                        <div class="row">
-                                            {% for lawyer in lawyers  %}
-                                            <div class="col-lg-6">
-
+                                            <div class="row">
+                                                {% for lawyer in lawyers  %}
+                                                <div class="col-lg-6">
 
 
 
 
 
-                                                <div class="card profile-card">
-                                                    <div class="card-body p-0">
-                                                        <div class="media p-3  align-items-center">
-                                                            <img src="{{lawyer.user.avatar.url}} " alt="user"
-                                                                class="rounded-circle thumb-xl"
-                                                                style="width:50px; height:50px;">
-                                                            <div class="media-body ml-3 align-self-center">
-                                                                <h5 class="pro-title">
-                                                                    {{lawyer.user.first_name|title}}
-                                                                    {{lawyer.user.last_name|title}}</h5>
-                                                                <p class="mb-2 text-muted">{{lawyer.user.email}}</p>
-                                                                <p class="mb-2 text-muted"> <a
-                                                                        href="{% url 'accounts:lawyer_detail' lawyer.pk %}">@{{lawyer.user.username}}</a>
-                                                                </p>
 
-                                                                <ul
-                                                                    class="list-inline list-unstyled profile-socials mb-0">
-                                                                    <!-- <li class="list-inline-item">
+                                                    <div class="card profile-card">
+                                                        <div class="card-body p-0">
+                                                            <div class="media p-3  align-items-center">
+                                                                <img src="{{lawyer.user.avatar.url}} " alt="user"
+                                                                    class="rounded-circle thumb-xl"
+                                                                    style="width:50px; height:50px;">
+                                                                <div class="media-body ml-3 align-self-center">
+                                                                    <h5 class="pro-title">
+                                                                        {{lawyer.user.first_name|title}}
+                                                                        {{lawyer.user.last_name|title}}</h5>
+                                                                    <p class="mb-2 text-muted">{{lawyer.user.email}}</p>
+                                                                    <p class="mb-2 text-muted"> <a
+                                                                            href="{% url 'accounts:lawyer_detail' lawyer.pk %}">@{{lawyer.user.username}}</a>
+                                                                    </p>
+
+                                                                    <ul
+                                                                        class="list-inline list-unstyled profile-socials mb-0">
+                                                                        <!-- <li class="list-inline-item">
                                                                         <a href="#" class="btn btn-primary"><i
                                                                                 class=""></i>View</a>
                                                                     </li> -->
 
-                                                                </ul>
-                                                            </div>
-                                                            <!-- <div class="action-btn">
+                                                                    </ul>
+                                                                </div>
+                                                                <!-- <div class="action-btn">
                                                                 <a href="" class=""><i
                                                                         class="fas fa-pen text-info mr-2"></i></a>
                                                                 <a href="" class=""><i
                                                                         class="fas fa-trash-alt text-danger"></i></a>
                                                             </div> -->
+                                                            </div>
                                                         </div>
+
+
+                                                        <!--end card-body-->
                                                     </div>
 
-
-                                                    <!--end card-body-->
+                                                    <!--end card-->
                                                 </div>
-
-                                                <!--end card-->
+                                                {% endfor %}
                                             </div>
-                                            {% endfor %}
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Case Timeline
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample-faq">
+
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="header-title mt-0 mb-3">Timeline</h4>
+
+
+                                                <h4 class="header-title my-3"><a
+                                                        href="{% url 'cases:list_tasks' case.pk %}">View More Tasks</a>
+                                                </h4>
+                                                <div class="main-timeline mt-3">
+
+
+
+
+                                                    {% for task in task_list  %}
+
+
+                                                    {% if forloop.first or forloop.last %}
+                                                    <div class="timeline">
+                                                        <span class="timeline-icon"></span>
+                                                        <span class="year">{{task.deadline|date:"d M, Y"}}</span>
+                                                        <div class="timeline-content">
+                                                            <h5 class="title">{{task.task|title}}</h5>
+                                                            <span class="post">{{task.date_modefied}}</span>
+                                                            <hr>
+                                                            <p class="">
+                                                                {{task.description|safe}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+
+
+
+                                                    {% if not forloop.first and not forloop.last %}
+                                                    <div class="timeline">
+                                                        <span class="timeline-icon"></span>
+                                                        <span class="year">{{task.deadline|date:"d M, Y"}}</span>
+
+
+                                                        <div class="timeline-content">
+                                                            <h5 class="title">{{task.task|title}}</h5>
+                                                            <span class="post">{{task.date_modefied}}</span>
+                                                            <hr>
+
+                                                            <p class="">
+                                                                {{task.description|safe}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+
+
+
+                                                    {% endfor %}
+
+
+
+
+
+                                                </div>
+                                            </div>
+                                            <!--end card-body-->
                                         </div>
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                     </div>
                                 </div>
-                            </div>
 
-
-
-
-                            <div class="card shadow-none border mb-1">
-                                <div class="card-header" id="headingThree">
-                                    <h5 class="my-0">
-                                        <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
-                                            data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            Case Timeline
-                                        </button>
-                                    </h5>
-                                </div>
-                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
-                                    data-parent="#accordionExample-faq">
-
-
-                                    <div class="card">
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
+                                                type="button" data-toggle="collapse" data-target="#collapseTwos"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                Legal Arguments and Authorities
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample-faq">
                                         <div class="card-body">
-                                            <h4 class="header-title mt-0 mb-3">Timeline</h4>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h4 class="header-title my-3"> <a
+                                                            href="{% url 'cases:argument_list' case.pk  %}"
+                                                            rel="noopener noreferrer"> View More</a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
 
 
-                                            <h4 class="header-title my-3"><a
-                                                    href="{% url 'cases:list_tasks' case.pk %}">View More Tasks</a>
-                                            </h4>
-                                            <div class="main-timeline mt-3">
+
+                                                {% for arg in arguments  %}
+                                                <div class="col-lg-6">
+
+
+                                                    <div class="card profile-card">
+                                                        <div class="card-body p-0">
+                                                            <div class="media p-3  align-items-center">
+                                                                <!-- <img src="{% static './assets/images/users/user-4.jpg' %} "
+                                                                alt="user" class="rounded-circle thumb-xl"> -->
+                                                                <div class="media-body ml-3 align-self-center">
+                                                                    <h5 class="pro-title">
+
+                                                                        {{arg.argument|title}}
+
+                                                                    </h5>
+                                                                    <p class="mb-2 text-muted">{{arg.authorities}}</p>
+
+
+                                                                    <ul
+                                                                        class="list-inline list-unstyled profile-socials mb-0">
+                                                                        <!-- <li class="list-inline-item">
+                                                                        <a href="#" class="btn btn-primary"><i
+                                                                                class=""></i>View</a>
+                                                                    </li> -->
+
+                                                                    </ul>
+                                                                </div>
+                                                                <!-- <div class="action-btn">
+                                                                <a href="" class=""><i
+                                                                        class="fas fa-pen text-info mr-2"></i></a>
+                                                                <a href="" class=""><i
+                                                                        class="fas fa-trash-alt text-danger"></i></a>
+                                                            </div> -->
+                                                            </div>
+                                                        </div>
+
+
+                                                        <!--end card-body-->
+                                                    </div>
+
+                                                    <!--end card-->
+                                                </div>
+                                                {% endfor %}
+                                            </div>
 
 
 
 
-                                                {% for task in task_list  %}
+
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                                                {% if forloop.first or forloop.last %}
-                                                <div class="timeline">
-                                                    <span class="timeline-icon"></span>
-                                                    <span class="year">{{task.deadline|date:"d M, Y"}}</span>
-                                                    <div class="timeline-content">
-                                                        <h5 class="title">{{task.task|title}}</h5>
-                                                        <span class="post">{{task.date_modefied}}</span>
-                                                        <hr>
-                                                        <p class="">
-                                                            {{task.description|safe}}
-                                                        </p>
+                                <div class="card shadow-none border mb-1">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="my-0">
+                                            <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseThrees"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Case Files
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThrees" class="collapse" aria-labelledby="headingThree"
+                                        data-parent="#accordionExample-faq">
+
+
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h4 class="header-title my-3"><a
+                                                            href="{% url 'cases:file_list' case.pk %}">View More
+                                                            Files</a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                            <div class="file-box-content">
+
+                                                {% if case_files %}
+
+
+                                                {% for file in case_files  %}
+                                                <div class="file-box">
+                                                    <a href="{{file.file.url}}" class="download-icon-link">
+                                                        <i class="dripicons-download file-download-icon"></i>
+                                                    </a>
+                                                    <div class="text-center">
+                                                        <i class="far fa-file-alt text-primary"></i>
+                                                        <h6 class="text-truncate">{{file.title|title}}</h6>
+                                                        <!-- <small class="text-muted">06 March 2019 / 5MB</small> -->
                                                     </div>
                                                 </div>
-                                                {% endif %}
-
-
-
-                                                {% if not forloop.first and not forloop.last %}
-                                                <div class="timeline">
-                                                    <span class="timeline-icon"></span>
-                                                    <span class="year">{{task.deadline|date:"d M, Y"}}</span>
-
-
-                                                    <div class="timeline-content">
-                                                        <h5 class="title">{{task.task|title}}</h5>
-                                                        <span class="post">{{task.date_modefied}}</span>
-                                                        <hr>
-
-                                                        <p class="">
-                                                            {{task.description|safe}}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                {% endif %}
-
-
-
                                                 {% endfor %}
 
 
-
+                                                {% endif %}
 
 
                                             </div>
+
+
                                         </div>
-                                        <!--end card-body-->
-                                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                </div>
-                            </div>
-
-                            <div class="card shadow-none border mb-1">
-                                <div class="card-header" id="headingTwo">
-                                    <h5 class="my-0">
-                                        <button class="btn btn-link collapsed ml-4 align-self-center shadow-none"
-                                            type="button" data-toggle="collapse" data-target="#collapseTwos"
-                                            aria-expanded="false" aria-controls="collapseTwo">
-                                            Legal Arguments and Authorities
-                                        </button>
-                                    </h5>
-                                </div>
-                                <div id="collapseTwos" class="collapse" aria-labelledby="headingTwo"
-                                    data-parent="#accordionExample-faq">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h4 class="header-title my-3"> <a
-                                                        href="{% url 'cases:argument_list' case.pk  %}"
-                                                        rel="noopener noreferrer"> View More</a>
-                                                </h4>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-
-
-
-                                            {% for arg in arguments  %}
-                                            <div class="col-lg-6">
-
-
-                                                <div class="card profile-card">
-                                                    <div class="card-body p-0">
-                                                        <div class="media p-3  align-items-center">
-                                                            <!-- <img src="{% static './assets/images/users/user-4.jpg' %} "
-                                                                alt="user" class="rounded-circle thumb-xl"> -->
-                                                            <div class="media-body ml-3 align-self-center">
-                                                                <h5 class="pro-title">
-
-                                                                    {{arg.argument|title}}
-
-                                                                </h5>
-                                                                <p class="mb-2 text-muted">{{arg.authorities}}</p>
-
-
-                                                                <ul
-                                                                    class="list-inline list-unstyled profile-socials mb-0">
-                                                                    <!-- <li class="list-inline-item">
-                                                                        <a href="#" class="btn btn-primary"><i
-                                                                                class=""></i>View</a>
-                                                                    </li> -->
-
-                                                                </ul>
-                                                            </div>
-                                                            <!-- <div class="action-btn">
-                                                                <a href="" class=""><i
-                                                                        class="fas fa-pen text-info mr-2"></i></a>
-                                                                <a href="" class=""><i
-                                                                        class="fas fa-trash-alt text-danger"></i></a>
-                                                            </div> -->
-                                                        </div>
-                                                    </div>
-
-
-                                                    <!--end card-body-->
-                                                </div>
-
-                                                <!--end card-->
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-
-
-
 
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div class="card shadow-none border mb-1">
-                                <div class="card-header" id="headingThree">
-                                    <h5 class="my-0">
-                                        <button class="btn btn-link collapsed ml-4 shadow-none" type="button"
-                                            data-toggle="collapse" data-target="#collapseThrees" aria-expanded="false"
-                                            aria-controls="collapseThree">
-                                            Case Files
-                                        </button>
-                                    </h5>
-                                </div>
-                                <div id="collapseThrees" class="collapse" aria-labelledby="headingThree"
-                                    data-parent="#accordionExample-faq">
 
+                            {% else %}
 
-                                    <div class="card-body">
+                            <div class="alert alert-secondary mb-0" role="alert">
+                                <h4 class="alert-heading font-18">You Have Not Been Assigned To This Case</h4>
+                                <p>You are seing this because you have not been assigned to this case.Kindly contact
+                                    admin
+                                    for <strong>Further Assistance</strong></p>
 
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h4 class="header-title my-3"><a
-                                                        href="{% url 'cases:file_list' case.pk %}">View More Files</a>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                        <div class="file-box-content">
-
-                                            {% if case_files %}
-
-
-                                            {% for file in case_files  %}
-                                            <div class="file-box">
-                                                <a href="{{file.file.url}}" class="download-icon-link">
-                                                    <i class="dripicons-download file-download-icon"></i>
-                                                </a>
-                                                <div class="text-center">
-                                                    <i class="far fa-file-alt text-primary"></i>
-                                                    <h6 class="text-truncate">{{file.title|title}}</h6>
-                                                    <!-- <small class="text-muted">06 March 2019 / 5MB</small> -->
-                                                </div>
-                                            </div>
-                                            {% endfor %}
-
-
-                                            {% endif %}
-
-
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
                             </div>
-                        </div>
 
-
-
-                        {% else %}
-
-                        <div class="alert alert-secondary mb-0" role="alert">
-                            <h4 class="alert-heading font-18">You Have Not Been Assigned To This Case</h4>
-                            <p>You are seing this because you have not been assigned to this case.Kindly contact admin
-                                for <strong>Further Assistance</strong></p>
-
-                        </div>
-
-                        {% endif %}
+                            {% endif %}
 
 
 
@@ -437,7 +443,7 @@ Case Details
 
 
 
-                        <!--end row-->
+                            <!--end row-->
                     </div>
                     <!--end card-body-->
                 </div>
@@ -480,6 +486,10 @@ Case Details
                         <button type="button" class="btn btn-dark btn-lg btn-block" data-toggle="modal"
                             data-animation="bounce" data-target=".bs-example-modal-sm">Upload Case Files</button>
 
+
+
+                        <button type="button" class="btn btn-pink btn-lg btn-block" data-toggle="modal"
+                            data-animation="bounce" data-target=".bs-example-modal-lg1">Add New Correspondent</button>
 
 
 
@@ -603,6 +613,31 @@ Case Details
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
             </div>
+
+            <div class="modal fade bs-example-modal-lg1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="myLargeModalLabel">Add New Correspondent</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'correspondents:case_add' case.pk %}" method="post">
+
+                                {% csrf_token %}
+                                {{corrs_form|crispy}}
+
+                                <button type="submit">Submit</button>
+
+
+
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
 
 
 

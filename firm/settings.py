@@ -43,8 +43,8 @@ INSTALLED_APPS = [
     'documents', 'accounts',
     'crispy_forms',
     'rest_framework', 'timezone_field',
-    'django_forms_bootstrap', 'django_select2', 'wills',
-    'principles', 'background_task', 'django_filters', 'widget_tweaks', 'clients', 'ajax_select', 'schedules', 'visitors', 'import_export',
+    'django_forms_bootstrap', 'django_select2', 'wills', 'bootstrap_datepicker_plus', "bootstrap4",
+    'principles', 'background_task', 'django_filters', 'widget_tweaks', 'clients', 'ajax_select', 'schedules', 'visitors', 'import_export', 'correspondents'
 ]
 
 MIDDLEWARE = [
@@ -153,34 +153,10 @@ LOGOUT_REDIRECT_URL = 'login'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "skboafoaandcodmin@gmail.com"
-EMAIL_HOST_PASSWORD = "90909090"
+EMAIL_HOST_PASSWORD = "hydration"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "skboafoaandcodmin@gmail.com"
-
-
-# # Twilio API
-# TWILIO_NUMBER = os.environ.get('TWILIO_NUMBER')
-# TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
-# TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH
-# _TOKEN')
-
-
-# DRAMATIQ_BROKER = {
-#     "BROKER": "dramatiq.brokers.redis.RedisBroker",
-#     "OPTIONS": {
-#         "url": 'redis://localhost:6379/0',
-#     },
-#     "MIDDLEWARE": [
-#         "dramatiq.middleware.Prometheus",
-#         "dramatiq.middleware.AgeLimit",
-#         "dramatiq.middleware.TimeLimit",
-#         "dramatiq.middleware.Callbacks",
-#         "dramatiq.middleware.Retries",
-#         "django_dramatiq.middleware.AdminMiddleware",
-#         "django_dramatiq.middleware.DbConnectionsMiddleware",
-#     ]
-# }
 
 
 BACKGROUND_TASK_RUN_ASYNC = True

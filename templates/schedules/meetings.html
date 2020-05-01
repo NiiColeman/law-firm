@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+<!-- {% load crispy_forms_tags %} -->
+
+{% block extrahead %}
+
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
+{% endblock extrahead %}
+
+
+
+
+{% block title %}
+Schedule List
+
+
+{% endblock title %}
+
+
+
+{% block content %}
+<!-- Page Content-->
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+
+                            <li class="breadcrumb-item"><a href="{% url 'cases:case_list' %}">Cases</a></li>
+                            <li class="breadcrumb-item active">Case List</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Cases</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+
+                <!--end card-->
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <button class="btn btn-gradient-primary px-4 float-right mt-1 mb-3" btn-lg btn-block"
+                            data-toggle="modal" data-target=".bd-example-modal-xl"></i>Add New </button>
+                        <br>
+                        <br>
+
+                        <br>
+
+                        <div class="accordion" id="accordionExample">
+                            <div class="card border mb-0 shadow-none">
+                                <div class="card-header bg-soft-pink text-white p-0" id="headingOne">
+                                    <h5 class="my-1 ">
+                                        <button class="btn btn-link text-dark shadow-none" type="button"
+                                            data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Pink Room {% if request.session.pink_ %}
+                                            ( currently available)
+                                            {% else %}
+                                            (currently occupied)
+
+                                            {% endif %}
+                                        </button>
+                                    </h5>
+                                </div>
+
+
+
+
+
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordionExample">
+                                    <div class="card-body">
+
+
+                                        <div class="table-responsive dash-social">
+                                            <table id="datatable" class="table">
+                                                <thead>
+                                                    <tr>
+
+                                                        <th>Name</th>
+                                                        <th>Purpose</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+
+
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    {% for sch in  pink %}
+                                                    <tr>
+                                                        <td> <a href="">{{sch.room.name|title}}</a>
+                                                        </td>
+                                                        <td>{{sch.purpose|title}}</td>
+                                                        <td>{{sch.start_time}}</td>
+                                                        <td>{{sch.end_time}}</td>
+
+                                                        {% if sch.expired %}
+                                                        <td><span class="badge badge-md   badge-soft-danger">
+                                                                <i class="ti-close"></i>
+                                                            </span></td>
+                                                        {% else %}
+                                                        <td><span class="badge badge-md   badge-soft-success">
+                                                                <i class="ti-check-box"></i> </span>
+                                                        </td>
+                                                        {% endif %}
+
+                                                        <td>
+
+                                                            {% if user == sch.lawyer %}
+                                                            <a href="{% url 'schedules:delete' sch.pk %}"
+                                                                class="btn btn-danger">Delete</a>
+                                                            {% endif %}
+
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+
+                                            </table>
+
+
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-0 border shadow-none">
+                                    <div class="card-header bg-soft-warning p-0" id="headingTwo">
+                                        <h5 class="my-1">
+                                            <button class="btn btn-link collapsed text-dark shadow-none" type="button"
+                                                data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                Yellow Room {% if request.session.yellow_ %}
+                                                ( currently available)
+
+                                                {% else %}
+                                                (currently occupied)
+
+                                                {% endif %}
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                        data-parent="#accordionExample">
+                                        <div class="card-body">
+
+                                            <div class="table-responsive dash-social">
+                                                <table id="datatable" class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Purpose</th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+
+                                                        {% for sch in  yellow %}
+                                                        <tr>
+                                                            <td> <a href="">{{sch.room.name|title}}</a>
+                                                            </td>
+                                                            <td>{{sch.purpose|title}}</td>
+                                                            <td>{{sch.start_time}}</td>
+                                                            <td>{{sch.end_time}}</td>
+
+                                                            {% if sch.expired %}
+                                                            <td><span class="badge badge-md   badge-soft-danger"> <i
+                                                                        class="ti-close"></i>
+                                                                </span></td>
+                                                            {% else %}
+                                                            <td><span class="badge badge-md   badge-soft-success"> <i
+                                                                        class="ti-check-box"></i> </span></td>
+                                                            {% endif %}
+
+                                                            <td>
+
+                                                                {% if user == sch.lawyer %}
+                                                                <a href="{% url 'schedules:delete_session' sch.pk %}"
+                                                                    class="btn btn-danger">Delete</a>
+                                                                {% endif %}
+
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-0 border shadow-none">
+                                        <div class="card-header bg-soft-primary p-0" id="headingThree">
+                                            <h5 class="my-1">
+                                                <button class="btn btn-link collapsed text-dark shadow-none"
+                                                    type="button" data-toggle="collapse" data-target="#collapseThree"
+                                                    aria-expanded="false" aria-controls="collapseThree">
+                                                    Purple {% if request.session.purple_ %}
+                                                    ( currently available)
+                                                    {% else %}
+                                                    (currently occupied)
+                                                    {% endif %}
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                            data-parent="#accordionExample">
+                                            <div class="card-body">
+
+                                                <div class="table-responsive dash-social">
+                                                    <table id="datatable" class="table">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>Name</th>
+                                                                <th>Purpose</th>
+                                                                <th>Start Date</th>
+                                                                <th>End Date</th>
+                                                                <th>Status</th>
+                                                                <th>Action</th>
+
+
+                                                            </tr>
+                                                        </thead>
+
+
+                                                        <tbody>
+
+                                                            {% for sch in  purple %}
+                                                            <tr>
+                                                                <td> <a href="">{{sch.room.name|title}}</a>
+                                                                </td>
+                                                                <td>{{sch.purpose|title}}</td>
+                                                                <td>{{sch.start_time}}</td>
+                                                                <td>{{sch.end_time}}</td>
+
+                                                                {% if sch.expired %}
+                                                                <td><span class="badge badge-md   badge-soft-danger">
+                                                                        <i class="ti-close"></i>
+                                                                    </span></td>
+                                                                {% else %}
+                                                                <td><span class="badge badge-md   badge-soft-success">
+                                                                        <i class="ti-check-box"></i> </span>
+                                                                </td>
+                                                                {% endif %}
+
+                                                                <td>
+
+                                                                    {% if user == sch.lawyer %}
+                                                                    <a href="{% url 'schedules:delete' sch.pk %}"
+                                                                        class="btn btn-danger">Delete</a>
+                                                                    {% endif %}
+
+                                                                </td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+
+
+
+
+                                                </div>
+
+                                                </table>
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end card-body-->
+                        </div>
+                        <!--end card-->
+                    </div>
+                    <!--end col-->
+                </div>
+
+
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0" id="myModalLabel"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+
+
+
+                        <form class="" action="{% url 'schedules:add_session' %}" method="POST">
+                            {% csrf_token %}
+
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="message">Purpose</label>
+                                        <textarea class="form-control" name="purpose" rows="5" id="message"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div> -->
+
+
+                            {% bootstrap_form form %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="my-3">Start Date</label>
+                                        <input type="datetime-local" class="form-control" name="start_time"
+                                            placeholder="Start date" id="date-start">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="my-3">End Date</label>
+                                        <input type="datetime-local" class="form-control" name="end_time"
+                                            placeholder="End date" id="date-end">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12 text-left">
+                                        <button type="submit" class="btn btn-gradient-primary px-5 py-2">Submit</button>
+                                    </div>
+                                </div>
+                        </form>
+
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        {% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- sample modal content -->

@@ -39,6 +39,8 @@ urlpatterns = [
     path("", include('schedules.urls')),
     path("", include('visitors.urls')),
     path("", include('wills.urls')),
+    path("", include('correspondents.urls')),
+
 
 
 

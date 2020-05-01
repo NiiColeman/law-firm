@@ -19,7 +19,7 @@ from django.core.paginator import Paginator
 from .filters import CaseFilter
 from datetime import datetime, timedelta
 from django.utils import timezone
-
+from correspondents.forms import CaseCorrespondentForm
 # @login_required
 # def case_list(request):
 #     form = CaseForm()
@@ -82,6 +82,7 @@ def case_detail(request, pk):
     task_form = CaseTaskForm()
     file_form = CaseFileForm(request.POST or None, request.FILES or None)
     arguments = LegalArgument.objects.filter(case=case)[:4]
+    corrs_form = CaseCorrespondentForm(request.POST or None)
 
     lawyers = case.lawyer.all()
 # print(case.lawyer_set.user)
@@ -107,7 +108,8 @@ def case_detail(request, pk):
         'case_files': case_files,
         'users': users,
         'arg_form': LegalArgumentForm(request.POST or None),
-        'arguments': arguments
+        'arguments': arguments,
+        'corrs_form': corrs_form
 
     }
 
@@ -136,8 +138,16 @@ def add_case(request):
             # case.added_by = request.user
             # case.court = form.instance.court
             # case.save()
-            form.save()
+            name = request.user
+            x = form.save()
+            lawyer = x.lawyer.all()
+            for i in lawyer:
+                msg1 = "New Case - {}".format(x.name)
+                msg2 = "Dear {} {} , You have been added by {} {} to a new case :{} ".format(
+                    i.user.first_name, i.user.last_name, name.first_name, name.last_name, x.name)
+                notify_user(msg1, msg2, i.user.id)
 
+            print(lawyer)
             messages.success(request, "Case has been added")
             return redirect('cases:case_list')
 

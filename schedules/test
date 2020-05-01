@@ -1,0 +1,26 @@
+model:
+room 1 
+room 2 
+room 3
+
+start_time
+end_time
+user 
+
+
+
+list page:
+purple room
+yello room
+pink room
+
+tab
+
+
+
+
+if request .method == "POST"
+
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
