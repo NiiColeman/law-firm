@@ -40,6 +40,8 @@ urlpatterns = [
     path("", include('visitors.urls')),
     path("", include('wills.urls')),
     path("", include('correspondents.urls')),
+    path("resources/", include('resources.urls')),
+
 
 
 

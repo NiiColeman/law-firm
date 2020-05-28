@@ -1,0 +1,56 @@
+<tbody>
+
+    {% for object in  object_list %}
+    <tr>
+
+
+        <td> <a>{{object.book|title}}</a>
+        </td>
+
+
+
+
+
+        <td> {{object.lawyer|title}}</td>
+        <td> {{object.date_requested|date}}</td>
+
+        <!-- <td> {{object.shelf_number|title}}</td> -->
+
+
+
+
+
+
+        <td>
+
+            <!-- <a href="" class="btn btn-gradient-secondary waves-effect waves-light"><i class="mdi mdi-eye"></i></a> -->
+
+
+            {% if not  object.requested %}
+            <a href="{% url 'resources:approve' object.pk %}"
+                class="btn btn-gradient-success waves-effect waves-light">Approve</a>
+
+
+            {% endif %}
+
+
+
+
+
+
+        </td>
+
+    </tr>
+
+
+
+    {% endfor %}
+
+
+
+    <!--end tr-->
+
+
+
+
+</tbody>

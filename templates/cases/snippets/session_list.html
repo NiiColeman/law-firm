@@ -1,0 +1,50 @@
+<div class="table-responsive dash-social">
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+
+                <th>Name</th>
+                <th>Purpose</th>
+
+
+
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Action</th>
+
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for sch in  session_object %}
+            <tr>
+                <td>{{sch.lawyer.first_name|title}} {{sch.lawyer.last_name|title}}
+
+
+
+               <td>{{sch.purpose|truncatewords:8|title}}</td>
+
+                <td>{{sch.start_time}}</td>
+                <td>{{sch.end_time}}</td>
+
+
+
+                <td>
+                    {% if user == sch.lawyer %}
+                    <a href="{{sch.get_absolute_url}}" class="btn btn-secondary">View</a>
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+
+
+</div>

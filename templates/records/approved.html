@@ -1,4 +1,4 @@
-<div class="table-responsive dash-social">
+<div class="table-responsive dash-socials">
     <table id="datatable" class="table">
         <thead class="thead-light">
             <tr>
@@ -8,14 +8,15 @@
                 <th>Date Requested</th>
                 <th>Approved By</th>
                 <th>Date Approved</th>
-
-
-
-
-
-
-
                 <th>Action</th>
+
+
+
+
+
+
+
+
             </tr>
             <!--end tr-->
         </thead>
@@ -23,7 +24,7 @@
 
         <tbody>
 
-            {% for app  in  apps %}
+            {% for app  in  approved %}
             <tr>
                 <td>
                     {{app.document.title|title}}
@@ -47,8 +48,8 @@
 
 
                 <td>
-                    <a href="{{app.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
-                            class="mdi mdi-eye"></i></a>
+                    <a href="{% url 'documents:return-doc' app.pk %}"
+                        class="btn btn-gradient-success waves-effect waves-light"></i>Return Document</a>
 
 
                 </td>

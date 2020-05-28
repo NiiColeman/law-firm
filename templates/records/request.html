@@ -46,13 +46,13 @@
 
 
                 <td>
-                    <a href="{{req.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
-                            class="mdi mdi-eye"></i></a>
+                    <!-- <a href="{{req.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
+                            class="mdi mdi-eye"></i></a> -->
 
 
                     {% if request.user|has_group:"FrontDesk" %}
                     <a href="{% url 'documents:approve' req.id %}"
-                        class="btn btn-gradient-primary waves-effect waves-light"><i class="mdi mdi-eye">Approve</i></a>
+                        class="btn btn-gradient-success waves-effect waves-light"><i class="">Approve</i></a>
                     {% endif %}
 
                 </td>

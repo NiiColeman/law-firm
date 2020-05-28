@@ -76,7 +76,7 @@ class FirmChart(APIView):
         avail_count = available.count()
 
         labels = [
-            'Clients', 'Cases', 'Closed Cases', 'Open Cases'
+            'Clients', 'Cases', 'Closed/Archived Cases', 'Active Cases'
         ]
 
         data2 = [doc_count, available.count(), not_available.count()]

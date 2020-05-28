@@ -139,7 +139,7 @@ Court List
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title mt-0" id="myModalLabel">New Task</h5>
+                                    <h5 class="modal-title mt-0" id="myModalLabel">New Court</h5>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">×</button>
                                 </div>
@@ -148,15 +148,18 @@ Court List
                                     <form action="{% url 'cases:court_add' %}" method="post">
                                         {% csrf_token %}
                                         {{form|crispy}}
-                                        <button type="submit" class="btn btn-secondary">Add Court</button>
+
+                                        <center>
+                                             <button type="submit" class="btn btn-secondary">Add Court</button>
+                                        <button type="button" class="btn btn-danger waves-effect"
+                                        data-dismiss="modal">Close</button>
+                                        </center>
+
+
                                     </form>
 
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary waves-effect"
-                                        data-dismiss="modal">Close</button>
 
-                                </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->

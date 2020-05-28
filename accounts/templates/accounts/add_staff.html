@@ -1,8 +1,17 @@
+
+
 <form action="{% url 'accounts:add_staff' %}" method="post">
 
 
     {% include 'accounts/snippets/staff_form.html' %}
 
 
-    <button type="submit" class="btn btn-secondary">Add</button>
+
+
+    <center>
+        <button type="submit" class="btn btn-secondary">Add Staff</button>
+        <button type="button" class="btn btn-danger waves-effect"
+                                                data-dismiss="modal">Close</button>
+
+    </center>
 </form>

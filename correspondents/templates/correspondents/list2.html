@@ -27,7 +27,7 @@ Correspondents List
 
                             </li>
 
-                            <li class="breadcrumb-item active">Correspondent List</li>
+                            <li class="breadcrumb-item active">Correspondence List</li>
                         </ol>
                     </div>
 
@@ -54,7 +54,7 @@ Correspondents List
                     <div class="card-body">
                         <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
                             data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
-                            Correspondent</button>
+                            Correspondence</button>
 
                         <h4 class="mt-0 header-title">Correspondents List</h4>
 
@@ -66,7 +66,7 @@ Correspondents List
                                         <th>Title</th>
                                         <th>Case</th>
 
-                                        <td>Correspondent</td>
+                                        <td>Correspondence</td>
                                         <td>Date Added</td>
 
                                         <th>Added By</th>
@@ -150,7 +150,7 @@ Correspondents List
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title mt-0" id="myModalLabel">New Correspondent</h5>
+                                    <h5 class="modal-title mt-0" id="myModalLabel">New Correspondence</h5>
                                     <button type="button" class="close" data-dismiss="modal"
                                         aria-hidden="true">×</button>
                                 </div>
@@ -159,14 +159,16 @@ Correspondents List
 
 
                                         {% include "correspondents/snippets/form.html" %}
-                                        <button type="submit" class="btn btn-secondary">Add New Correspondent</button>
-                                    </form>
+
+
 
                                 </div>
                                 <div class="modal-footer">
+                                    <center>  <button type="submit" class="btn btn-secondary">Add </button>
                                     <button type="button" class="btn btn-secondary waves-effect"
-                                        data-dismiss="modal">Close</button>
+                                        data-dismiss="modal">Close</button></center>
 
+</form>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->

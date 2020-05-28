@@ -39,7 +39,15 @@
                 <div class="card">
                     <div class="card-body profile-card">
                         <div class="media align-items-center">
-                            <img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"
+                            <!--    {% if lawyer.user.avatar %}-->
+                            <!--<img src="{{lawyer.user.avatar.url}}" alt="user" class="rounded-circle thumb-lg">-->
+                            <!--{% else %}-->
+                            <!--<img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"-->
+                            <!--    class="rounded-circle thumb-lg">-->
+                            <!--{% endif %}-->
+
+
+                             <img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"
                                 class="rounded-circle thumb-lg">
                             <div class="media-body ml-3 align-self-center">
                                 <h5 class="pro-title">{{lawyer.user.first_name|title}} {{lawyer.user.last_name|title}}
@@ -107,9 +115,9 @@
                                     <div class="col-8 align-self-center text-right">
                                         <div class="ml-2">
                                             <div class="ml-2">
-                                                <p class="mb-0 text-muted">Pending Cases</p>
+                                                <p class="mb-0 text-muted">Active Cases</p>
                                                 <h4 class="mt-0 mb-1 d-inline-block text-purple font-22">
-                                                    {{completed.count}}</h4>
+                                                    {{pending.count}}</h4>
                                                 <span class="badge badge-soft-success mt-1 shadow-none">Active</span>
                                             </div>
                                         </div>
@@ -137,8 +145,8 @@
                                     </div>
                                     <div class="col-8 align-self-center text-right">
                                         <div class="ml-2">
-                                            <p class="mb-0 text-muted">Closed Cases</p>
-                                            <h4 class="mt-0 mb-1 d-inline-block text-pink font-22">{{pending.count}}
+                                            <p class="mb-0 text-muted">Archived Cases</p>
+                                            <h4 class="mt-0 mb-1 d-inline-block text-pink font-22">{{closed.count}}
                                             </h4>
                                         </div>
                                     </div>
@@ -207,17 +215,118 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Update Lawyer</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">
                     <form action="{% url 'accounts:lawyers_profile' lawyer.pk %}" method="POST"
                         enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{user_form|crispy}}
-                        {{lawyer_form|crispy}}
+                       {% csrf_token %}
 
-                        <button type="submit">Update Lawyer</button>
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.first_name|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.last_name|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.username|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.email|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-0">
+                                {{ user_form.password|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-12 mb-0">
+                                {{ user_form.phone|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4 mb-0">
+                                {{ user_form.is_superuser|as_crispy_field }}
+                            </div>
+
+                            <div class="form-group col-md-4 mb-0">
+                                {{ user_form.is_active|as_crispy_field }}
+                            </div>
+
+
+                            <div class="form-group col-md-4 mb-0">
+                                {{ user_form.is_staff|as_crispy_field }}
+                            </div>
+
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-0">
+                                {{ user_form.avatar|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.date_joined|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.last_login|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.groups|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ user_form.user_permissions|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                                {{ lawyer_form.bar_number|as_crispy_field }}
+                            </div>
+                            <div class="form-group col-md-6 mb-0">
+                                {{ lawyer_form.lawyer_status|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+                        {{ user_form.is_lawyer|as_crispy_field }}
+
+
+
+                        <center>
+
+                            <button type="submit" class="btn btn-secondary">Update Lawyer</button>
+                            <button type="button" class="btn btn-danger waves-effect"
+                                data-dismiss="modal">Close</button>
+                        </center>
+
                     </form>
                 </div>
             </div><!-- /.modal-content -->

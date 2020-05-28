@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Case, Category, Status, CaseTask, Appointment, CaseFile, LegalArgument, Court
+from .models import Case, Category, Status, CaseTask, Appointment, CaseFile, LegalArgument, Court,CourtSession,Process
 from lawyers.models import Lawyer, OtherStaff, User
 # Create your views here.
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
-from .forms import CaseForm, CaseTaskForm, CaseFileForm, CaseArchiveForm, CaseForms, CategoryForm, LegalArgumentForm, CourtForm
+from .forms import CaseForm, CaseTaskForm, CaseFileForm, CaseArchiveForm, CaseForms, CategoryForm, LegalArgumentForm, CourtForm,CourtSessionForm,ProcessForm
 from django.urls import reverse
 from accounts.decorators import group_required, groups_required
 from django.contrib.auth.decorators import login_required
@@ -14,12 +14,25 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from .models import CaseArchive
 from django.utils.crypto import get_random_string
-from .tasks import notify_user
+from .tasks import notify_user,notify_staff
 from django.core.paginator import Paginator
 from .filters import CaseFilter
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
+# from django.utils import timezone
+from correspondents.forms import CaseCorrespondentForm
+
+
 from django.utils import timezone
 from correspondents.forms import CaseCorrespondentForm
+import datetime
+
+from datetime import timedelta, time
+from django.conf import settings
+from django.utils.timezone import make_aware
+
+
+
+
 # @login_required
 # def case_list(request):
 #     form = CaseForm()
@@ -109,7 +122,11 @@ def case_detail(request, pk):
         'users': users,
         'arg_form': LegalArgumentForm(request.POST or None),
         'arguments': arguments,
-        'corrs_form': corrs_form
+        'corrs_form': corrs_form,
+        'session_form': CourtSessionForm(request.POST or None),
+        'session_object': CourtSession.objects.filter(case=case),
+
+
 
     }
 
@@ -195,7 +212,7 @@ def update_case(request, pk):
 def delete_case(request, pk):
     case = get_object_or_404(Case, pk=pk)
 
-    if request.method == "Post":
+    if request.method == "POST":
 
         case.delete()
         messages.success(request, 'case has been deleted')
@@ -446,6 +463,7 @@ class CaseList(ListView):
     def get_context_data(self, **kwargs):
         context = super(CaseList, self).get_context_data(**kwargs)
         context['form'] = CaseForms(self.request.POST or None)
+        context['process_form']=ProcessForm(self.request.POST or None)
         return context
 
 
@@ -872,3 +890,157 @@ def case_court(request, pk):
     }
 
     return render(request, 'cases/case_list_view.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################### COURT SESSIONS #####################################################
+
+@login_required
+def add_session(request, pk):
+    case = get_object_or_404(Case, pk=pk)
+    if request.method == "POST":
+        form = CourtSessionForm(request.POST or None)
+        if form.is_valid():
+
+            purpose = form.instance.purpose
+            form.instance.case = case
+            form.instance.lawyer = request.user
+            start = request.POST.get("start_time")
+            end = request.POST.get("end_time")
+            s1 = start.replace("T", " ")
+            e1 = end.replace("T", " ")
+
+            start1 = datetime.datetime.strptime(
+                s1, '%Y-%m-%d %H:%M')
+            end1 = datetime.datetime.strptime(
+                e1, '%Y-%m-%d %H:%M')
+
+            settings.TIME_ZONE
+            start1 = make_aware(start1)
+            end1 = make_aware(end1)
+
+            form.instance.start_time = start1
+            form.instance.end_time = end1
+
+            form.save()
+            messages.success(request, "Court session has been added")
+            return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
+        else:
+            messages.error(request, form.errors)
+            return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
+
+    else:
+        form = CourtSessionForm()
+
+    return render(request, 'cases/detail.html', {'session_form': form})
+
+
+@login_required
+def update_session(request, pk):
+    object = get_object_or_404(CourtSession, pk=pk)
+    case = object.case
+
+    if request.method == "POST":
+        form = CourtSessionForm(request.POST or None, instance=object)
+
+        if form.is_valid():
+            purpose = form.instance.purpose
+            form.instance.case = case
+            form.instance.lawyer = request.user
+            start = request.POST.get("start_time")
+            end = request.POST.get("end_time")
+            s1 = start.replace("T", " ")
+            e1 = end.replace("T", " ")
+
+            start1 = datetime.datetime.strptime(
+                s1, '%Y-%m-%d %H:%M')
+            end1 = datetime.datetime.strptime(
+                e1, '%Y-%m-%d %H:%M')
+
+            settings.TIME_ZONE
+            start1 = make_aware(start1)
+            end1 = make_aware(end1)
+
+            form.instance.start_time = start1
+            form.instance.end_time = end1
+
+            form.save()
+            messages.success(request, "Court session has been updated")
+            return HttpResponseRedirect(reverse('cases:session_detail', args=[object.pk]))
+
+        else:
+            messages.success(request, "Court session could not be updated")
+            return HttpResponseRedirect(reverse('cases:session_detail', args=[object.pk]))
+
+    else:
+        form = CourtSessionForm()
+
+    return render(request, "cases/session_detail.html", {'form': form})
+
+
+@login_required
+def detail_session(request, pk):
+    object = get_object_or_404(CourtSession, pk=pk)
+    case = object.case
+
+    return render(request, 'cases/session_detail.html', {'object': object, 'case': case, 'session_form': CourtSessionForm(request.POST or None, instance=object)})
+
+
+@login_required
+def delete_session(request, pk):
+    object = get_object_or_404(CourtSession, pk=pk)
+    case = object.case
+
+    if request.method == "POST":
+        object.delete()
+        messages.success(request, "Court session has been deleted")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
+    else:
+        messages.error(request, "Court session could not be deleted")
+        return HttpResponseRedirect(reverse('cases:case_detail', args=[case.pk]))
+
+    return render(request, "cases/session_detail.html", {'form': form})
+
+
+
+################################################## PROCESSES ############################
+@login_required
+def add_process(request):
+    if request.method == "POST":
+        form = ProcessForm(request.POST or None)
+        if form.is_valid():
+            form.instance.added = request.user
+            form.save()
+
+            case = form.instance.case
+            lawyers = case.lawyer.all()
+            print(lawyers)
+
+            for lawyer in lawyers:
+                msg1 = "New Process {}".format(form.instance.process)
+                msg2 = "Dear {}, please note that you have new process {} for your case ({})".format(
+                    lawyer, form.instance.process, case)
+                notify_staff(lawyer.user.id, msg1, msg2)
+                # print(lawyer.user.id)
+
+            messages.success(request, 'Process has been added')
+            return redirect('cases:case_list')
+        else:
+            messages.error(request, "Process could not be added")
+            return redirect('cases:case_list')
+    else:
+        form = ProcessForm()
+
+    return render(request, "cases/case_list_view.html", {'form': form})
+

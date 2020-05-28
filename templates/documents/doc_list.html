@@ -8,7 +8,7 @@ Document List
 
 
 
-
+{% load auth_extras %}
 
 
 
@@ -16,6 +16,8 @@ Document List
 
 {% block content %}
 <!-- Page Content-->
+
+
 <div class="page-content">
 
     <div class="container-fluid">
@@ -27,11 +29,11 @@ Document List
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
 
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Documents</a></li>
+                            </li>
                             <li class="breadcrumb-item active">Document List</li>
                         </ol>
                     </div>
-                    <h4 class="page-title">Documents</h4>
+
                 </div>
                 <!--end page-title-box-->
             </div>
@@ -46,47 +48,32 @@ Document List
 
 
 
+
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
+
                     <div class="card-body">
+                         {% if request.user|has_group:"FrontDesk" %}
                         <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" data-toggle="modal"
-                            data-animation="bounce" data-target=".bs-example-modal-lg"><i
-                                class="mdi mdi-plus-circle-outline mr-2"></i>Add New Document</button>
+                            data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
+                            Document</button>
 
+                            {% endif %}
 
+                        <h4 class="mt-0 header-title">Document List</h4>
 
-                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
-                            aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Add New
-                                            Document</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                            aria-hidden="true">×</button>
-                                    </div>
-                                    <div class="modal-body">
-                                        {% include 'documents/add_document.html' %}
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div>
-
-
-
-
-                        <h4 class="header-title mt-0">Documents </h4>
                         <div class="table-responsive dash-social">
                             <table id="datatable" class="table">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Document Title</th>
-                                        <th>Category</th>
+
                                         <th>Added By</th>
                                         <th>Status</th>
-                                        <th>Case</th>
-                                        <th>Client</th>
+
+
 
 
                                         <th>Date Added</th>
@@ -94,7 +81,7 @@ Document List
 
 
                                         <th>Action</th>
-                                        <th> </th>
+                                        <th>Request </th>
 
                                     </tr>
                                     <!--end tr-->
@@ -113,7 +100,7 @@ Document List
                                         <td>
                                             {{doc.title|title}}
 
-                                        <td>{{doc.category|title}}</td>
+
 
                                         <td>{{doc.added_by|title}}</td>
                                         {% if doc.status|stringformat:"s" == 'Not Available' %}
@@ -122,14 +109,8 @@ Document List
                                         <td><span class="badge badge-md   badge-soft-success">{{doc.status}}</span>
                                         </td>
 
-                                        <td>{{doc.case|title}}</td>
 
-                                        {% if doc.case %}
-                                        <td>{{doc.case.client.name|title}}</td>
-                                        {% else %}
-                                        <td>None</td>
 
-                                        {% endif %}
 
 
                                         {% endif %}
@@ -151,13 +132,12 @@ Document List
 
                                         <td>
                                             {% if user.is_authenticated %}
-                                            {% if doc.status|stringformat:"s" == 'Available' %}
-                                            <form action="{% url 'documents:record_request' doc.id %}" method="post">
+                                            {% if not doc.requested and  doc.status|stringformat:"s" == 'Available'%}
 
-                                                {% csrf_token %}
-                                                <button class="btn btn-secondary">Request</button>
+                                            <a href="{% url 'documents:record_request' doc.id %}"
+                                                class="btn btn-secondary">Request</a>
 
-                                            </form>
+
 
                                             {% endif %}
                                             {%  endif %}</td>
@@ -176,16 +156,65 @@ Document List
                                 </tbody>
                             </table>
                         </div>
+
+
                     </div>
-                    <!--end card-body-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- sample modal content -->
+                    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">New Book</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+
+                                <div class="modal-body">
+
+
+                                    {% include 'documents/add_document.html' %}
+
+                                </div>
+                                <div class="modal-footer">
+
+
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+                                    </form>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
-                <!--end card-->
             </div>
-            <!--end col-->
-        </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
 
-
-    </div>
-
-</div>
-{% endblock content %}
+    {% endblock content %}

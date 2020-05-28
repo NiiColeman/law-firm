@@ -42,16 +42,16 @@
                     <div class="card-body profile-card">
                         <div class="media align-items-center">
 
-                            {% if staff.user.avatar %}
-                            <img src="{{staff.user.avatar.url}}" alt="user" class="rounded-circle thumb-lg">
+                            <!--{% if staff.user.avatar %}-->
+                            <!--<img src="{{staff.user.avatar.url}}" alt="user" class="rounded-circle thumb-lg">-->
 
 
-                            {% else %}
+                            <!--{% else %}-->
 
 
-                            <img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"
-                                class="rounded-circle thumb-lg">
-                            {% endif %}
+                            <!--<img src="{% static './assets/images/users/user-4.jpg' %}" alt="user"-->
+                            <!--    class="rounded-circle thumb-lg">-->
+                            <!--{% endif %}-->
 
 
                             <div class="media-body ml-3 align-self-center">
@@ -207,7 +207,7 @@
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="card-body">
-                                                <!-- <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3" 
+                                                <!-- <button class="btn btn-gradient-primary px-4 float-right mt-0 mb-3"
                                                     data-toggle="modal" data-animation="bounce"
                                                     data-target=".bs-example-modal-lg"><i
                                                         class="mdi mdi-plus-circle-outline mr-2"></i>Add New Request</button> -->
@@ -318,7 +318,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Large modal</h5>
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">Update Staff</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 </div>
                 <div class="modal-body">

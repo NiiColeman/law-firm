@@ -6,7 +6,12 @@
     {% csrf_token %}
     {{ task_form|crispy }}
 
-    <button type="submit" class="btn btn-secondary">Add Task</button>
+  <center>
 
+     <button type="submit" class="btn btn-secondary" >Submit</button>
+       <button type="button" class="btn btn-danger waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+</center>
 
 </form>

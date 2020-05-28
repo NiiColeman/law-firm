@@ -47,7 +47,7 @@ Wills Details
                 <div class="card">
                     <div class="card-body">
                         <h3 class="mt-0  text-center">
-                            {{will.client|title}}
+                            {{will.client.name|title}}
                         </h3>
 
 
@@ -65,7 +65,7 @@ Wills Details
                                     Execution: &nbsp; <strong>{{will.date_of_execution|date}}</strong></i>
                                 </li>
                                 <!-- <p class="text-lead text-left">
-    
+
                             </p> -->
 
                                 <li class="mb-2 font-15 text-muted"><i
@@ -91,8 +91,10 @@ Wills Details
                                 </i>
                                 <li class="mb-2 font-15 text-muted"><i
                                         class="mdi mdi-checkbox-marked-circle-outline text-success mr-3">
-                                    </i>&nbsp;Lawyer:&nbsp; <strong>{{will.user|title}}
-                                        {{will.user.last_name|title}}</strong></li>
+                                    </i>&nbsp;Lawyer:&nbsp; <strong>   {% for lawyer in lawyers  %}
+                                        {{lawyer}} ,
+
+                                        {% endfor %}</strong></li>
 
 
                             </div>
@@ -154,13 +156,21 @@ Wills Details
                     <div class="card-body">
 
 
-                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-lg">Edit</button>
+                        <center>
+                            <h3>Actions</h3>
+                        </center>
 
-                        {% if user.is_superuser %}
-                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-center">Delete</button>
-                        {% endif %}
+
+                        <center>
+                            <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-lg">Edit</button>
+
+                            {% if user.is_superuser %}
+                            <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-center">Delete</button>
+                            {% endif %}
+
+                        </center>
                     </div>
                     <!--end card-body-->
                 </div>
@@ -184,9 +194,51 @@ Wills Details
 
                             <form action="{{will.get_update_url}}" method="post">
                                 {% csrf_token %}
-                                {{form|crispy}}
-                                {{form.erorrs}}
-                                <button type="submit" class="btn btn-primary">Update</button>
+
+
+
+
+                                {{form.client|as_crispy_field}}
+                                {{form.lawyer|as_crispy_field}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-0">
+                                        {{ form.date_of_execution|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
+                                        {{ form.date_deposited|as_crispy_field }}
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 mb-0">
+                                        {{ form.receipt_number|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
+                                        {{ form.court|as_crispy_field }}
+                                    </div>
+
+                                </div>
+
+
+                                {{form.internal_depository|as_crispy_field}}
+
+
+
+                                {{form.errors}}
+
+
+
+                                <center>
+
+                                    <button type="submit" class="btn btn-primary">Update Will</button>
+                                    <button type="button" class="btn btn-danger waves-effect"
+                                        data-dismiss="modal">Close</button>
+
+                                </center>
 
                             </form>
                         </div>
@@ -208,12 +260,16 @@ Wills Details
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{will.title|title}}</p>
+                            <p>AreYou Sure You Want To Delete This Will?</p>
 
 
                             <form action="{{will.get_delete_url}}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                 <center>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button>
+                                </center>
                             </form>
                         </div>
                     </div><!-- /.modal-content -->

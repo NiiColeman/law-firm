@@ -197,10 +197,12 @@ Client Details
                 <div class="modal-body">
                     <form action="{{client.get_update_url}}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{form|crispy}}
-                        {{form.errors}}
+                         {% include "clients/snippets/form.html" %}
 
-                        <button type="submit" class="btn btn-secondary">Update Client</button>
+                        <center><button type="submit" class="btn btn-secondary">Update Client</button>
+                            <button type="button" class="btn btn-danger waves-effect"
+                                data-dismiss="modal">Close</button></center>
+
                     </form>
                 </div>
             </div><!-- /.modal-content -->
@@ -222,7 +224,9 @@ Client Details
                     <form action="{{client.get_delete_url}}" method="POST">
                         {% csrf_token %}
                         <p>Are you sure you want to delete {{client.name|title}} ?</p>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                            <center> <button type="submit" class="btn btn-danger">Delete Client</button>
+                            <button type="button" class="btn btn-secondary waves-effect"
+                                data-dismiss="modal">Close</button></center>
                     </form>
                 </div>
             </div><!-- /.modal-content -->

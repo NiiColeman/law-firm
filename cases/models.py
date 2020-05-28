@@ -98,8 +98,10 @@ class Case(models.Model):
     description = models.TextField()
     category = models.ForeignKey(
         Category, null=True, on_delete=models.SET_NULL)
-    court_number = models.CharField(max_length=250)
+    court_number = models.CharField(max_length=250,null=True,blank=True)
     suit_number = models.CharField(max_length=250)
+    case_number = models.CharField(max_length=250, null=True, blank=True)
+
     representative = models.ForeignKey(
         Representative, null=True, on_delete=models.SET_NULL)
     lawyer = models.ManyToManyField("lawyers.Lawyer")
@@ -267,3 +269,55 @@ class LegalArgument(models.Model):
 
         verbose_name = 'LegalArgument'
         verbose_name_plural = 'LegalArguments'
+
+
+
+
+
+
+
+
+
+
+########################## Court Sessions ####################################
+
+class CourtSession(models.Model):
+    lawyer = models.ForeignKey(
+        'lawyers.User', null=True, on_delete=models.SET_NULL)
+    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    purpose = models.CharField(max_length=250)
+    start_time = models.DateTimeField(auto_now=False)
+
+    end_time = models.DateTimeField(auto_now=False)
+
+    def __str__(self):
+        return self.case.name
+
+    def get_absolute_url(self):
+        return reverse("cases:session_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("cases:session_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("cases:session_delete", kwargs={"pk": self.pk})
+
+
+
+
+
+class Process(models.Model):
+    case = models.ForeignKey(Case, on_delete=models.CASCADE)
+    process = models.CharField(max_length=250)
+    date_added = models.DateTimeField(auto_now=True)
+    added_by = models.ForeignKey(
+        "lawyers.User", null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        process = "Process :{} - Case{}".format(self.process, self.case)
+        return process
+
+
+
+
+

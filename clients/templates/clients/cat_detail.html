@@ -110,13 +110,22 @@ Category Details
                     <div class="card-body">
 
 
-                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-lg">Edit</button>
+                        <center>
 
-                        {% if user.is_superuser %}
-                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-center">Delete</button>
-                        {% endif %}
+                            <h3>Actions</h3>
+                        </center>
+
+                        <center>
+                            <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-lg">Edit</button>
+
+                            {% if user.is_superuser %}
+                            <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-center">Delete</button>
+                            {% endif %}
+
+                        </center>
+
                     </div>
                     <!--end card-body-->
                 </div>
@@ -142,7 +151,9 @@ Category Details
                                 {% csrf_token %}
                                 {{form|crispy}}
                                 {{form.erorrs}}
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                   <center><button type="submit" class="btn btn-secondary">Update Category</button>
+                                    <button type="button" class="btn btn-danger waves-effect"
+                                        data-dismiss="modal">Close</button></center>
                             </form>
                         </div>
                     </div><!-- /.modal-content -->
@@ -163,12 +174,14 @@ Category Details
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{cat.title|title}}</p>
+                            <p>AreYou Sure You Want To Delete {{cat.title|title}}</p>
 
 
                             <form action="{% url 'clients:cat_delete' cat.pk %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                  <center><button type="submit" class="btn btn-danger">Delete Category</button>
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                        data-dismiss="modal">Close</button></center>
                             </form>
                         </div>
                     </div><!-- /.modal-content -->

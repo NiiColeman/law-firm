@@ -3,7 +3,8 @@ from .views import (document_detail, document_list, record_detail, record_list, 
                     add_document, record_list,
                     document_request,
                     document_request_list,
-                    document_delete_view, request_doc, record_update, record_delete, approve_request, document_archive_list, record_archive_list, upload_files, delete_file
+                    document_delete_view, request_doc, record_update, record_delete, approve_request, document_archive_list, record_archive_list, upload_files, delete_file,
+                    return_document, DocumentHistoryList, ApprovedList
 
                     )
 
@@ -41,7 +42,18 @@ urlpatterns = [
     path("documents/files/<int:pk>/add-files",
          upload_files, name="upload_files"),
     path("documents/files/<int:pk>/delete-files",
-         delete_file, name="delete_files")
+         delete_file, name="delete_files"),
+
+
+
+    path("documents/approved-requests",ApprovedList.as_view(), name="approved-list"),
+    path("doccuments/requests/<int:pk>/return-document", return_document, name="return-doc"),
+    path("doccuments/archives/history", DocumentHistoryList.as_view(), name="history"),
+
+
+
+
+
 
 
 

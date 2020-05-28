@@ -20,7 +20,7 @@ Agreement Details
                     <div class="float-right">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'wills:agreement_list' %}">Agreement Details</a>
+                            <li class="breadcrumb-item"><a href="{% url 'wills:agreement_list' %}">Agreement List</a>
                             </li>
                             <li class="breadcrumb-item active">Agreement Details</li>
                         </ol>
@@ -65,7 +65,7 @@ Agreement Details
                                     Execution: &nbsp; <strong>{{agreement.date_of_execution|date}}</strong></i>
                                 </li>
                                 <!-- <p class="text-lead text-left">
-    
+
                             </p> -->
 
                                 <li class="mb-2 font-15 text-muted"><i
@@ -89,8 +89,12 @@ Agreement Details
                                 </i>
                                 <li class="mb-2 font-15 text-muted"><i
                                         class="mdi mdi-checkbox-marked-circle-outline text-success mr-3">
-                                    </i>&nbsp;Lawyer:&nbsp; <strong>{{agreement.user|title}}
-                                        {{agreement.user.last_name|title}}</strong></li>
+                                    </i>&nbsp;Lawyer(s):&nbsp; <strong> {% for lawyer in lawyers %}
+                                    {{lawyer|title}} ,
+
+                                    {% endfor %}
+
+                                    </strong></li>
 
 
                             </div>
@@ -152,13 +156,25 @@ Agreement Details
                     <div class="card-body">
 
 
-                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-lg">Edit</button>
+                                      <center>
 
-                        {% if user.is_superuser %}
-                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
-                            data-target=".bs-example-modal-center">Delete</button>
-                        {% endif %}
+                            <h3>Actions</h3>
+                        </center>
+
+
+
+                        <center>
+
+                            <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-lg">Edit</button>
+
+                            {% if user.is_superuser %}
+                            <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                                data-target=".bs-example-modal-center">Delete</button>
+                            {% endif %}
+
+                        </center>
+
                     </div>
                     <!--end card-body-->
                 </div>
@@ -182,9 +198,44 @@ Agreement Details
 
                             <form action="{% url 'wills:agreement_update' agreement.pk %}" method="post">
                                 {% csrf_token %}
-                                {{form|crispy}}
-                                {{form.erorrs}}
-                                <button type="submit" class="btn btn-primary">Update</button>
+
+
+
+
+
+
+
+
+                        {{form.parties|as_crispy_field}}
+                        {{form.category|as_crispy_field}}
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 mb-0">
+                            {{ form.date_of_execution|as_crispy_field }}
+                         </div>
+                            <div class="form-group col-md-6 mb-0">
+                            {{ form.date_of_registration|as_crispy_field }}
+                            </div>
+
+                        </div>
+
+
+                        {{form.internal_depository|as_crispy_field}}
+
+
+
+
+
+
+
+    <center>
+
+        <button type="submit" class="btn btn-primary">Update Agreement</button>
+        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+
+    </center>
 
                             </form>
                         </div>
@@ -206,12 +257,18 @@ Agreement Details
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{agreement.title|title}}</p>
+                            <p>AreYou Sure You Want To Delete This Agreement ?</p>
 
 
                             <form action="{% url 'wills:agreement_delete' agreement.pk %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                 <center>
+
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="button" class="btn btn-secondary waves-effect"
+                                            data-dismiss="modal">Close</button>
+
+                                </center>
                             </form>
                         </div>
                     </div><!-- /.modal-content -->

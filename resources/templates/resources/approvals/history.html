@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load auth_extras %}
+{% load crispy_forms_tags %}
+{% block title %}
+BookS History
+
+
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+
+                            </li>
+                            <li class="breadcrumb-item active">Books History</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h4 class="mt-0 header-title">Books History</h4>
+                        <div class="table-responsive dash-social">
+                            <table id="datatable" class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>Book</th>
+                                        <th>Requested By</th>
+                                        <th>Date Requested</th>
+                                        <th>Approved By</th>
+                                        <th>Date Approved</th>
+                                        <th>Date Returned</th>
+
+
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for object in  history %}
+                                    <tr>
+                                        <td> <a>{{object.book|title}}</a>
+                                        </td>
+                                        <td> {{object.lawyer|title}}</td>
+                                        <td> {{object.date_requested|date}}</td>
+                                        <td>{{object.approved_by|title}}</td>
+                                        <td>{{object.date_approved|date}}</td>
+                                        <td>{{object.date_returned|date}}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+
+    {% endblock content %} ,

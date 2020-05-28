@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load auth_extras %}
+{% load crispy_forms_tags  %}
 {% block title %}
 Case List
 
@@ -51,6 +52,12 @@ Case List
                             data-target=".bd-example-modal-xl"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
                             Case</button>
 
+                              {% if request.user|has_group:"FrontDesk" %}
+                        <button class="btn btn-gradient-primary px-4 float-center mt-0 mb-3" data-toggle="modal"
+                        data-target=".bd-example-modal-xlx"><i class="mdi mdi-plus-circle-outline mr-2"></i>Add New
+                        Process</button>
+                        {% endif %}
+
 
                         <h4 class="mt-0 header-title">Case Lists</h4>
 
@@ -82,10 +89,10 @@ Case List
 
 
                                         {% if case.closed %}
-                                        <td> <span class="badge badge-md   badge-soft-success">Closed</span>
+                                        <td> <span class="badge badge-md   badge-soft-success">Archived</span>
                                         </td>
                                         {% else %}
-                                        <td> <span class="badge badge-md   badge-soft-danger">Open</span>
+                                        <td> <span class="badge badge-md   badge-soft-danger">Active</span>
                                         </td>
                                         {% endif %}
 
@@ -156,14 +163,22 @@ Case List
                                         aria-hidden="true">×</button>
                                 </div>
                                 <div class="modal-body">
+
+                                    <form action="{% url 'cases:add_case' %}" method="POST">
                                     {% include "cases/add_case.html" %}
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary waves-effect"
-                                        data-dismiss="modal">Close</button>
 
+                                        <center>
+
+                                            <button type="submit" class="btn btn-secondary">Save changes</button>
+
+                                            <button type="button" class="btn btn-danger waves-effect"
+                                                data-dismiss="modal">Close</button>
+                                        </center>
+
+  </form>
                                 </div>
+
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
@@ -171,6 +186,29 @@ Case List
 
 
 
+                   <div class="modal fade bd-example-modal-xlx" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title mt-0" id="myModalLabel">Add New Process</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'cases:process_add' %}" method="post">
+                                        {% csrf_token %}
+                                        {{process_form|crispy}}
+                                </div>
+                                <div class="modal-footer">
+                                     <button type="submit" class="btn btn-secondary   float-center">Add Process</button>
+                                    <button type="button" class="btn btn-secondary waves-effect  float-center"
+                                        data-dismiss="modal">Close</button>
+                                    </form>
+
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
 
 

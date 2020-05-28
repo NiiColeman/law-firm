@@ -4,10 +4,45 @@
 <form action="{% url 'wills:add_agreement' %}" method="post">
 
     {% csrf_token %}
-    {{form|crispy}}
+   
 
 
-    <button type="submit" class="btn btn-submit">Submit</button>
+
+
+
+
+    {{form.parties|as_crispy_field}}
+    {{form.category|as_crispy_field}}
+
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+            {{ form.date_of_execution|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+            {{ form.date_of_registration|as_crispy_field }}
+        </div>
+
+    </div>
+
+
+    {{form.internal_depository|as_crispy_field}}
+
+
+
+
+
+
+
+    <center>
+
+        <button type="submit" class="btn btn-primary">Add Agreement</button>
+        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+
+    </center>
+
+
 
 
 </form>

@@ -109,9 +109,12 @@ Court Details
                 <div class="card">
                     <div class="card-body">
 
+<center>
+    <h3>Actions</h3>
+</center>
 
-
-                        {% if user.is_superuser or user.is_staff %}
+<center>
+    {% if user.is_superuser or user.is_staff %}
                         <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>
 
@@ -120,6 +123,9 @@ Court Details
                         <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center">Delete</button>
                         {% endif %}
+</center>
+
+
 
 
 
@@ -149,7 +155,14 @@ Court Details
                                 {% csrf_token %}
                                 {{form|crispy}}
                                 {{form.erorrs}}
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                      <center>
+                                            <button type="submit" class="btn btn-secondary">Add Court</button>
+                                            <button type="button" class="btn btn-danger waves-effect"
+                                                data-dismiss="modal">Close</button>
+
+
+                                        </center>
+
                             </form>
                         </div>
                     </div><!-- /.modal-content -->
@@ -170,12 +183,18 @@ Court Details
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{court.name|title}}</p>
+                            <p>AreYou Sure You Want To Delete {{court.name|title}} ?</p>
 
 
                             <form action="{% url 'cases:court_delete' court.pk %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                 <center>
+                                            <button type="submit" class="btn btn-danger">Delete Court</button>
+                                            <button type="button" class="btn btn-secondary waves-effect"
+                                                data-dismiss="modal">Close</button>
+
+
+                                        </center>
                             </form>
                         </div>
                     </div><!-- /.modal-content -->

@@ -10,24 +10,24 @@ class DateInput(forms.DateInput):
 
 class WillForm(forms.ModelForm):
     """WillForm definition."""
-    date_of_execution = forms.DateField(widget=DateInput)
+    date_of_execution = forms.DateField(widget=DateInput,required=False)
     date_deposited = forms.DateField(widget=DateInput)
 
     class Meta:
         model = Will
-        exclude = ('user',)
+        fields=['client','lawyer', 'date_of_execution','date_deposited','receipt_number', 'court','internal_depository']
 
     # TODO: Define form fields here
 
 
 class AgreementForm(forms.ModelForm):
     """WillForm definition."""
-    date_of_execution = forms.DateField(widget=DateInput)
+    date_of_execution = forms.DateField(widget=DateInput,required=False)
     date_of_registration = forms.DateField(widget=DateInput)
 
     class Meta:
         model = Agreement
-        exclude = ('user',)
+        fields=['parties','lawyer', 'category','date_of_execution','date_of_registration','internal_depository']
 
 
 class AgreementCategoryForm(forms.ModelForm):

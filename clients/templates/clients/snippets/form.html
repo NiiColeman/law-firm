@@ -2,5 +2,25 @@
 
 
 {% csrf_token %}
-{{form|crispy}}
-{{form.media}}
+<div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+        {{ form.name|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-6 mb-0">
+        {{ form.email|as_crispy_field }}
+    </div>
+
+</div>
+{{ form.address|as_crispy_field }}
+
+
+
+<div class="form-row">
+    <div class="form-group col-md-6 mb-0">
+        {{ form.phone|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-6 mb-0">
+        {{ form.category|as_crispy_field }}
+    </div>
+
+</div>

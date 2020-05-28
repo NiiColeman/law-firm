@@ -56,11 +56,12 @@ Document Details
                         </p>
                         <p>Category: {{doc.category|title}}</p>
                         <p>Case: {{doc.case|title}}</p>
-                        <p>Status: {% if doc.status == "Pending" %}
-                            <span class="badge badge-md badge-boxed  badge-soft-">{{doc.status|title}}</span>
+                        <p>Storage Location : {{doc.storage_location}}</p>
+                        <p>Status: {% if doc.status == "Available" %}
+                            <span class="badge badge-md badge-boxed  badge-soft-danger">{{doc.status|title}}</span>
 
                             {% else %}
-                            <span class="badge badge-md badge-boxed  badge-soft-">{{doc.status|title}}</span>
+                            <span class="badge badge-md badge-boxed  badge-soft-success">{{doc.status|title}}</span>
 
                             {% endif %}
 

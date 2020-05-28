@@ -1,0 +1,55 @@
+<tbody>
+
+    {% for object in  object_list %}
+    <tr>
+
+
+        <td> <a href="{{object.get_absolute_url}}">{{object.title|title}}</a>
+        </td>
+
+
+
+
+
+        <td> {{object.date_added|date}}</td>
+        <td> {{object.branch|title}}</td>
+        <td> {{object.shelf_number|title}}</td>
+
+
+
+
+
+
+        <td>
+
+            <a href="{{object.get_absolute_url}}" class="btn btn-gradient-secondary waves-effect waves-light"><i
+                    class="mdi mdi-eye"></i></a>
+
+
+            {% if not  object.requested %}
+            <a href="{{object.get_request_url}}" class="btn btn-gradient-success waves-effect waves-light">request</a>
+
+
+            {% endif %}
+
+
+
+
+
+
+        </td>
+
+    </tr>
+
+
+
+    {% endfor %}
+
+
+
+    <!--end tr-->
+
+
+
+
+</tbody>

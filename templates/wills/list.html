@@ -112,7 +112,7 @@ Will List
 
                                     <tr>
                                         <td>
-                                            {{will.client|title}}
+                                            {{will.client.name|title}}
 
                                         <td>{{will.date_of_execution|date}}</td>
                                         <td>{{will.date_deposited|date}}</td>
@@ -143,11 +143,12 @@ Will List
                                         <td>
 
 
-                                            {% if user == will.user %}
+
+
                                             <a href="{{will.get_absolute_url}}"
                                                 class="btn btn-gradient-secondary waves-effect waves-light"><i
                                                     class="mdi mdi-eye"></i></a>
-                                            {% endif %}
+
 
 
 

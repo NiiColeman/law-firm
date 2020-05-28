@@ -230,13 +230,13 @@
 
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
-                                    class="ti-control-record"></i>Closed Cases
+                                    class="ti-control-record"></i>Archived Cases
                                 {% if request.session.completed %}
                                 <span class="badge badge-success float-right mr-2">{{request.session.completed}}</span>
                                 {% endif %}
                             </a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'cases:pending_list' %}"><i
-                                    class="ti-control-record"></i>Open Cases {% if request.session.pending %}
+                                    class="ti-control-record"></i>Active Cases {% if request.session.pending %}
                                 <span class="badge badge-pink float-right mr-2">{{request.session.pending}}</span>
                                 {% endif %}</a></li>
                         <!--
@@ -258,8 +258,8 @@
 
 
 
-                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:completed_list' %}"><i
-                                    class="ti-control-record"></i>Closed Cases</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'cases:case_list' %}"><i
+                                    class="ti-control-record"></i> Case List</a></li>
 
                         <!--
                         <li class="nav-item"><a class="nav-link" href="../ecommerce/ecommerce-product-detail.html"><i
@@ -284,7 +284,7 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:lawyer_list' %}"><i
                                     class="ti-control-record"></i>Lawyers</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:staff_list' %}"><i
-                                    class="ti-control-record"></i>Front Desk</a></li>
+                                    class="ti-control-record"></i>Staff</a></li>
                         <!-- <li class="nav-item"><a class="nav-link" href="../crm/crm-opportunities.html"><i
                     class="ti-control-record"></i>Opportunities</a></li>
         <li class="nav-item"><a class="nav-link" href="../crm/crm-leads.html"><i
@@ -296,12 +296,12 @@
                 {% endif %}
 
 
-                <li>
+                <!-- <li>
                     <a href="javascript: void(0);"><i class="ti-folder"></i>
                         <span>Documents</span>
 
                         <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
-                        <!-- <span class="badge badge-pink float-right mr-2">New</span> -->
+
                     </a>
                     <ul class="nav-second-level" aria-expanded="false">
                         <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_list' %}"><i
@@ -314,7 +314,7 @@
                         {% endif %}
                     </ul>
                 </li>
-
+ -->
 
                 <li>
                     <a href="javascript: void(0);"><i class="ti-medall"></i>
@@ -335,7 +335,7 @@
 
 
 
-                {% if request.user.is_superuser %}
+                {% if request.user.is_superuser or request.user|has_group:"FrontDesk" %}
                 <li>
                     <a href="javascript: void(0);"><i class="ti-user"></i><span>Visitors</span><span
                             class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
@@ -499,19 +499,20 @@
                                     class="ti-control-record"></i>Gallery</a></li>
                     </ul>
                 </li>-->
+                <!--{% if request.user.is_superuser or request.user|has_group:"FrontDesk" %}-->
+                <!--<li>-->
+                <!--    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Archives</span><span-->
+                <!--            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>-->
+                <!--    <ul class="nav-second-level" aria-expanded="false">-->
+                <!--        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_archives' %}"><i-->
+                <!--                    class="ti-control-record"></i>Documents</a></li>-->
+                <!--        <li class="nav-item"><a class="nav-link" href="{% url 'documents:rec_archives' %}"><i-->
+                <!--                    class="ti-control-record"></i>Records</a></li>-->
 
-                <li>
-                    <a href="javascript: void(0);"><i class="ti-lock"></i><span>Archives</span><span
-                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
-                    <ul class="nav-second-level" aria-expanded="false">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_archives' %}"><i
-                                    class="ti-control-record"></i>Documents</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:rec_archives' %}"><i
-                                    class="ti-control-record"></i>Records</a></li>
 
-
-                    </ul>
-                </li>
+                <!--    </ul>-->
+                <!--</li>-->
+                <!--{% endif %}-->
 
 
 
@@ -530,7 +531,7 @@
                                     class="ti-control-record"></i>Wills</a></li>
 
                         <li class="nav-item"><a class="nav-link" href="{% url 'correspondents:list' %}"><i
-                                    class="ti-control-record"></i>Correspondents</a></li>
+                                    class="ti-control-record"></i>Correspondence</a></li>
 
 
 
@@ -543,6 +544,79 @@
 
                     </ul>
                 </li>
+
+
+
+
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-files"></i><span>Resources</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <!-- <li class="nav-item"><a class="nav-link" href="{% url 'schedules:list' %}"><i
+                                    class="ti-control-record"></i>Use Conference Room</a></li> -->
+                        <li class="nav-item"><a class="nav-link" href="{% url 'resources:book_list' %}"><i
+                                    class="ti-control-record"></i>Books</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'documents:doc_list' %}"><i
+                                    class="ti-control-record"></i>Documents</a></li>
+
+
+                    </ul>
+                </li>
+
+
+
+
+
+                {% if request.user.is_superuser or request.user|has_group:"FrontDesk" %}
+
+
+                <li>
+                    <a href="javascript: void(0);"><i class="ti-harddrives"></i><span>Records</span><span
+                            class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span></a>
+                    <ul class="nav-second-level" aria-expanded="false">
+                        <li>
+                            <a href="javascript: void(0);"><i class="ti-control-record"></i>Books <span
+                                    class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                            <ul class="nav-second-level" aria-expanded="false">
+
+                                <li><a href="{% url  'resources:request_list' %}">Requests</a></li>
+                                <li><a href="{% url 'resources:approve_list' %}">Approvals</a></li>
+                                <li><a href="{% url 'resources:history' %}">Book History</a></li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);"><i class="ti-control-record"></i>Documents <span
+                                    class="menu-arrow left-has-menu"><i class="mdi mdi-chevron-right"></i></span></a>
+                            <ul class="nav-second-level" aria-expanded="false">
+                                <li><a href="{% url 'documents:record_list' %}"> Requests
+                                        {% if request.sessiion.rec > 0 %}
+                                        <span class="badge badge-pink float-right mr-2">{{request.session.recs}}</span>
+
+                                        {% endif %}</a></li>
+                                <li><a href="{% url 'documents:approved-list' %}">Approvals</a></li>
+                                <li><a href="{% url 'documents:history' %}">History</a></li>
+
+                            </ul>
+                        </li>
+
+
+                </li>
+
+
+
+                {% endif %}
+
+
+
+                </li>
+
+            </ul>
+            </li>
+
+
+
 
         </div>
         <!-- end left-sidenav-->

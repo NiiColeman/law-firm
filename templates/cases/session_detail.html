@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}
+Court Session Details
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="page-content">
+
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">S.K. Boafo & Co.</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'cases:case_detail' case.pk %}">Case
+                                    Detail</a>
+                            </li>
+                            <li class="breadcrumb-item active">Court Session Details</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Court Session</h4>
+                </div>
+                <!--end page-title-box-->
+            </div>
+            <!--end col-->
+        </div>
+        <!-- end page title end breadcrumb -->
+        {% include 'messages/messages.html' %}
+
+
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="mt-0 header-title text-center">
+                            Case : {{object.case.name|title}}
+                        </h1>
+                        <!-- <p class="text-muted text-center">{{object.date_added}} -->
+
+                        </p>
+                        <p>
+                            <h5 class="text-muted">Lawyer: {{object.lawyer.first_name|title}}
+                                {{object.lawyer.last_name|title}}</h5>
+                        </p>
+                        <p>
+                            <h5 class="text-muted">Start Time :{{object.start_time}}</h5>
+                        </p>
+                        <p>
+                            <h5 class="text-muted">End Time : {{object.end_time}}</h5>
+                        </p>
+
+                        <!-- <p>
+                            <h5 class="text-muted"></h5>
+                        </p> -->
+
+                        <p>
+                            <h5 class="text-muted"> Client: {{object.case.client|title}}</h5>
+                        </p>
+
+                        <h1 class="mt-0 header-title text-center">
+                            Purpose/Court Remarks
+                        </h1>
+
+                        <p>{{object.purpose|safe}}</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!--end row-->
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+
+
+            <div class="col-md-12 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+
+
+                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-lg">Edit</button>
+
+
+                        <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
+                            data-target=".bs-example-modal-center">Delete</button>
+
+                    </div>
+                    <!--end card-body-->
+                </div>
+                <!--end card-->
+            </div>
+
+
+
+            <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0 text text-center" id="myLargeModalLabel">Edit
+                                doc</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+
+
+
+                            <form action="{{object.get_update_url}}" method="post">
+                                {% csrf_token %}
+                                {{session_form|crispy}}
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="my-3">Start Date</label>
+                                            <input type="datetime-local" class="form-control" name="start_time"
+                                                placeholder="Start date" id="date-start" value="{{object.start_time}}"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="my-3">End Date</label>
+                                            <input type="datetime-local" class="form-control" name="end_time"
+                                                placeholder="End date" id="date-end" value="{{object.end_time}}"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 text-left">
+                                            <button type="submit"
+                                                class="btn btn-gradient-primary px-5 py-2">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+
+
+
+            <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog"
+                aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title mt-0" id="exampleModalLabel">Delete Session</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>AreYou Sure You Want TO Delete this session</p>
+
+                            <form action="{{object.get_delete_url}}" method="post">
+                                {% csrf_token %}
+
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+
+
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+
+        </div>
+    </div>
+    {% endblock content %}

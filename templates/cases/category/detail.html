@@ -111,12 +111,21 @@ Category Details
                     <div class="card-body">
 
 
-                        <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
+                        <center>
+<h3>Actions</h3>
+
+                        </center>
+
+
+<center>
+ <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>
 
 
                         <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center">Delete</button>
+</center>
+
 
                     </div>
                     <!--end card-body-->
@@ -158,15 +167,21 @@ Category Details
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>AreYou Sure You Want TO Delete {{case.name|title}}</p>
+                            <p>AreYou Sure You Want To Delete {{cat.name|title}}</p>
 
 
                             <form action="{% url 'cases:cat_delete' cat.pk %}" method="POST">
                                 {% csrf_token %}
-                                <button class="btn btn-secondary" data-dismiss="modal"
+
+
+                                <center>
+                                    <button class="btn btn-secondary" data-dismiss="modal"
                                     aria-label="Close">Cancel</button>
 
                                 <input type="submit" value="Delete" class="btn btn-danger">
+                                </center>
+
+
                             </form>
 
 

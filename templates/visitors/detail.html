@@ -123,11 +123,11 @@ Visitor Details
                     <div class="card-body">
 
 
-                        {% if user.is_superuser or user.is_staff %}
+
                         <button class="btn btn-primary" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-lg">Edit</button>
 
-
+{% if user.is_superuser or user.is_staff %}
                         <button class="btn btn-danger" data-toggle="modal" data-animation="bounce"
                             data-target=".bs-example-modal-center">Delete</button>
                         {% endif %}

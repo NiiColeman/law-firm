@@ -98,6 +98,8 @@ def list_sessions(request):
     pink = MeetingSession.objects.filter(room__id=1, start_time__date=today)
     yellow = MeetingSession.objects.filter(room__id=2, start_time__date=today)
     purple = MeetingSession.objects.filter(room__id=3, start_time__date=today)
+    conf = MeetingSession.objects.filter(room__id=4, start_time__date=today)
+
     start1 = timezone.now()
     # pink_check = False
 
@@ -137,6 +139,20 @@ def list_sessions(request):
     else:
         request.session['purple_'] = True
 
+
+    if conf:
+        for i in conf:
+            s1 = i.start_time < start1
+
+            s2 = i.end_time >= start1
+        if (s1 and s2):
+            request.session['conf_'] = False
+        else:
+            request.session['conf_'] = True
+    else:
+        request.session['conf_'] = True
+
+
     # print(pink_check)
     # for i in pink:
     #     if start1 in range(i.start_time, i.end_time):
@@ -149,6 +165,7 @@ def list_sessions(request):
         'purple': purple,
         'yellow': yellow,
         'form': form,
+        'conf':conf
         # 'pink_check'
     }
 
@@ -184,6 +201,9 @@ def add_session(request):
             pink = MeetingSession.objects.filter(room__id=1)
             yellow = MeetingSession.objects.filter(room__id=2)
             purple = MeetingSession.objects.filter(room__id=3)
+            conf = MeetingSession.objects.filter(room__id=4)
+
+
 
             # object = MeetingSession.objects.create(
             #     purpose=purpose, room=room, start_time=start1, end_time=end1, lawyer=request.user)

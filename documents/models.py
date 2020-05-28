@@ -58,6 +58,8 @@ class Document(models.Model):
 
     category = models.ForeignKey(
         DocCategory, default=DOC_CATEGORY_ID, on_delete=models.SET_DEFAULT)
+    requested = models.BooleanField(default=False)
+
 
     """Model definition for Document."""
 
@@ -107,6 +109,9 @@ class DocumentRecord(models.Model):
     date_requested = models.DateTimeField(auto_now=True)
     date_approved = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
+    requested = models.BooleanField(default=False)
+    returned = models.BooleanField(default=False)
+    date_returned = models.DateField(auto_now=False, null=True)
 
     # TODO: Define fields here
 

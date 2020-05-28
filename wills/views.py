@@ -9,9 +9,9 @@ from .models import models
 from .forms import WillForm
 from django.contrib.auth.decorators import login_required
 
-
+@login_required()
 def will_list(request):
-    wills = Will.objects.filter(user=request.user)
+    wills = Will.objects.filter(lawyer__user=request.user)
     form = WillForm(request.POST or None)
 
     context = {
@@ -20,25 +20,27 @@ def will_list(request):
     }
     return render(request, 'wills/list.html', context)
 
-
+@login_required
 def will_detail(request, pk):
     will = get_object_or_404(Will, pk=pk)
     form = WillForm(request.POST or None, instance=will)
+    lawyers=will.lawyer.all()
     context = {
         'will': will,
-        'form': form
+        'form': form,
+        'lawyers':lawyers
     }
 
     return render(request, 'wills/detail.html', context)
 
-
+@login_required
 def will_update(request, pk):
     will = get_object_or_404(Will, pk=pk)
 
     if request.method == "POST":
         form = WillForm(request.POST or None, instance=will)
         if form.is_valid():
-            form.instance.user = request.user
+
             form.save()
             messages.success(request, "Will Has been updated")
 
@@ -59,13 +61,13 @@ def will_update(request, pk):
 
     return render(request, 'wills/detail.html', context)
 
-
+@login_required
 def add_will(request):
 
     if request.method == "POST":
         form = WillForm(request.POST or None)
         if form.is_valid():
-            form.instance.user = request.user
+
 
             form.save()
 
@@ -80,7 +82,7 @@ def add_will(request):
 
     return render(request, 'wills/list.html', {'form': form})
 
-
+@login_required
 def delete_will(request, pk):
     will = get_object_or_404(Will, pk=pk)
 
@@ -94,9 +96,9 @@ def delete_will(request, pk):
 
     return render(request, 'wills/detail.html')
 
-
+@login_required
 def agreement_list(request):
-    object_list = Agreement.objects.filter(user=request.user)
+    object_list = Agreement.objects.filter(lawyer__user=request.user)
     form = AgreementForm(request.POST or None)
 
     context = {
@@ -106,12 +108,12 @@ def agreement_list(request):
 
     return render(request, 'wills/agreements/list.html', context)
 
-
+@login_required
 def add_agreement(request):
     if request.method == "POST":
         form = AgreementForm(request.POST or None)
         if form.is_valid():
-            form.instance.user = request.user
+
             form.save()
             messages.success(request, "Agreement has been added")
             return redirect('wills:agreement_list')
@@ -124,25 +126,27 @@ def add_agreement(request):
 
     return render(request, "wills/agreements/list.html", {'form': form})
 
-
+@login_required
 def agreement_detail(request, pk):
     object = get_object_or_404(Agreement, pk=pk)
     form = AgreementForm(request.POST or None, instance=object)
+    lawyers=object.lawyer.all()
 
     context = {
         'agreement': object,
-        'form': form
+        'form': form,
+        'lawyers':lawyers
     }
 
     return render(request, 'wills/agreements/detail.html', context)
 
-
+@login_required
 def agreement_update(request, pk):
     object = get_object_or_404(Agreement, pk=pk)
     if request.method == "POST":
         form = AgreementForm(request.POST or None, instance=object)
         if form.is_valid():
-            form.instance.user = request.user
+
             form.save()
             messages.success(request, "Agreement has been updated")
             return HttpResponseRedirect(reverse('wills:agreement_detail', args=[object.pk]))
@@ -155,7 +159,7 @@ def agreement_update(request, pk):
 
     return render(request, 'wills/agreements/detail.html', {'form': form})
 
-
+@login_required
 def delete_agreement(request, pk):
     object = get_object_or_404(Agreement, pk=pk)
 

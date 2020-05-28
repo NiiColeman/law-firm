@@ -84,7 +84,8 @@ class Lawyer(models.Model):
 
     def __str__(self):
         """Unicode representation of Lawyer."""
-        return self.user.username
+        full_name="{} {}".format(self.user.first_name,self.user.last_name)
+        return full_name
 
 
 class OtherStaff(models.Model):
