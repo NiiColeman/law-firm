@@ -6,6 +6,8 @@ from .views import (client_create_view, client_delete,
                     category_list, add_cat,
                     update_cat,
                     client_cat,
+                    add_case,
+                    add_will
 
                     )
 
@@ -32,6 +34,11 @@ urlpatterns = [
          client_cat, name="client_cat"),
 
     #     path('')
+
+     #case
+    path('clients/<int:pk>/add-new-case',add_case,name='add-case'),
+    #will
+    path('clients/<int:pk>/add-new-will',add_will,name='add-will'),
 
 
 

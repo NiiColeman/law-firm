@@ -27,7 +27,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = []
 
-ALLOWED_HOSTS = ['skboafoandco.pythonanywhere.com']
+ALLOWED_HOSTS = ['app.skboafoandco.com']
 
 
 # Application definition

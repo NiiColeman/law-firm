@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 # from django.views.generic import TemplateView,ListView,CreateView,UpdateView,DeleteView
 from django.urls import reverse
-from .forms import ClientForm, ClientCategoryForm
+from .forms import ClientForm, ClientCategoryForm,ClientCaseForm,ClientWillForm
 # Create your views here.
 from .models import Client, ClientCategory
 from django.contrib import messages
@@ -57,7 +57,9 @@ def client_detail(request, pk):
     context = {
         'client': client,
         'form': form,
-        'client_cases': client_cases
+        'client_cases': client_cases,
+        'case_form':ClientCaseForm(request.POST or None),
+        'will_form':ClientWillForm(request.POST or None ),
     }
 
     return render(request, "clients/client_detail.html", context)
@@ -169,6 +171,70 @@ def client_cat(request, pk):
     }
 
     return render(request, 'clients/client_list.html', context)
+
+
+
+
+
+@login_required
+def add_case(request,pk):
+    client=get_object_or_404(Client,pk=pk)
+
+    if request.method=="POST":
+
+        form=ClientCaseForm(request.POST or None)
+        if form.is_valid():
+
+            form.instance.client=client
+            form.instance.added_by=request.user
+            form.save()
+
+            messages.success(request, 'a new case hase been added for {}'.format(client.name))
+            return HttpResponseRedirect(reverse('clients:client_detail', args=[client.pk] ))
+
+        else:
+            messages.error(request, 'Failed To Add A New Case For  {},Please Check Your Form'.format(client.name))
+            return HttpResponseRedirect(reverse('clients:client_detail', args=[client.pk] ))
+    else:
+        form =ClientCaseForm()
+
+    return render(request,'clients/client_detail',{'case_form':form})
+
+
+def get_lawyer(user):
+    qs=Lawyer.objects.get(user=user)
+
+    return qs
+
+
+@login_required
+def add_will(request,pk):
+    client=get_object_or_404(Client,pk=pk)
+
+    if request.method=="POST":
+        form = ClientWillForm(request.POST or None)
+        if form.is_valid():
+            form.instance.client=client
+            form.save()
+
+            messages.success(request, 'New will has been added for {}'.format(client.name))
+            return redirect('wills:will_list')
+
+        else:
+            messages.error(request, 'failed to add new will for {}'.format(client.name))
+            return HttpResponseRedirect(reverse('clients:client_detail', args=[client.pk]))
+
+    else:
+        form=ClientWillForm()
+
+
+
+    return render(request,'clients/client_detail.html', {'will_form':form})
+
+
+
+
+
 
 
 

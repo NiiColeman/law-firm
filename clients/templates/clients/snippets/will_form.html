@@ -1,0 +1,51 @@
+{% load crispy_forms_tags %}
+
+
+<form action="{% url 'clients:add-will'  client.pk  %}" method="post">
+
+    {% csrf_token %}
+
+
+
+    {{will_form.lawyer|as_crispy_field}}
+
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+            {{ will_form.date_of_execution|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+            {{ will_form.date_deposited|as_crispy_field }}
+        </div>
+
+    </div>
+
+
+
+    <div class="form-row">
+        <div class="form-group col-md-6 mb-0">
+            {{ will_form.receipt_number|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-6 mb-0">
+            {{ will_form.court|as_crispy_field }}
+        </div>
+
+    </div>
+
+
+    {{will_form.internal_depository|as_crispy_field}}
+
+
+
+
+
+
+
+    <center>
+
+        <button type="submit" class="btn btn-primary">Add Will</button>
+        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">Close</button>
+
+    </center>
+
+
+</form>

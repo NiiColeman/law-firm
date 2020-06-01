@@ -1,0 +1,56 @@
+{% load crispy_forms_tags %}
+
+
+
+
+
+
+{% csrf_token %}
+
+
+
+<div class="form-row">
+    <div class="form-group col-md-12 mb-0">
+        {{ case_form.name|as_crispy_field }}
+    </div>
+
+</div>
+{{ case_form.description|as_crispy_field }}
+
+{{ case_form.lawyer|as_crispy_field }}
+<div class="form-row">
+
+    <div class="form-group col-md-6 mb-0">
+        {{ case_form.category|as_crispy_field }}
+    </div>
+
+    <div class="form-group col-md-6 mb-0">
+        {{ case_form.court|as_crispy_field }}
+    </div>
+
+</div>
+
+
+<div class="form-row">
+
+    <div class="form-group col-md-6 mb-0">
+        {{ case_form.representative|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-6 mb-0">
+        {{ case_form.date_added|as_crispy_field }}
+    </div>
+</div>
+
+
+<div class="form-row">
+    <div class="form-group col-md-4 mb-0">
+        {{ case_form.court_number|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-4 mb-0">
+        {{ case_form.case_number|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-4 mb-0">
+        {{ case_form.suit_number|as_crispy_field }}
+    </div>
+
+</div>
